@@ -1,6 +1,9 @@
 // Import React
 import React from "react";
 
+import Navbar from "components/Navbar";
+import Footer from "components/Footer";
+
 // Import React Router
 import { BrowserRouter, HashRouter, Route } from "react-router-dom";
 const Router = location.protocol === "file:" ? HashRouter : BrowserRouter;
@@ -19,7 +22,6 @@ class Root extends React.Component {
 			requestAnimationFrame(loop);
 			if(route !== app.getRoute()) {
 				route = app.getRoute();
-				$(window).scrollTop(0);
 				Photon.reload();
 			}
 		}());
@@ -31,8 +33,10 @@ class Root extends React.Component {
 		return (
 			<Router>
 				<main>
+					<Navbar/>
 					{ ROUTES.map(({ route, View }, key) => <Route key={key} path={route} exact={true} component={View}/> ) }
 				</main>
+				<Footer/>
 			</Router>
         );
 

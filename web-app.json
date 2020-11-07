@@ -1,12 +1,12 @@
 {
 	"logo": "./src/static/icon.png",
-	"output": "static/",
-	"prefix": "/static/",
+	"output": "/",
+	"prefix": "",
 	"config": {
 
-		"appName": "Photon PWA",
+		"appName": "Mayhem MC",
 		"version": "1.0.0",
-		"appDescription": "Create single page applications using PhotonCSS",
+		"appDescription": "Mayhem MC - High performance survival games server.",
 		"developerName": "Josh Merlino",
 		"developerURL": "https://joshmerlino.github.io",
 		"background": "#fff",
@@ -20,9 +20,12 @@
 		"icons": {
 			"android": true,
 			"appleIcon": true,
+			"appleStartup": true,
+			"coast": false,
 			"favicons": true,
 			"firefox": true,
-			"windows": true
+			"windows": true,
+			"yandex": true
 		}
 	}
 }

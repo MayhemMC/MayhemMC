@@ -1,4 +1,9 @@
 @import "~photoncss/src/less/photon";
+@import "~react-image-gallery/styles/css/image-gallery.css";
+
+@import "md";
+@import "legacy.autolink.less";
+@import "customtheme";
 
 #root {
     display: flex;
@@ -10,4 +15,117 @@
 	main {
 		flex-grow: 1;
 	}
+}
+
+body {
+	&::-webkit-scrollbar {
+	  	width: 12px;
+		background: @background;
+	}
+
+	&::-webkit-scrollbar-thumb {
+	  	background: @surface;
+		box-shadow: inset 0px 0px 0px 4px @background;
+	  	border-radius: 10px;
+	}
+}
+
+.card, .card * {
+	&::-webkit-scrollbar {
+	  	width: 12px;
+		background: @surface;
+	}
+
+	&::-webkit-scrollbar-thumb {
+	  	background: @border;
+		box-shadow: inset 0px 0px 0px 4px @surface;
+	  	border-radius: 10px;
+	}
+}
+
+.title h2 {
+	font-family: Roboto Mono;
+	display: inline-block;
+	padding: 12px 0;
+	margin: 0;
+	margin-bottom: 16px;
+	border-bottom: 2px solid @primary;
+	border-image-slice: 1;
+	text-transform: uppercase;
+	letter-spacing: 8px;
+	font-size: 20px;
+	font-weight: 500;
+	@media @sm {
+		font-size: 18px;
+		letter-spacing: 5.66px;
+		white-space: nowrap;
+	}
+}
+
+footer.legacy.dark {
+	margin-top: -12px!important;
+	background-color: darken(@background, 2%)!important;
+}
+
+.card {
+	hr {
+		margin: 0;
+		width: 100%;
+	}
+	code {
+		font-family: Roboto Mono;
+		font-size: inherit;
+		font-weight: 500;
+		color: @on-surface;
+		background: darken(@surface, 4%);
+		border-radius: 4px;
+		padding: 2px 6px;
+		user-select: all;
+	}
+}
+
+.container {
+	max-width: 1600px;
+}
+
+.material-tooltip {
+	text-align: center;
+}
+
+.dropzone {
+	border-radius: inherit;
+	&.dropping {
+		box-shadow: inset 0px 0px 5px 2px @green-accent4;
+	}
+}
+
+.image-gallery-slide .image-gallery-image {
+	object-fit: cover;
+	min-height: 320px;
+}
+
+.b-top-btm {
+	border-top: 1px solid @border-variant;
+	border-bottom: 1px solid @border-variant;
+}
+
+.dialog {
+	overflow: hidden;
+	max-width: 440px!important;
+}
+
+.checkbox input[type="checkbox"]::after {
+    color: @background!important;
+}
+
+.toolbar {
+	box-shadow:
+	  0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+	  0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+	  0px 1px 10px 0px rgba(0, 0, 0, 0.12),
+	  0px -36px 0px 0px #004ba0;
+}
+
+.dialog p {
+	margin: 0;
 }

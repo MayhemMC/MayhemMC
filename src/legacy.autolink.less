@@ -1,0 +1,78 @@
+.reference,
+.autolink {
+	.card();
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	margin: 4px;
+	margin-bottom: 0;
+	width: calc(100% - 8px);
+	height: 122px;
+	padding: 0;
+	.padding-layer {
+		padding: 16px 20px 12px;
+
+		.external-img {
+			width: 44px;
+			height: 44px;
+			border-radius: 50%;
+			float: left;
+			margin-bottom: 16px;
+			margin-right: 20px;
+			position: relative;
+
+			img {
+				position: absolute;
+				max-width: 36px;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%,-50%);
+			}
+		}
+
+		.title {
+			display: inline-block;
+			font-family: Roboto;
+			font-size: 15px;
+			color: #FAFAFA;
+			font-weight: 500;
+			overflow-x: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		p {
+			display: block;
+			font-family: Roboto;
+			font-size: 14px;
+			color: #fafafa;
+			overflow: hidden;
+			height: 34px;
+			text-overflow: ellipsis;
+			margin: 8px 0;
+			padding: 0;
+		}
+
+		i {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			color: #fafafa!important;
+		}
+
+		.ref {
+			display: inline-block;
+			font-family: Roboto;
+			font-size: 13px;
+			font-weight: 500;
+			color: #fafafa;
+			overflow: hidden;
+			height: 34px;
+			text-overflow: ellipsis;
+			margin: 8px 0;
+			transform: translateY(-8px);
+			left: 0;
+			padding: 0;
+		}
+	}
+}

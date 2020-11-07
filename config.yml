@@ -1,8 +1,8 @@
 # Used for hosting multiple sites with their own DNS name all on the same machine, which DNS name will this server bind to
-remote-address: ''
+remote-address: 'mayhemmc.uk.to'
 
 # Port for the production server to listen on
-port: 80
+port: 8400
 
 # SSL configuration
 ssl:
@@ -18,3 +18,13 @@ ssl:
 
   # Port for the HTTPS server to run on
   port: 443
+
+# mySQL connection configuration
+mysql:
+  host: 'localhost'
+  user: 'mmc'
+  password: 'PdfJqyVxbYhRHPP3'
+  database: 'mmc'
+
+# Discord bot configuration
+discord-secret: 'NzA5NDgwNzk3NzgxODg1MDAw.Xrmhew.Daani83XOerdMegwyBCbLi5_czM'
