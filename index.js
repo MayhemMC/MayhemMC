@@ -1,11 +1,29 @@
 const bodyParser = require("body-parser");
 const compression = require("compression");
+const propReader = require("properties-reader");
 const cors = require("cors");
 const express = require("express");
 const fs = require("fs").promises;
 const http = require("http");
 const path = require("path");
 const YAML = require("yaml");
+
+global.fs = fs;
+global.path = path;
+global.YAML = YAML;
+global.propReader = propReader;
+global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
+
+const Query = require("minecraft-query");
+global.query = port => new Query({ host: "localhost", port, timeout: 50 }).fullStat().catch(() => null);
+
+const { exec } = require("child_process");
+global.exec = (cmd, opts) => new Promise(function(resolve, reject) {
+	exec(cmd, opts, function(err, out) {
+		if(err) reject(err);
+		resolve(out);
+	})
+});
 
 // Log errors to console instead of killing the application
 process.on("uncaughtException", err => console.error("[ERROR]", err));
@@ -15,6 +33,9 @@ if (process.env.NODE_ENV === "dev") {
 
 	// Start development server
 	(async function server(app) {
+
+		// Configure MySQL
+		global.mysql = await require("./mysql.js")();
 
 		// Use body parser to parse fields
 		app.use(bodyParser.json());
@@ -28,6 +49,11 @@ if (process.env.NODE_ENV === "dev") {
 				console.error("[ERROR]", req.url, error);
 				res.json({ status: 500, error });
 			}
+		});
+
+		app.use("/dynmap/:server", ({ params, url }, response) => {
+			const file = path.join(MMC_ROOT, params.server, "/plugins/dynmap/web/", url.split("?")[0]);
+			response.sendFile(file);
 		});
 
 		// Start HTTP server
@@ -46,6 +72,9 @@ if (process.env.NODE_ENV === "dev") {
 
 	// Get config from config.yml
 	const config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
+
+	// Configure MySQL
+	global.mysql = await require("./mysql.js")();
 
 	// Use gzip when serving files
 	app.use(compression());
@@ -71,6 +100,11 @@ if (process.env.NODE_ENV === "dev") {
 			console.error("[ERROR]", req.url, error);
 			res.json({ status: 500, error });
 		}
+	});
+
+	app.use("/dynmap/:server", ({ params, url }, response) => {
+		const file = path.join(MMC_ROOT, params.server, "/plugins/dynmap/web/", url.split("?")[0]);
+		response.sendFile(file);
 	});
 
 	// Catch 404's and send the index document - history-fallback-api
