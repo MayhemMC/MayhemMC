@@ -9,7 +9,18 @@ module.exports = async function() {
 
 	// On client log in
 	client.on("ready", async () => {
+
 	  	console.log(chalk.cyan("[DISCORD]"), "Logged into Discord as", chalk.blue(client.user.tag));
+
+		// Show server IP as subtitle
+		client.user.setPresence({
+		    activity: {
+		        name: "mayhemmc.uk.to",
+				type: "PLAYING",
+		    },
+		    status: "online"
+		});
+		
 	});
 
 	// On command
