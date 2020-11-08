@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useReducer } from "react";
 import { Link } from "react-router-dom";
 import { Drawer } from "@photoncss/Drawer";
 import { ListItem, Subheader } from "@photoncss/List";
@@ -7,6 +7,10 @@ const Route = ({ to, icon, children }) =>
   <Link to={to}><ListItem rounded leadingIcon={icon} active={app.getRoute() === to}>{children}</ListItem></Link>
 
 export default function Component() {
+
+	const [ i, forceUpdate ] = useReducer(x => x + 1, 0);
+	i === 0 && Photon.hooks.push(forceUpdate);
+
 	return (
 		<Fragment>
 			<Drawer id="web-nav">

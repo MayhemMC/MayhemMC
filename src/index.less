@@ -1,5 +1,8 @@
 @import "~photoncss/src/less/photon";
 @import "~photoncss/src/less/themes/slate";
+@import "components/Markdown";
+
+@headline-type: "Uni Sans Heavy CAPS";
 
 @font-face {
 	font-family: 'MinecraftiaRegular';
@@ -15,6 +18,13 @@
 	font-style: normal;
 }
 
+@font-face {
+	font-family: "Uni Sans Heavy CAPS";
+	src: url("//db.onlinewebfonts.com/t/3029259ef4f4389d799fe57da6f29158.eot");
+	src: url("//db.onlinewebfonts.com/t/3029259ef4f4389d799fe57da6f29158.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/3029259ef4f4389d799fe57da6f29158.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/3029259ef4f4389d799fe57da6f29158.woff") format("woff"), url("//db.onlinewebfonts.com/t/3029259ef4f4389d799fe57da6f29158.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/3029259ef4f4389d799fe57da6f29158.svg#Uni Sans Heavy CAPS") format("svg");
+}
+
+
 #root {
     display: flex;
     flex-direction: column;
@@ -28,7 +38,6 @@
 }
 
 .title h2 {
-	font-family: Roboto Mono;
 	display: inline-block;
 	padding: 12px 0;
 	margin: 0;
@@ -49,4 +58,8 @@
 footer.legacy.dark {
 	margin-top: -12px!important;
 	background-color: darken(@background, 2%)!important;
+}
+
+.dialog p {
+	margin: 0;
 }
