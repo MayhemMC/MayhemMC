@@ -8,7 +8,7 @@ require("./utils.js");
 module.exports = async function() {
 
 	// On client log in
-	client.on("ready", () => {
+	client.on("ready", async () => {
 	  	console.log(chalk.cyan("[DISCORD]"), "Logged into Discord as", chalk.blue(client.user.tag));
 	});
 
@@ -23,6 +23,9 @@ module.exports = async function() {
 			}
 		}
 	});
+
+	// Send welcome message
+	client.on("guildMemberAdd", require("./join.js"));
 
 	// Log client in using token
 	client.login(config["discord-secret"]);
