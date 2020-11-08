@@ -7,11 +7,21 @@ const fs = require("fs").promises;
 const http = require("http");
 const path = require("path");
 const YAML = require("yaml");
+const chalk = require("chalk");
+const namemc = require("namemc");
+const ms = require("ms");
+const prettyms = require("pretty-ms");
+const fetch = require("node-fetch");
 
 global.fs = fs;
 global.path = path;
 global.YAML = YAML;
+global.chalk = chalk;
+global.namemc = namemc;
 global.propReader = propReader;
+global.ms = ms;
+global.prettyms = prettyms;
+global.fetch = fetch;
 global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
 
 const Query = require("minecraft-query");
@@ -25,6 +35,15 @@ global.exec = (cmd, opts) => new Promise(function(resolve, reject) {
 	})
 });
 
+global.mmcExec = (server, cmd) => new Promise(function(resolve, reject) {
+	exec(`sudo -u mmc /usr/bin/screen -S mc-${server} -X stuff '${cmd}'^M`, {}, function(err, out) {
+		if(err) reject(err);
+		resolve(out);
+	})
+});
+
+// Start Discord bot
+
 // Log errors to console instead of killing the application
 process.on("uncaughtException", err => console.error("[ERROR]", err));
 
@@ -33,6 +52,10 @@ if (process.env.NODE_ENV === "dev") {
 
 	// Start development server
 	(async function server(app) {
+
+		// Get config from config.yml
+		global.config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
+		require("./discord/index.js")();
 
 		// Configure MySQL
 		global.mysql = await require("./mysql.js")();
@@ -71,7 +94,8 @@ if (process.env.NODE_ENV === "dev") {
 (async function server(app) {
 
 	// Get config from config.yml
-	const config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
+	global.config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
+	require("./discord/index.js")();
 
 	// Configure MySQL
 	global.mysql = await require("./mysql.js")();
