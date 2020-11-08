@@ -9,6 +9,9 @@ let ROUTES = [];
 const importAll = a => a.keys().forEach(k => ROUTES.push(a(k).default));
 importAll(require.context("../views", true, /\.js$/));
 
+import Footer from "components/Footer";
+import Sidenav from "components/Sidenav";
+
 // Create root component
 class Root extends React.Component {
 
@@ -21,6 +24,7 @@ class Root extends React.Component {
 				route = app.getRoute();
 				$(window).scrollTop(0);
 				Photon.reload();
+				Photon.Drawer("#web-nav").close();
 			}
 		}());
 	}
@@ -30,9 +34,11 @@ class Root extends React.Component {
 		// Initial render of root component
 		return (
 			<Router>
+				<Sidenav/>
 				<main>
 					{ ROUTES.map(({ route, View }, key) => <Route key={key} path={route} exact={true} component={View}/> ) }
 				</main>
+				<Footer/>
 			</Router>
         );
 

@@ -16,7 +16,7 @@ module.exports = merge(require("./webpack.conf.js"), {
 		},
 		proxy: {
         	"/api": {
-            	target: "http://192.168.1.173:4000/",
+            	target: "http://localhost:4000/",
             	secure: false
         	}
     	},
