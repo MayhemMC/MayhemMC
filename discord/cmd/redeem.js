@@ -34,6 +34,15 @@ module.exports = async function(args, message) {
 	// Get users from database
 	const [ rows ] = await mysql.query(`SELECT * FROM \`discord_players\` WHERE uuid="${uuid}"`);
 
+	// If user isnt registered
+	if(rows.length === 0) {
+	    const embed = new MessageEmbed()
+	    embed.setColor(0xc62828)
+	    embed.setTitle("Can't redeem token.")
+		embed.setDescription(`\`${currentName}\` is not registered.`)
+	    return channel.send(embed);
+	}
+
 	// Define role constants
 	const role_ids = [ Roles.VIP, Roles.WARRIOR, Roles.HERO, Roles.LEGEND ];
 	const role_names = [ "vip", "warrior", "hero", "legend" ];
