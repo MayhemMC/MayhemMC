@@ -20,13 +20,13 @@ module.exports = async function() {
 		    },
 		    status: "online"
 		});
-		
+
 	});
 
 	// On command
 	client.on("message", message => {
 		const [ root, command, ...args ] = message.content.split(" ");
-		if(root === ".mmc" || root === "mmc") {
+		if(root.toLowerCase() === ".mmc" || root.toLowerCase() === "mmc") {
 			try {
 				require(`./cmd/${command.toLowerCase()}.js`)(args, message);
 			} catch(e) {

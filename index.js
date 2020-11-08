@@ -12,6 +12,9 @@ const namemc = require("namemc");
 const ms = require("ms");
 const prettyms = require("pretty-ms");
 const fetch = require("node-fetch");
+const ordinal = require("ordinal");
+const dayjs = require("dayjs");
+dayjs.extend(require("dayjs/plugin/relativeTime"))
 
 global.fs = fs;
 global.path = path;
@@ -20,6 +23,8 @@ global.chalk = chalk;
 global.namemc = namemc;
 global.propReader = propReader;
 global.ms = ms;
+global.ordinal = ordinal;
+global.dayjs = dayjs;
 global.prettyms = prettyms;
 global.fetch = fetch;
 global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
@@ -40,6 +45,12 @@ global.mmcExec = (server, cmd) => new Promise(function(resolve, reject) {
 		if(err) reject(err);
 		resolve(out);
 	})
+});
+
+global.mmcApi = (api, params) => new Promise(resolve => {
+	const req = { body: params };
+	const res = { json: resolve };
+	require(`${__dirname}/api/${api}.js`)(req, res);
 });
 
 // Start Discord bot

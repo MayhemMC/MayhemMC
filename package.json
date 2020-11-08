@@ -68,7 +68,8 @@
         "chalk": "^4.1.0",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
-        "discord.js": "^12.2.0",
+        "dayjs": "^1.9.5",
+        "discord.js": "^12.4.1",
         "express": "^4.17.1",
         "http": "0.0.1-security",
         "https": "^1.0.0",
@@ -78,6 +79,7 @@
         "mysql2": "^2.2.5",
         "namemc": "^0.1.5",
         "node-fetch": "^2.6.1",
+        "ordinal": "^1.0.3",
         "pretty-ms": "^7.0.1",
         "properties-reader": "^2.1.1",
         "yaml": "^1.10.0"

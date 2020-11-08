@@ -1,6 +1,6 @@
 module.exports = async function(args, message) {
 
-	const { channel, member } = message;
+	const { channel, member, guild } = message;
 
 	// If user dosnt have permissions
 	if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) {
@@ -72,7 +72,7 @@ module.exports = async function(args, message) {
 		await mmcExec(server, `lp user ${name} parent set ${role_codes[role]}`);
 	};
 
-	client.channels.cache.get(Channels.JOINS).send(`Thank you ${rows.length !== 0 ? `<@${discordid}>`:`\`${name}\``} for supporting the server! You have recieved your __**\`${role_names[role].toUpperCase()}\`**__ rank!`)
+	client.channels.cache.get(Channels.JOINS).send(`Thank you ${rows.length !== 0 ? `<@${discordid}>`:`\`${name}\``} for supporting the server! You have recieved your ${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === role_names[role].toUpperCase())} __**\`${role_names[role].toUpperCase()}\`**__ rank!`)
 
 	const embed = new MessageEmbed()
     embed.setColor(0x19d476)
