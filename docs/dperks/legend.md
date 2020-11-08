@@ -1,6 +1,6 @@
 **Anarchy**:
 - Phantoms do not attack.
-- Use anvils to rename items with color codes.
+- Use anvils to rename items with color & format codes.
 - 3 Additional `/sethome`.
 - `/addlore`, `/setlore`, `/removelore` - Add lore to your items.
 - `/hat` - Wear any item on your head.
