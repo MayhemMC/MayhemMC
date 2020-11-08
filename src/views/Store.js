@@ -6,13 +6,14 @@ import { Col, Container, Row } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
 import { Textfield } from "@photoncss/Textfield";
+import { List, ListItem } from "@photoncss/List";
 import Masonry from "react-masonry-component";
 import MCText from "mctext-react";
 
 let specimen = null;
 
 // Package component
-export function Package({ name, imageURL, expires, price, discount = 0, display_prefix }) {
+export function Package({ name, imageURL, expires, price, discount = 0, display_prefix, features }) {
 
 	const rprice = price - discount;
 	if(rprice <= 0) return null;
@@ -39,7 +40,7 @@ export function Package({ name, imageURL, expires, price, discount = 0, display_
 				</CardTitle>
 				<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
 				<div className="b-top-btm">
-					<Markdown source={`dperks/${name.toLowerCase()}`}/>
+					<Markdown source={features}/>
 				</div>
 				<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
 				<CardActions>
@@ -54,8 +55,12 @@ export function Package({ name, imageURL, expires, price, discount = 0, display_
 function View() {
 
 	const [ discount, setDiscount ] = useState(0);
-	const [{ packages }, setState ] = useState({ packages: [] });
-	useEffect(() => packages.length === 0 && app.api("store").then(setState));
+	const [{ packages }, _packages ] = useState({ packages: [] });
+	const [{ donations }, _donations ] = useState({ donations: [] });
+	useEffect(() => {
+		donations.length === 0 && app.api("donations").then(_donations);
+		packages.length === 0 && app.api("store").then(_packages);
+	});
 
 	async function checkdiscount({ target }) {
 
@@ -99,11 +104,27 @@ function View() {
 								<Textfield label="Minecraft username" onKeyUp={checkdiscount}/>
 							</div>
 						</Card>
+						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }} variant="outlined">
+							<CardTitle>Recient Donations</CardTitle>
+							<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
+							<List style={{ margin: "0 -1px" }}>
+							{ donations.map((donation, key) => {
+								const rank = packages.filter(({ name }) => name.toUpperCase() === donation.package)[0];
+								if(rank === undefined) return null;
+								return (
+									<ListItem key={key} waves={false}>
+										<img src={`https://crafatar.com/avatars/${donation.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px","transform":"translateY(-7px)", borderRadius: 4 }}/>
+										<MCText>{`${rank.display_prefix} ${donation.name}`.replace(/\&/gm, "§")}</MCText>
+									</ListItem>
+								)
+							} )}
+							</List>
+						</Card>
 					</Col>
 
 					<Col sm={12} lg={9}>
 						<Row>
-							<Masonry>
+							<Masonry options={{ transitionDuration: 0 }}>
 								{ packages.map((p, key) => <Package key={key} {...p} discount={discount}/> )}
 							</Masonry>
 						</Row>

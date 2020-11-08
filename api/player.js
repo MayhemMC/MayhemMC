@@ -4,15 +4,12 @@ module.exports = async function(req, res) {
 
 	// Get params
 	const params = { ...req.body, ...req.query };
-	let { name, uuid } = params;
+	let { name } = params;
 
-	let player = null;
-	console.log({ name, uuid });
-	if(name) player = (await lookupName(name).catch(() => false))
+	let player = (await lookupName(name).catch(() => false))
 	if(player === false) return res.json({ success: false, error: `Player '${name}' dosn't exist.` });
 	if(player === null) return res.json({ success: false, error: "No player specified. Use the 'name' or 'uuid' parameters." });
-	player = player.filter(a => a.currentName.toLowerCase() === name.toLowerCase())[0];
-	if(uuid) player = await lookupUUID(uuid);
+	player = player.filter(a => a.currentName.toLowerCase() === name.toLowerCase())[0] || player[0];
 	if(!await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`)).catch(() => false)) return res.json({ success: false, error: `'${player.currentName}' has never joined Mayhem MC before.` });
 
 	const { WHITELIST_PLAYERS } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/plugins/BungeeAdvancedProxy/config.yml"), "utf8"));

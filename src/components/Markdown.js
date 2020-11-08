@@ -10,7 +10,7 @@ export default function Component({ source }) {
 
 	return (
 		<div className="md-container" id={guid}>
-			<Markdown escapeHtml={false} source={ require(`../../docs/${source}.md`).default }/>
+			<Markdown escapeHtml={false} source={source}/>
 		</div>
 	)
 }
