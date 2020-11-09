@@ -25,23 +25,27 @@ function View() {
 			</Toolbar>
 			<ToolbarSpacer/>
 
-			<Container>
+			<Container style={{ maxWidth: 1600 }}>
 				<Row>
 
-					<Col sm={12}>
+					<Col>
 						<Card style={{ overflow: "hidden", zIndex: -1, position: "relative" }} id="x-parallax">
 							<img src={app.static("banner.jpg")} alt="" style={{ width: "100%", height: "100%" }}/>
 						</Card>
 					</Col>
 
-					<Col sm={12} lg={4} xl={3}>
+					<Col sm={12} lg={3}>
 
 					</Col>
 
-					<Col sm={12} lg={8} xl={9}>
+					<Col sm={12} lg={6}>
 						<Card>
 							<Markdown source={require("../../docs/index.md").default}/>
 						</Card>
+					</Col>
+
+					<Col sm={12} lg={3}>
+
 					</Col>
 
 				</Row>

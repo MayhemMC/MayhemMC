@@ -15,6 +15,12 @@ module.exports = async function(req, res) {
 	res.json({
 		success: true,
 		limit: limit === 50000 ? false : limit,
+		links: [
+			"https://minecraftservers.org/vote/583568",
+			"https://minecraft-server-list.com/server/459450/vote/",
+			"https://minecraft-mp.com/server/255961/vote/",
+			"https://topg.org/Minecraft/in-605738"
+		],
 		votes
 	})
 

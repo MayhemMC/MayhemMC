@@ -1,24 +1,24 @@
 .md-container {
 	padding: 8px;
 	h1, h2, h3 {
-		font-family: Roboto Mono;
+		font-family: @headline-type;
 		display: inline-block;
 		padding-bottom: 12px;
 		margin-bottom: 8px;
 		border-bottom: 2px solid @primary;
 		border-image-slice: 1;
 		text-transform: uppercase;
-		letter-spacing: 8px;
+		letter-spacing: 6px;
 		font-weight: 500;
 		white-space: nowrap;
 		overflow: hidden;
 	    text-overflow: ellipsis;
 	}
 	h1 {
-		font-size: 32px;
+		font-size: 24px;
 	}
 	h2 {
-		font-size: 24px;
+		font-size: 20px;
 	}
 	h3 {
 		font-size: 16px;
@@ -52,11 +52,11 @@
 code {
 	font-family: Roboto Mono;
 	font-size: 12px;
-	font-weight: 400;
+	font-weight: 500;
 	color: @on-surface;
 	background: darken(@surface, 2%);
 	border-radius: 4px;
-	padding: 0 3px;
+	padding: 0 6px;
 	user-select: all;
 	display: inline-block;
 }
@@ -66,6 +66,9 @@ code {
 		margin: 0;
 		li {
 			margin: 4px 0;
+			code {
+				padding: 2px 6px;
+			}
 		}
 	}
 	code {

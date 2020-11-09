@@ -66,7 +66,7 @@ if (process.env.NODE_ENV === "dev") {
 
 		// Get config from config.yml
 		global.config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
-		require("./discord/index.js")();
+		//require("./discord/index.js")();
 
 		// Configure MySQL
 		global.mysql = await require("./mysql.js")();

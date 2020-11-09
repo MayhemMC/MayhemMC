@@ -44,7 +44,7 @@ export function Package({ name, imageURL, expires, price, discount = 0, display_
 				</div>
 				<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
 				<CardActions>
-					<Button variant="flat" color="primary" style={{ float: "right", margin: 0 }} onClick={ () => app.inAppPurchase({ player: specimen, name, price: rprice, display_prefix }) }>PURCHASE</Button>
+					<Button variant="flat" color="accent" style={{ float: "right", margin: 0 }} onClick={ () => app.inAppPurchase({ player: specimen, name, price: rprice, display_prefix }) }>PURCHASE</Button>
 				</CardActions>
 			</Card>
 		</Col>
@@ -97,14 +97,14 @@ function View() {
 				<Row>
 
 					<Col sm={12} lg={3}>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }} variant="outlined">
+						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
 							<Icon style={{ display: "inline-block" }} waves={false}>local_offer</Icon>
 							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: "2rem", fontWeight: "500", fontSize: "16px" }}>Enter your player name to log in and activate your personal discounts.</span>
 							<div style={{ marginLeft: 24 }}>
 								<Textfield label="Minecraft username" onKeyUp={checkdiscount}/>
 							</div>
 						</Card>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }} variant="outlined">
+						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }}>
 							<CardTitle>Recient Donations</CardTitle>
 							<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
 							<List style={{ margin: "0 -1px" }}>
