@@ -1,16 +1,40 @@
 import React, { Fragment } from "react";
 import { renderToString } from "react-dom/server";
-import MCText from "mctext-react";
+import MCText from "components/MCText";
 
 export default function inAppPurchase({ player, name, price, display_prefix }) {
 
 	function ready(player) {
+
+		if(price < 0) {
+			return Photon.Dialog({
+			    title: "Error",
+				transition: "grow",
+				dismissable: false,
+			    content: renderToString(<Fragment>
+					<div style={{ margin: "0 24px", marginTop: -24 }}>
+						You <code>{player}</code> have already purchased the <code><MCText style={{ display: "inline" }}>{display_prefix.replace(/\&/gm, "§").trim()}</MCText></code> package.
+						<br/>
+						If you're buying this package as a gift, use that players name instead.
+					</div>
+				</Fragment>),
+				actions: [{
+					name: "okay",
+					click(dialog) {
+						dialog.close();
+					}
+				}]
+			}).open();
+		}
+
 		Photon.Dialog({
 		    title: "Checkout:",
 			transition: "grow",
 			dismissable: false,
 		    content: renderToString(<Fragment>
-				You <code>{player}</code> are about to purchase the <code><MCText>{display_prefix.replace(/\&/gm, "§")}</MCText></code> package for <code>{Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(price)}</code>
+				<div style={{ margin: "0 24px", marginTop: -24 }}>
+					You <code>{player}</code> are about to purchase the <code><MCText style={{ display: "inline" }}>{display_prefix.replace(/\&/gm, "§").trim()}</MCText></code> package for <code>{Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(price)}</code>
+				</div>
 				<br/>
 				<div style={{ margin: "0 24px" }}>
 					1. Make sure you're in our <a href="https://discord.gg/4FBnfPA" className="link" target="_blank">Discord Server</a>.
@@ -49,21 +73,40 @@ export default function inAppPurchase({ player, name, price, display_prefix }) {
 				name: "continue",
 				async click(dialog) {
 
-					function finalize() {
+					function finalize(a = true) {
 						dialog.close();
-						ready(name);
+						a && ready(name);
 					}
 
-					const { name } = dialog.fields();
+					let { name } = dialog.fields();
 					const { packages } = await app.api("store");
 					const playerInfo = await app.api("player", { name });
 
-					if(playerInfo.success === false) return finalize();
+					if(playerInfo.success === false) {
+						finalize(false);
+						return Photon.Dialog({
+						    title: "Error",
+							transition: "grow",
+							dismissable: false,
+						    content: renderToString(<Fragment>
+								<div style={{ margin: "0 24px", marginTop: -24 }}>
+									You must join our server <code>mayhemmc.uk.to</code> before purchasing a rank.
+								</div>
+							</Fragment>),
+							actions: [{
+								name: "okay",
+								click(dialog) {
+									dialog.close();
+								}
+							}]
+						}).open();
+					}
 					if(playerInfo.donator === false) return finalize();
 
-					packages.map(({ name, price: discount }) => {
-						if(name.toUpperCase() === playerInfo.donator.package) {
+					packages.map(({ name: rank, price: discount }) => {
+						if(rank.toUpperCase() === playerInfo.donator.package) {
 							price -= discount;
+							name = playerInfo.name;
 						}
 					})
 

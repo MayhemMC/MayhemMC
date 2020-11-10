@@ -1,17 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import { Col, Container, Row } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
-import { Card, CardActions, CardTitle } from "@photoncss/Card";
-import { List, ListItem } from "@photoncss/List";
 import { Icon } from "@photoncss/Icon";
-import MCText from "mctext-react";
+import { Card } from "@photoncss/Card";
 import Markdown from "components/Markdown";
 
 (function animation(){
 	$("#x-parallax").css("transform", `translateY(${ $(window).scrollTop()/1.2 }px) scale(${ Math.max(1 - $(window).scrollTop()/1920, .4) })`)
 	$("#x-parallax").css("opacity", `${ (100 - $(window).scrollTop()/4)/100 }`)
 	requestAnimationFrame(animation);
-}())
+}());
 
 // Render view
 function View() {
@@ -25,7 +23,7 @@ function View() {
 			</Toolbar>
 			<ToolbarSpacer/>
 
-			<Container style={{ maxWidth: 1600 }}>
+			<Container>
 				<Row>
 
 					<Col>

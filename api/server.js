@@ -1,9 +1,5 @@
 module.exports = async function(req, res) {
 
-	// Get params
-	const params = { ...req.body, ...req.query };
-	let {  } = params;
-
 	// Get servers from bungee config
 	const { servers, player_limit } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/config.yml"), "utf8"));
 	const { WHITELIST_PLAYERS, PROTOCOL_VERSION, MAINTENANCE_MODE_ENABLED } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/plugins/BungeeAdvancedProxy/config.yml"), "utf8"));

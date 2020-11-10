@@ -8,7 +8,7 @@ import { Icon } from "@photoncss/Icon";
 import { Textfield } from "@photoncss/Textfield";
 import { List, ListItem } from "@photoncss/List";
 import Masonry from "react-masonry-component";
-import MCText from "mctext-react";
+import MCText from "components/MCText";
 
 let specimen = null;
 
@@ -22,7 +22,7 @@ export function Package({ name, imageURL, expires, price, discount = 0, display_
 		<Col sm={12} md={6}>
 			<Card>
 				<CardTitle leadingImage={ imageURL }>
-				  <MCText>{display_prefix.replace(/\&/gm, "§")}</MCText>
+				  <MCText style={{ margin: 0 }}>{display_prefix.replace(/\&/gm, "§")}</MCText>
 				  <h6 style={{
 					  position: "absolute",
 					  top: 2,
@@ -114,7 +114,7 @@ function View() {
 								return (
 									<ListItem key={key} waves={false}>
 										<img src={`https://crafatar.com/avatars/${donation.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px","transform":"translateY(-7px)", borderRadius: 4 }}/>
-										<MCText>{`${rank.display_prefix} ${donation.name}`.replace(/\&/gm, "§")}</MCText>
+										<MCText style={{ display: "inline-block" }}>{`${rank.display_prefix} ${donation.name}`.replace(/\&/gm, "§")}</MCText>
 									</ListItem>
 								)
 							} )}

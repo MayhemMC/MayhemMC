@@ -57,3 +57,5 @@ app.api = (path, data = {}) => new Promise(function(resolve, reject) {
 	.then(resp => resp.json())
 	.then(resolve).catch(reject);
 });
+
+global.serialize = text => text.replace(/\&(\w)/gm, "§$1");
