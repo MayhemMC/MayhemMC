@@ -1,6 +1,0 @@
-# MySQL configuration
-mysql:
-  host: 'localhost'
-  user: 'mmc'
-  password: 'PdfJqyVxbYhRHPP3'
-  database: 'mmc'
