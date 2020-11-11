@@ -1,2 +1,2 @@
 ### Looking for this?
-* [API documentation](.../wiki/home)
+* [API documentation](https://github.com/MayhemMC/MayhemMC/wiki/home)
