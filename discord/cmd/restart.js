@@ -32,7 +32,7 @@ module.exports = async function(args, message) {
             await mmcExec(server, `title @a subtitle ["",{"text":">>","color":"dark_gray"},{"text":" Restarting in","bold":true,"color":"yellow"},{"text":": ","color":"gray"},{"text":"${prettyms(msleft, { compact: true })}","color":"white"},{"text":" <<","color":"dark_gray"}]`);
             await mmcExec(server, `title @a title {"text":" "}`)
             if (msleft > 1000) setTimeout(() => announce(msleft - 1000), 1000);
-			else await mmcExec(server, `stop`);
+	    else await exec(`sudo service mmc@${server} restart`);
         }(ms(delay)));
     }
 

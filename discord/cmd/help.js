@@ -4,7 +4,7 @@ module.exports = async function(args, message) {
 
 	// Formulate embed object
     const embed = new MessageEmbed()
-    embed.setColor("#1976d4")
+    embed.setColor(Color.INFO)
     embed.setTitle("Mayhem MC Commands")
 	embed.addField("List", `Usage: \`mmc list\`\nShows all the players that are currently online.\n`)
 	if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.MOD)) embed.addField("Restart", `Usage: \`mmc restart <server> (delay = 15s)\`\nQueues a server restart **(Moderator only)**.\n`)

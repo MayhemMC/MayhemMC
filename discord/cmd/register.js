@@ -8,7 +8,7 @@ module.exports = async function(args, message) {
 	// If not enough args
 	if(username === null) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xffc107)
+	    embed.setColor(Color.WARN)
 	    embed.setTitle("Incorrect usage.")
 		embed.setDescription("`mmc register <username>`")
 	    return channel.send(embed);
@@ -18,7 +18,7 @@ module.exports = async function(args, message) {
 
 	if(results.length === 0) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("Can't register.")
 		embed.setDescription(`\`${username}\` is not a valid Minecraft account.`)
 	    return channel.send(embed);
@@ -30,7 +30,7 @@ module.exports = async function(args, message) {
 	// If player never joined the server
 	if(await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${uuid}.yml`)).then(() => false).catch(() => true)) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("Can't register.")
 		embed.setDescription(`\`${currentName}\` has never joined the server before.`)
 	    return channel.send(embed);
@@ -42,7 +42,7 @@ module.exports = async function(args, message) {
 	// If user is already registered
 	if((await mysql.query(`SELECT * FROM discord_players WHERE discordid="${discordid}"`))[0].length !== 0) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("Can't register.")
 		embed.setDescription(`You are already registered.`)
 	    return channel.send(embed);
@@ -51,7 +51,7 @@ module.exports = async function(args, message) {
 	// If target is already registered
 	if((await mysql.query(`SELECT * FROM discord_players WHERE uuid="${uuid}"`))[0].length !== 0) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("Can't register.")
 		embed.setDescription(`\`${currentName}\` has already registered as someone else.`)
 	    return channel.send(embed);
@@ -65,7 +65,7 @@ module.exports = async function(args, message) {
 
 	// Respond
 	const embed = new MessageEmbed()
-	embed.setColor(0x19d476)
+	embed.setColor(Color.SUCCESS)
 	embed.setTitle("Registered.")
 	embed.setDescription(`You have been registered as \`${currentName}\`.`)
 	return channel.send(embed);

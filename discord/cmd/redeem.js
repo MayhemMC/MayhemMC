@@ -16,7 +16,7 @@ module.exports = async function(args, message) {
 	// If not enough args
 	if(token === null) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xffc107)
+	    embed.setColor(Color.WARN)
 	    embed.setTitle("Incorrect usage.")
 		embed.setDescription("`mmc redeem <token>`")
 	    return channel.send(embed);
@@ -37,7 +37,7 @@ module.exports = async function(args, message) {
 	// If user isnt registered
 	if(rows.length === 0) {
 	    const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("Can't redeem token.")
 		embed.setDescription(`\`${currentName}\` is not registered.`)
 	    return channel.send(embed);
@@ -75,7 +75,7 @@ module.exports = async function(args, message) {
 	client.channels.cache.get(Channels.JOINS).send(`Thank you ${rows.length !== 0 ? `<@${discordid}>`:`\`${name}\``} for supporting the server! You have recieved your ${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === role_names[role].toUpperCase())} __**\`${role_names[role].toUpperCase()}\`**__ rank!`)
 
 	const embed = new MessageEmbed()
-    embed.setColor(0x19d476)
+    embed.setColor(Color.SUCCESS)
     embed.setTitle("Package redeemed.")
 	embed.addField("Player", currentName, true);
 	embed.addField("User", `<@${discordid}>`, true);

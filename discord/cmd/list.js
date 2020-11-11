@@ -4,7 +4,7 @@ module.exports = async function(args, message) {
 	const { servers, max_players } = await mmcApi("server");
 
 	const embed = new MessageEmbed();
-	embed.setColor(0x1976d4);
+	embed.setColor(Color.INFO)
 	embed.setTitle(`Players online`)
 
 	const online = [];

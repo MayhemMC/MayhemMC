@@ -1,6 +1,6 @@
 module.exports = async function(args, message) {
 
-	const { channel, member, mentions, guild } = message;
+	const { channel, mentions, guild } = message;
 
 	// Get args
 	const [ user = null ] = args;
@@ -8,7 +8,7 @@ module.exports = async function(args, message) {
 	// If not enough args
 	if(user === null) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xffc107)
+	    embed.setColor(Color.WARN)
 	    embed.setTitle("Incorrect usage.")
 		embed.setDescription("`mmc whois <username | @user>`")
 	    return channel.send(embed);
@@ -32,13 +32,13 @@ module.exports = async function(args, message) {
 	if(player === false) {
 		if(Object.keys(parseCollection(mentions.users)).length === 0) {
 			const embed = new MessageEmbed()
-		    embed.setColor(0xc62828)
+		    embed.setColor(Color.ERROR)
 		    embed.setTitle("Player not found.")
 			embed.setDescription(`\`${user}\` has never joined the server before.`)
 		    return channel.send(embed);
 		}
 		const embed = new MessageEmbed()
-		embed.setColor(0xc62828)
+		embed.setColor(Color.ERROR)
 		embed.setTitle("Player not found.")
 		embed.setDescription(`${mentions.users.first().toString()} is not registered.`)
 		return channel.send(embed);
@@ -54,7 +54,7 @@ module.exports = async function(args, message) {
 	]["VIP;WARRIOR;HERO;LEGEND".split(";").indexOf(player.donator.package)]: false;
 
 	const embed = new MessageEmbed();
-	embed.setColor(0x1976d4);
+	embed.setColor(Color.INFO);
 	embed.setTitle(`Who is '${player.name}'`);
 	embed.setThumbnail(`https://crafatar.com/renders/head/${player.uuid}?overlay`);
 

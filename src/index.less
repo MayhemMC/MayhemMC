@@ -2,7 +2,7 @@
 @import "~photoncss/src/less/themes/discord";
 @import "components/Markdown";
 
-@primary: #1976d2;
+@primary: #26c6da;
 @headline-type: "Uni Sans Heavy CAPS";
 
 @font-face {
@@ -67,4 +67,12 @@ footer.legacy.dark {
 
 .container {
 	max-width: 1600px;
+}
+
+.full-frame {
+	margin: -12px;
+	width: 100vw;
+	@media @md {
+		margin: -24px;
+	}
 }

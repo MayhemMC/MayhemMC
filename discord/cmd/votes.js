@@ -6,7 +6,7 @@ module.exports = async function(args, message) {
 	const sum = votes.reduce((total, { votes }) => votes + total, 0);
 
 	const embed = new MessageEmbed();
-	embed.setColor(0x1976d4);
+	embed.setColor(Color.INFO);
 	embed.setTitle(`Votes (${dayjs().format("MMMM")})`)
 
 	const lines = [];
