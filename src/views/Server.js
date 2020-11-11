@@ -1,9 +1,25 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Container, Row } from "@photoncss/Layout";
+import { Container, Row, Col } from "@photoncss/Layout";
+import { Card, CardTitle } from "@photoncss/Card";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
+import { List, ListItem } from "@photoncss/List";
 import { Tabs, Tab, TabContent } from "@photoncss/Tabs";
 import { stripFormats } from "minecraft-text";
+import MCText from "components/MCText";
+import Markdown from "components/Markdown";
+
+export function Player({ name }) {
+	const [ player, _player ] = useState(null);
+	useEffect(() => player === null && app.api("player", { name }).then(_player));
+	if(player === null) return null;
+	return (
+		<ListItem waves={false}>
+			<img src={`https://crafatar.com/avatars/${player.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px","transform":"translateY(-7px)", borderRadius: 4 }}/>
+			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.donator !== false ? player.donator.display_prefix + " ":""}${player.name}`}</MCText>
+		</ListItem>
+	)
+}
 
 // Render view
 function View() {
@@ -28,7 +44,7 @@ function View() {
 						{ /*
 						<Tab htmlFor={`${server.key}-players`}>players</Tab>
 						<Tab htmlFor={`${server.key}-plugins`}>plugins</Tab>*/ }
-						{ server.plugins.filter(plugin => plugin.indexOf("dynmap") !== -1).length === 1 && <Tab htmlFor={`${server.key}-map`}>map</Tab> }
+						{ server.plugins.filter(plugin => plugin.indexOf("dynmap") !== -1).length === 1 && <Tab htmlFor={`${server.key}-map`}>dynmap</Tab> }
 					</Tabs>
 				)}
 			</Toolbar>
@@ -37,9 +53,42 @@ function View() {
 			<TabContent id={`${server.key}-about`}>
 				<Container>
 					<Row>
-
-						
-
+						<Col lg={4}>
+							<Card>
+								<CardTitle>
+									<MCText delimiter="&">{server.display_name}</MCText>
+								</CardTitle>
+								<div style={{ padding: 24, paddingTop: 0 }}>
+									<MCText delimiter="&">{server.description}</MCText>
+								</div>
+							</Card>
+							<Card>
+								<CardTitle>Server Info</CardTitle>
+								{ server.plugins !== undefined && (
+									<p style={{ marginTop: -12 }}>
+										<div><b>Status</b><span style={{ float: "right" }}>{server.online ? <span className="text-green text-accent-2">Online</span>:<span className="text-red text-accent-2">Offline</span>}</span></div>
+										<div><b>Server Version</b><span style={{ float: "right" }}>{server.version}</span></div>
+										<div><b>RAM</b><span style={{ float: "right" }}>{server.max_memory}</span></div>
+										<div><b>Players (All Time)</b><span style={{ float: "right" }}>{server.unique_joins}</span></div>
+									</p>
+								)}
+							</Card>
+							{ server.online && (
+								<Card>
+									<CardTitle>Players</CardTitle>
+									<h3 style={{ fontWeight: 300, textAlign: "center" }}>{server.players.length} / {server.max_players}</h3>
+									<hr style={{ margin: 0, width: "100%" }}/>
+									<List>
+										{ server.players.map((name, key) => <Player name={name} key={key}/> )}
+									</List>
+								</Card>
+							) }
+						</Col>
+						<Col lg={8}>
+							<Card>
+								<Markdown source={require(`../../docs/server/${server.key}.md`).default}/>
+							</Card>
+						</Col>
 					</Row>
 				</Container>
 			</TabContent>

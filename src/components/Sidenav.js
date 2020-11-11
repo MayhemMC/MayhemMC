@@ -25,7 +25,7 @@ export default function Component() {
 				{Object.keys(servers).length !== 0 && <Fragment>
 					<hr/>
 					<Subheader>Servers</Subheader>
-					{Object.keys(servers).map(server => <Route to={`/server/${server}`} key={Object.keys(servers).indexOf(server)}>{stripFormats(servers[server].display_name, "&")}</Route>)}
+					{Object.keys(servers).filter(server => server !== "lobby").map(server => <Route to={`/server/${server}`} key={Object.keys(servers).indexOf(server)}>{stripFormats(servers[server].display_name, "&")}</Route>)}
 				</Fragment>}
 			</Drawer>
 		</Fragment>

@@ -40,7 +40,8 @@ module.exports = async function(req, res) {
 		discord_id: discordid,
 		donator: donations.length === 0 ? false : {
 			package: donations[0].package,
-			timestamp: donations[0].timestamp
+			timestamp: donations[0].timestamp,
+			...(await mmcApi("store")).packages.filter(p => p.name.toUpperCase() === donations[0].package)[0]
 		},
 		votes: votes.length === 0 ? false : {
 			amount: votes[0].votes,
