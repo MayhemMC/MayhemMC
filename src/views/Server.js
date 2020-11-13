@@ -16,7 +16,7 @@ export function Player({ name }) {
 	return (
 		<ListItem waves={false}>
 			<img src={`https://crafatar.com/avatars/${player.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px","transform":"translateY(-7px)", borderRadius: 4 }}/>
-			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.donator !== false ? player.donator.display_prefix + " ":""}${player.name}`}</MCText>
+			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix}${player.name}`}</MCText>
 		</ListItem>
 	)
 }
@@ -31,6 +31,10 @@ function View() {
 
 	requestAnimationFrame(Photon.reload);
 	$(".tabs").removeAttr("md");
+
+	const dynmapid = Photon.guid();
+	$(window).resize(() => $(`#${dynmapid}`).css({ height: window.innerHeight - $("footer").height() - 128 }));
+	requestAnimationFrame(() => $(`#${dynmapid}`).css({ height: window.innerHeight - $("footer").height() - 128 }))
 
 	return (
 		<Fragment>
@@ -97,7 +101,7 @@ function View() {
 			<TabContent id={`${server.key}-plugins`}></TabContent>*/ }
 			{ server.online && server.plugins.filter(plugin => plugin.indexOf("dynmap") !== -1).length === 1 && (
 				<TabContent id={`${server.key}-map`}>
-					<iframe src={`/dynmap/${server.key}`} frameBorder="0" className="full-frame" style={{ height: window.innerHeight - $("footer").height() - 128}}></iframe>
+					<iframe src={`/dynmap/${server.key}/#`} frameBorder="0" className="full-frame" id={dynmapid}></iframe>
 				</TabContent>
 			)}
 

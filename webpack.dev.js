@@ -18,6 +18,10 @@ module.exports = merge(require("./webpack.conf.js"), {
         	"/api": {
             	target: "http://localhost:4000/",
             	secure: false
+        	},
+			"/dynmap": {
+            	target: "http://localhost:4000/",
+            	secure: false
         	}
     	},
 		hot: true,

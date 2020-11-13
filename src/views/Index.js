@@ -17,10 +17,11 @@ export function Player({ name, server }) {
 	const [ player, _player ] = useState(null);
 	useEffect(() => player === null && app.api("player", { name }).then(_player));
 	if(player === null) return null;
+	if(player.error) return null;
 	return (
 		<ListItem waves={false} subtitle={`Playing ${server}`}>
 			<img src={`https://crafatar.com/avatars/${player.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px", borderRadius: 4 }}/>
-			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.donator !== false ? player.donator.display_prefix + " ":""}${player.name}`}</MCText>
+			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix}${player.name}`}</MCText>
 		</ListItem>
 	)
 }
@@ -57,7 +58,7 @@ function View() {
 							<Card>
 								<CardTitle>Players</CardTitle>
 								<h3 style={{ fontWeight: 300, textAlign: "center" }}>{online.length} / {server.max_players}</h3>
-								<hr style={{ margin: 0, width: "100%" }}/>
+								{ online.length !== 0 && <hr style={{ margin: 0, width: "100%" }}/> }
 								<List>
 									{ online.map(({ name, server }, key) => <Player name={name} server={server} key={key}/> )}
 								</List>
