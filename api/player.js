@@ -11,7 +11,6 @@ module.exports = async function(req, res) {
 	if(name === undefined && uuid === undefined) return res.json({ success: false, error: "No player specified. Use the 'name' or 'uuid' parameters to specify a target player." });
 
 	const cached = usercache[name || uuid];
-	cached !== undefined && console.log(cached.expires, Date.now());
 	if(cached !== undefined && cached.expires > Date.now()) {
 		const cached_response = { ...cached };
 		delete cached_response.expires;

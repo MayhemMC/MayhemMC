@@ -38,9 +38,8 @@ export function Player({ name, server = null }) {
 	)
 }
 
+let initialRender = true;
 export default function PlayerList({ only = false }) {
-
-	let initialRender = true;
 
 	// Initialize state
 	const [ server, setState ] = useState(null);
