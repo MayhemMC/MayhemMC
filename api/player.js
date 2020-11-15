@@ -1,16 +1,22 @@
 const { lookupName, lookupUUID } = require("namemc");
 
-module.exports = async function(req, res) {
+const usercache = {};
 
-	const timeout = setTimeout(function() {
-		res.json({ success: false, error: `Player '${name}' dosn't exist.` })
-	}, 2000)
+module.exports = async function(req, res) {
 
 	// Get params
 	const params = { ...req.body, ...req.query };
 	let { name, uuid } = params;
 
-	if(name === undefined && uuid === undefined) return res.json({ success: false, error: "No player specified. Use the 'name' or 'uuid' parameters." });
+	if(name === undefined && uuid === undefined) return res.json({ success: false, error: "No player specified. Use the 'name' or 'uuid' parameters to specify a target player." });
+
+	const cached = usercache[name || uuid];
+	cached !== undefined && console.log(cached.expires, Date.now());
+	if(cached !== undefined && cached.expires > Date.now()) {
+		const cached_response = { ...cached };
+		delete cached_response.expires;
+		return res.json({ ...cached_response, cached: true });
+	}
 
 	let player;
 
@@ -35,8 +41,7 @@ module.exports = async function(req, res) {
 	if(WHITELIST_PLAYERS.includes(player.currentName)) prefix = "&8[&7&lADMIN&8]&f&l "
 	if(player.uuid === "1eb084b8-588e-43e6-bdd3-e05e53682987") prefix = "&8[&3&lOWNER&8]&f&l "
 
-	// Respond to request
-	res.json({
+	const response = {
 		success: true,
 		uuid: player.uuid,
 		name: player.currentName,
@@ -54,8 +59,12 @@ module.exports = async function(req, res) {
 		},
 		first_joined: (await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`))).birthtime,
 		last_joined: new Date(playerfile.timestamps.login)
-	});
+	};
 
-	clearTimeout(timeout);
+	// Respond to request
+	res.json({ ...response, cached: false });
+
+	response.expires = Date.now() + 300000;
+	usercache[name || uuid] = response;
 
 }
