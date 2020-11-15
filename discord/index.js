@@ -30,7 +30,7 @@ module.exports = async function() {
 			try {
 				require(`./cmd/${command.toLowerCase()}.js`)(args, message);
 			} catch(e) {
-				if(e.toString() === "TypeError: Cannot read property 'toLowerCase' of undefined") {
+				if(e.toString() === "TypeError: Cannot read property 'toLowerCase' of undefined" || e.toString().includes("Cannot find module")) {
 					require(`./cmd/help.js`)(args, message);
 				} else {
 					console.log(chalk.cyan("[DISCORD]") + chalk.red(" [ERROR]"), e)
