@@ -4,7 +4,7 @@ module.exports = async function(req, res) {
 
 	const timeout = setTimeout(function() {
 		res.json({ success: false, error: `Player '${name}' dosn't exist.` })
-	}, 100000)
+	}, 2000)
 
 	// Get params
 	const params = { ...req.body, ...req.query };

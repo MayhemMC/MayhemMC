@@ -9,11 +9,14 @@ export function Player({ name, server = null }) {
 	// Initialize state
 	const [ player, setState ] = useState(null);
 
+	// State resolver
+	const resolve = () => app.api("player", { name }).then(setState);
+
 	// If player hasnt resolved yet
 	if(player === null) {
 
-		// Resolve player
-		app.api("player", { name }).then(setState);
+		// Resolve state
+		resolve();
 
 		// Return placeholder component
 		return (
@@ -37,11 +40,19 @@ export function Player({ name, server = null }) {
 
 export default function PlayerList({ only = false }) {
 
+	let initialRender = true;
+
 	// Initialize state
 	const [ server, setState ] = useState(null);
 
 	// State resolver
-	const resolve = () => app.api("server").then(setState);
+	const resolve = () => {
+		initialRender = false;
+		app.api("server").then(newState => {
+			if(!Array.equals(server, newState)) setState(null);
+			setState(newState);
+		})
+	}
 
 	// Queue state to refresh every 5 seconds
 	useEffect(function() {
@@ -55,7 +66,7 @@ export default function PlayerList({ only = false }) {
 	if(server === null) {
 
 		// Resolve state
-		resolve();
+		if(initialRender) resolve();
 
 		// Return empty card with progress
 		return (

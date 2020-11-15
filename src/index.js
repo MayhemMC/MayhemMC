@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 import inAppPurchase from "./inAppPurchase";
+import "./utils";
 
 // Create global `app` definition
 global.app = { inAppPurchase };
