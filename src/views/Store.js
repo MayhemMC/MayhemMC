@@ -1,55 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Card, CardActions, CardTitle } from "@photoncss/Card";
-import { Button } from "@photoncss/Button";
-import Markdown from "components/Markdown";
+import { Card, CardTitle } from "@photoncss/Card";
 import { Col, Container, Row } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
 import { Textfield } from "@photoncss/Textfield";
-import { List, ListItem } from "@photoncss/List";
+import { List } from "@photoncss/List";
 import Masonry from "react-masonry-component";
-import MCText from "components/MCText";
+import { Player } from "components/PlayerList";
+import Package from "components/Package";
 
-let specimen = null;
-
-// Package component
-export function Package({ name, imageURL, expires, price, discount = 0, display_prefix, features }) {
-
-	const rprice = price - discount;
-	if(rprice <= 0) return null;
-
-	return (
-		<Col sm={12} md={6}>
-			<Card>
-				<CardTitle leadingImage={ imageURL }>
-				  <MCText style={{ margin: 0 }}>{display_prefix.replace(/\&/gm, "§")}</MCText>
-				  <h6 style={{
-					  position: "absolute",
-					  top: 2,
-					  right: 16,
-					  fontFamily: "Roboto Condensed",
-				  }}>{ rprice <= 0 ? "":Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(rprice)}</h6>
-				  { expires && <div className="text-red" style={{
-					  fontSize: 14,
-					  left: "50%",
-					  fontFamily: "Roboto Condensed",
-					  transform: "translateX(-50%)",
-					  position: "absolute",
-					  top: 10
-				  }}>(Limited time only)</div> }
-				</CardTitle>
-				<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
-				<div className="b-top-btm">
-					<Markdown source={features}/>
-				</div>
-				<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
-				<CardActions>
-					<Button variant="flat" color="accent" style={{ float: "right", margin: 0 }} onClick={ () => app.inAppPurchase({ player: specimen, name, price: rprice, display_prefix }) }>PURCHASE</Button>
-				</CardActions>
-			</Card>
-		</Col>
-	)
-}
+global.store_specimen = null;
 
 // Render view
 function View() {
@@ -65,7 +25,7 @@ function View() {
 	async function checkdiscount({ target }) {
 
 		const name = $(target).val();
-		specimen = name;
+		global.store_specimen = name;
 
 		if(name === "") return setDiscount(0);
 		if(name.length < 3 || name.length > 16) return;
@@ -97,6 +57,7 @@ function View() {
 				<Row>
 
 					<Col sm={12} lg={3}>
+
 						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
 							<Icon style={{ display: "inline-block" }} waves={false}>local_offer</Icon>
 							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: "2rem", fontWeight: "500", fontSize: "16px" }}>Enter your player name to log in and activate your personal discounts.</span>
@@ -104,22 +65,15 @@ function View() {
 								<Textfield label="Minecraft username" onKeyUp={checkdiscount}/>
 							</div>
 						</Card>
+
 						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }}>
 							<CardTitle>Recient Donations</CardTitle>
-							<hr style={{"marginTop":"-16px","width":"100%","marginLeft":"0"}}/>
+							<hr/>
 							<List style={{ margin: "0 -1px" }}>
-							{ donations.map((donation, key) => {
-								const rank = packages.filter(({ name }) => name.toUpperCase() === donation.package)[0];
-								if(rank === undefined) return null;
-								return (
-									<ListItem key={key} waves={false}>
-										<img src={`https://crafatar.com/avatars/${donation.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px","transform":"translateY(-7px)", borderRadius: 4 }}/>
-										<MCText style={{ display: "inline-block" }}>{`${rank.display_prefix} ${donation.name}`.replace(/\&/gm, "§")}</MCText>
-									</ListItem>
-								)
-							} )}
+								{ donations.map((donation, key) => <Player name={donation.name} key={key}/> )}
 							</List>
 						</Card>
+						
 					</Col>
 
 					<Col sm={12} lg={9}>

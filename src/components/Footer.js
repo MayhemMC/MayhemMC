@@ -10,7 +10,7 @@ export default function Component() {
 				<Container>
 					<Row style={{ marginTop: 4 }}>
 						<Col lg={8}>
-							<img src={app.static("icon.png")} alt="" width="72" style={{ display: "inline-block", marginRight: 16, marginBottom: -32 }}/>
+							<img src={app.static("icon.png")} alt="" width="72" style={{ display: "inline-block", marginRight: 16, marginBottom: -32, borderRadius: 8 }}/>
 							<div className="title" style={{ display: "inline-block" }}><h2>Mayhem MC</h2></div>
 						</Col>
 						<Col lg={4}>

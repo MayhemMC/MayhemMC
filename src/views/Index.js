@@ -4,8 +4,7 @@ import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
 import { Card, CardTitle } from "@photoncss/Card";
 import Markdown from "components/Markdown";
-import { List, ListItem } from "@photoncss/List";
-import MCText from "components/MCText";
+import PlayerList from "components/PlayerList";
 
 (function animation(){
 	$("#x-parallax").css("transform", `translateY(${ $(window).scrollTop()/1.2 }px) scale(${ Math.max(1 - $(window).scrollTop()/1920, .4) })`)
@@ -13,27 +12,9 @@ import MCText from "components/MCText";
 	requestAnimationFrame(animation);
 }());
 
-export function Player({ name, server }) {
-	const [ player, _player ] = useState(null);
-	useEffect(() => player === null && app.api("player", { name }).then(_player));
-	if(player === null) return null;
-	if(player.error) return null;
-	return (
-		<ListItem waves={false} subtitle={`Playing ${server}`}>
-			<img src={`https://crafatar.com/avatars/${player.uuid}?overlay=true`} alt="" style={{"height":"36px","width":"36px","display":"inline-block","marginRight":"12px","marginBottom":"-20px", borderRadius: 4 }}/>
-			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix}${player.name}`}</MCText>
-		</ListItem>
-	)
-}
-
 // Render view
 function View() {
 
-	const [ server, _server ] = useState(null);
-	useEffect(() => server === null && app.api("server").then(_server));
-
-	const online = [];
-	if(server !== null) Object.keys(server.servers).map(s => server.servers[s].players !== false && server.servers[s].players.map(name => online.push({ name, server: s })));
 
 	return (
 		<Fragment>
@@ -54,16 +35,7 @@ function View() {
 					</Col>
 
 					<Col sm={12} lg={4}>
-						{ server !== null && (
-							<Card>
-								<CardTitle>Players</CardTitle>
-								<h3 style={{ fontWeight: 300, textAlign: "center" }}>{online.length} / {server.max_players}</h3>
-								{ online.length !== 0 && <hr style={{ margin: 0, width: "100%" }}/> }
-								<List>
-									{ online.map(({ name, server }, key) => <Player name={name} server={server} key={key}/> )}
-								</List>
-							</Card>
-						) }
+						<PlayerList/>
 					</Col>
 
 					<Col sm={12} lg={8}>

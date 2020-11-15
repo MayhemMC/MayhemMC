@@ -30,7 +30,7 @@ module.exports = async function(req, res) {
 	const [ donations ] = await mysql.query(`SELECT * FROM donations WHERE uuid = "${player.uuid}"`);
 	const playerfile = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`), "utf8"));
 
-	let prefix = "";
+	let prefix = "&7";
 	if(donations.length !== 0) prefix = (await mmcApi("store")).packages.filter(p => p.name.toUpperCase() === donations[0].package)[0].display_prefix + " ";
 	if(WHITELIST_PLAYERS.includes(player.currentName)) prefix = "&8[&7&lADMIN&8]&f&l "
 	if(player.uuid === "1eb084b8-588e-43e6-bdd3-e05e53682987") prefix = "&8[&3&lOWNER&8]&f&l "

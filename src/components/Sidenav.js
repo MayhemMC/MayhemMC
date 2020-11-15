@@ -18,7 +18,7 @@ export default function Component() {
 	return (
 		<Fragment>
 			<Drawer id="web-nav">
-				<img src={ app.static("icon.png") } alt="" style={{ margin: "0 auto", width: "66%" }}/>
+				<img src={ app.static("icon-transparent.png") } alt="" style={{ margin: "0 auto", width: "66%" }}/>
 				<hr/>
 				<Route to="/" icon="home">Home</Route>
 				<Route to="/store" icon="shopping_cart">Store</Route>
