@@ -4,6 +4,10 @@ const usercache = {};
 
 module.exports = async function(req, res) {
 
+	const timeout = setTimeout(function() {
+		res.json({ success: false, error: "Request timed out" });
+	}, 2500)
+	
 	// Get params
 	const params = { ...req.body, ...req.query };
 	let { name, uuid } = params;
@@ -65,5 +69,8 @@ module.exports = async function(req, res) {
 
 	response.expires = Date.now() + 300000;
 	usercache[name || uuid] = response;
+	
+	// Cancel timeout
+	clearTimeout(timeout);
 
 }
