@@ -40,7 +40,7 @@
         "less-loader": "^7.0.2",
         "minecraft-text": "^1.2.14",
         "mini-css-extract-plugin": "^1.2.1",
-        "namemc": "^0.1.6",
+        "namemc": "^0.2.7",
         "nodemon": "^2.0.4",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
         "photoncss": "^10.5.71-beta",

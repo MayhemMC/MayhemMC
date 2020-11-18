@@ -46,6 +46,8 @@ module.exports = async function(req, res) {
 		}
 	}
 
+	const bungeequery = await query(25577).catch(() => ({ map: null, players: [] }))
+
 	// Formulate final response and respond
 	res.json({
 		success: true,
@@ -54,8 +56,8 @@ module.exports = async function(req, res) {
 		administrators: WHITELIST_PLAYERS,
 		discord_invite: "4FBnfPA",
 		max_players: player_limit,
-		software: (await query(25577)).map,
-		players: (await query(25577)).players,
+		software: bungeequery.map,
+		players: bungeequery.players,
 		motd: MOTD[Math.floor(Math.random() * MOTD.length)].replace(/\<\/section\>\;\<section\>/gm, "\n").replace(/<\/?section\>/gm, ""),
 		servers
 	})
