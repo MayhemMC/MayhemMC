@@ -1,13 +1,15 @@
 const { lookupName, lookupUUID } = require("namemc");
+const { ungzip } = require("node-gzip");
 
 const usercache = {};
 
 module.exports = async function(req, res) {
 
 	const timeout = setTimeout(function() {
+		if(res.headersSent) return;
 		res.json({ success: false, error: "Request timed out" });
 	}, 2500)
-	
+
 	// Get params
 	const params = { ...req.body, ...req.query };
 	let { name, uuid } = params;
@@ -44,33 +46,65 @@ module.exports = async function(req, res) {
 	if(WHITELIST_PLAYERS.includes(player.currentName)) prefix = "&8[&7&lADMIN&8]&f&l "
 	if(player.uuid === "1eb084b8-588e-43e6-bdd3-e05e53682987") prefix = "&8[&3&lOWNER&8]&f&l "
 
-	const response = {
-		success: true,
-		uuid: player.uuid,
-		name: player.currentName,
-		administrator: WHITELIST_PLAYERS.includes(player.currentName),
-		discord_id: discordid,
-		donator: donations.length === 0 ? false : {
-			package: donations[0].package,
-			timestamp: donations[0].timestamp,
-		},
-		prefix,
-		votes: votes.length === 0 ? false : {
-			amount: votes[0].votes,
-			timestamp: votes[0].last_vote,
-			place: allvotes.indexOf(votes[0])
-		},
-		first_joined: (await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`))).birthtime,
-		last_joined: new Date(playerfile.timestamps.login)
-	};
+	// This finna eat memory but it needa happen to resolve players IP from logs
+	const logs = path.join(MMC_ROOT, "bungee/logs");
+	const files = await fs.readdir(logs);
 
-	// Respond to request
-	res.json({ ...response, cached: false });
+	let addresses = {};
+	files.map(async file => {
 
-	response.expires = Date.now() + 300000;
-	usercache[name || uuid] = response;
-	
-	// Cancel timeout
-	clearTimeout(timeout);
+		let content = "";
+		if(file.includes(".log.gz")) {
+			content = (await ungzip(await fs.readFile(path.join(logs, file)))).toString();
+		} else {
+			content = await fs.readFile(path.join(logs, file), "utf8");
+		}
+
+		clines = content.split("\n");
+		clines = clines.filter(line => line.includes("[Votifier NIO worker/INFO] [NuVotifier]: Got a protocol"));
+		clines = clines.filter(line => line.includes(`username:${player.currentName}`));
+		clines = clines.map(line => line.split(`address:`)[1].split(" ")[0]);
+		clines = clines.filter(line => !line.includes(":"));
+		clines.map(line => addresses[line] = true);
+
+		if(files.indexOf(file) === files.length - 1) {
+
+			addresses = Object.keys(addresses)
+
+			const response = {
+				success: true,
+				uuid: player.uuid,
+				name: player.currentName,
+				administrator: WHITELIST_PLAYERS.includes(player.currentName),
+				discord_id: discordid,
+				donator: donations.length === 0 ? false : {
+					package: donations[0].package,
+					timestamp: donations[0].timestamp,
+				},
+				prefix,
+				known_addresses: addresses.length,
+				timezone: addresses.length > 0 ? (await fetch(`http://ip-api.com/json/${addresses[addresses.length - 1]}`).then(resp => resp.json())).timezone : null,
+				votes: votes.length === 0 ? false : {
+					amount: votes[0].votes,
+					timestamp: votes[0].last_vote,
+					place: allvotes.indexOf(votes[0])
+				},
+				first_joined: (await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`))).birthtime,
+				last_joined: new Date(playerfile.timestamps.login)
+			};
+
+			// Respond to request
+			res.json({ ...response, cached: false });
+
+			response.expires = Date.now() + 3600000;
+			usercache[name || uuid] = response;
+
+			// Cancel timeout
+			clearTimeout(timeout);
+
+		}
+
+	})
+
 
 }

@@ -60,11 +60,13 @@ module.exports = async function(args, message) {
 
 	embed.setDescription(player.discord.toString());
 
-	rank && embed.addField("Donator Rank", rank, true);
-	player.votes && embed.addField("Votes", `**${ordinal(player.votes.place + 1)}** place • **${player.votes.amount}** votes • **${dayjs(player.votes.timestamp).fromNow(true)}** ago`, true)
+	rank && embed.addField("Donator Rank", rank);
+	player.votes && embed.addField("Votes", `**${ordinal(player.votes.place + 1)}** place • **${player.votes.amount}** votes • **${dayjs(player.votes.timestamp).fromNow(true)}** ago`)
 
-	embed.addField("First joined", dayjs(player.first_joined).format("`hh:mmA` • `MM/DD/YYYY`"), true)
-	embed.addField("Last seen", `**${dayjs(player.last_joined).fromNow(true)}** ago`, true)
+	embed.addField("First joined", dayjs(player.first_joined).format("`hh:mmA` • `MM/DD/YYYY`"))
+	embed.addField("Last seen", `**${dayjs(player.last_joined).fromNow(true)}** ago`)
+
+	if(player.timezone !== null) embed.addField("Timezone", `**${player.timezone}**`)
 
 	return await channel.send(embed);
 
