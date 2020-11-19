@@ -1,7 +1,7 @@
 module.exports = async function(args, message) {
 
 	const { channel } = message;
-	const { servers, max_players } = await mmcApi("server");
+	const { servers, max_players } = await mmcApi("servers");
 
 	const embed = new MessageEmbed();
 	embed.setColor(Color.INFO)

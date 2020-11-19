@@ -9,13 +9,26 @@ import MCText from "components/MCText";
 import PlayerList from "components/PlayerList";
 import Markdown from "components/Markdown";
 
+let __key = null;
+
 // Render view
 function View() {
 
-	const [{ servers }, _servers ] = useState({ servers: {} });
-	useEffect(() => Object.keys(servers).length === 0 && app.api("server").then(_servers));
-	const server = servers[location.pathname.split("/server/")[1].toLowerCase()] || { online: false, display_name: "", description: "" };
-	server.key = location.pathname.split("/server/")[1].toLowerCase();
+	//const [ server, _servers ] = useState(null);
+	//useEffect(() => Object.keys(servers).length === 0 && app.api("server", { server: location.pathname.split("/server/")[1].toLowerCase() }).then(_servers));
+	//server.key = location.pathname.split("/server/")[1].toLowerCase();
+
+	const urlKey = location.pathname.split("/server/")[1].toLowerCase()
+	const [ server, _server ] = useState({ display_name: urlKey, description: "" })
+	useEffect(() => {
+		if(__key !== urlKey) {
+			_server({ display_name: urlKey, description: "" })
+			app.api("server", { server: urlKey }).then(_server)
+			__key = urlKey;
+		}
+	});
+
+	server.key = urlKey;
 
 	requestAnimationFrame(Photon.reload);
 	$(".tabs").removeAttr("md");

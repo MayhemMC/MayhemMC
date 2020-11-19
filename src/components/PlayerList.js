@@ -10,7 +10,10 @@ export function Player({ name, server = null }) {
 	const [ player, setState ] = useState(null);
 
 	// State resolver
-	const resolve = () => app.api("player", { name }).then(setState);
+	const resolve = () => playercache.hasOwnProperty(name) ? setState(playercache[name]) : app.api("player", { name }).then(p => {
+		playercache[name] = p
+		setState(p)
+	});
 
 	// If player hasnt resolved yet
 	if(player === null) {
@@ -47,10 +50,17 @@ export default function PlayerList({ only = false }) {
 	// State resolver
 	const resolve = () => {
 		initialRender = false;
-		app.api("server").then(newState => {
-			if(!Array.equals(server, newState)) setState(null);
-			setState(newState);
-		})
+		if(only === false) {
+			app.api("servers").then(newState => {
+				if(!Array.equals(server, newState)) setState(null);
+				setState(newState);
+			})
+		} else {
+			app.api("server", { server: only }).then(newState => {
+				if(!Array.equals(server, newState)) setState(null);
+				setState(newState);
+			})
+		}
 	}
 
 	// Queue state to refresh every 5 seconds
@@ -77,15 +87,19 @@ export default function PlayerList({ only = false }) {
 
 	}
 
-	// Map server's players to a array
 	const online = [];
-	const { servers } = server;
-	(only !== false ? [ only ] : Object.keys(servers)).map(server => servers[server].players !== false && servers[server].players.map(name => online.push({ name, server })));
+	if(only === false) {
+		// Map server's players to a array
+		const { servers } = server;
+		Object.keys(servers).map(server => servers[server].players !== false && servers[server].players.map(name => online.push({ name, server })));
+	} else {
+		server.players.map(name => online.push({ name }))
+	}
 
 	// Return complete component
 	return (
 		<Card>
-			<CardTitle>Players<span className="color-primary text-on-primary" style={{ fontSize: 14, borderRadius: 24, position: "absolute", height: 32, padding: "0 10px", right: 16 }}>{online.length}/{(only ? servers[only] : server).max_players}</span></CardTitle>
+			<CardTitle>Players<span className="color-primary text-on-primary" style={{ fontSize: 14, borderRadius: 24, position: "absolute", height: 32, padding: "0 10px", right: 16 }}>{online.length}/{server.max_players}</span></CardTitle>
 			{ online.length > 0 && <Fragment>
 				<hr/>
 				<List>

@@ -95,7 +95,7 @@ module.exports = async function(req, res) {
 	// Respond to request
 	res.json({ ...response, cached: false });
 
-	// Cache response for 1 hour
+	// Cache response for 1 week
 	response.expires = Date.now() + 3600000*24*7;
 	usercache[(name || uuid).toUpperCase()] = response;
 

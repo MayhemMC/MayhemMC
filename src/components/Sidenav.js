@@ -13,7 +13,7 @@ export default function Component() {
 	i === 0 && Photon.hooks.push(forceUpdate);
 
 	const [{ servers }, _servers ] = useState({ servers: {} });
-	useEffect(() => Object.keys(servers).length === 0 && app.api("server").then(_servers));
+	useEffect(() => Object.keys(servers).length === 0 && app.api("servers").then(_servers));
 
 	return (
 		<Fragment>
