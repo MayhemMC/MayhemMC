@@ -1,8 +1,16 @@
 **Anarchy**:
-- Phantoms do not attack.
 - Use anvils to rename items with color codes.
-- 1 Additional `/sethome`.
-- `/hat` - Wear any item on your head.
+- Phantoms do not attack.
+- `/disposal`
+- `/hat`
+- `/nick` (use color codes)
+- `/rename` (use color codes)
+- `/sethome` (total of 4 homes)
+
+---
+
+**Creative**:
+- `/nick` (use color codes)
 
 ---
 
@@ -27,10 +35,24 @@
 - `/sethome` (total of 10 homes)
 
 ---
-
 **SMP**:
 - Use anvils to rename items with color codes.
-- 2 Additional `/sethome`.
-- `/craft` - Open a 3x3 crafting grid by command.
-- `/hat` - Wear any item on your head.
-- `/ptime` - Control what time (only for you).
+- `/back`
+- `/clearinventory`
+- `/craft`
+- `/condense`
+- `/disposal`
+- `/enderchest`
+- `/feed`
+- `/firework`
+- `/hat`
+- `/nick` (use color codes)
+- `/rename` (use color codes)
+- `/sethome` (total of 10 homes)
+
+--
+
+**Super Vanilla**:
+- Use anvils to rename items with color codes.
+- `/nick` (use color codes)
+- `/rename` (use color codes)

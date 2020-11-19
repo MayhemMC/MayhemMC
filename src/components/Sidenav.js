@@ -22,11 +22,11 @@ export default function Component() {
 				<hr/>
 				<Route to="/" icon="home">Home</Route>
 				<Route to="/store" icon="shopping_cart">Store</Route>
-				{Object.keys(servers).length !== 0 && <Fragment>
+				<Fragment>
 					<hr/>
 					<Subheader>Servers</Subheader>
 					{Object.keys(servers).filter(server => server !== "lobby").map(server => <Route to={`/server/${server}`} key={Object.keys(servers).indexOf(server)}>{stripFormats(servers[server].display_name, "&")}</Route>)}
-				</Fragment>}
+				</Fragment>
 			</Drawer>
 		</Fragment>
 	)
