@@ -5,16 +5,29 @@
 - `/hat` - Wear any item on your head.
 
 ---
+
 **Factions**:
 - Use anvils to rename items with color codes.
-- 1 Additional `/sethome`.
-- 1 Additional `/pv`.
-- Can get the following kits every 48 hours: `common`, `uncommon`.
-- `/craft` - Open a 3x3 crafting grid by command.
-- `/compact` - Compress minerals to blocks.
-- `/hat` - Wear any item on your head.
+- `/back`
+- `/clearinventory`
+- `/craft`
+- `/condense`
+- `/disposal`
+- `/enderchest`
+- `/feed`
+- `/firework`
+- `/hat`
+- `/kit`
+  * `xp` (every 2 hours)
+  * `common` (every 24 hours)
+  * `uncommon` (every 36 hours)
+- `/nick` (use color codes)
+- `/pv` (3 vaults)
+- `/rename` (use color codes)
+- `/sethome` (total of 10 homes)
 
 ---
+
 **SMP**:
 - Use anvils to rename items with color codes.
 - 2 Additional `/sethome`.

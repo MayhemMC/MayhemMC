@@ -6,22 +6,42 @@
 - `/nick` - Change your in-game name.
 
 ---
+
 **Creative**:
 - `/nick` - Change your in-game name.
 
 ---
+
 **Factions**:
+- Talk in chat with color codes.
 - Use anvils to rename items with color codes.
-- 2 Additional `/sethome`.
-- 2 Additional `/pv`.
-- Can get the following kits every 48 hours: `common`, `uncommon`, `rare`.
-- `/craft` - Open a 3x3 crafting grid by command.
-- `/compact` - Compress minerals to blocks.
-- `/feed` - Instantly feed yourself.
-- `/hat` - Wear any item on your head.
-- `/nick` - Change your in-game name.
+- `/back`
+- `/clearinventory`
+- `/craft`
+- `/condense`
+- `/disposal`
+- `/enderchest`
+- `/endersee`
+- `/ext`
+- `/feed`
+- `/firework`
+- `/hat`
+- `/invsee`
+- `/kit`
+  * `xp` (every 2 hours)
+  * `common` (every 24 hours)
+  * `uncommon` (every 36 hours)
+  * `rare` (every 48 hours)
+- `/nick` (use color codes)
+- `/ptime`
+- `/pv` (4 vaults)
+- `/pweather`
+- `/rename` (use color codes)
+- `/sethome` (total of 15 homes)
+- `/top`
 
 ---
+
 **SMP**:
 - Use anvils to rename items with color codes.
 - 4 Additional `/sethome`.

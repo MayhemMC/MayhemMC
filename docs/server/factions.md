@@ -10,6 +10,7 @@ Assemble groups, work together, battling, building massive bases, raiding and lo
 6.  Be ethical and respectful.
 7.  Report bugs instead of exploiting them. *(I will award bounties for discovering bugs)*
 8.  **No automations**, Includes autoclickers, baritione etc.
+9.  No scamming.
 ---
 
 # Crates

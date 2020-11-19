@@ -67,13 +67,13 @@ function View() {
 						</Card>
 
 						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }}>
-							<CardTitle>Recient Donations</CardTitle>
+							<CardTitle>Recent Donations</CardTitle>
 							<hr/>
 							<List style={{ margin: "0 -1px" }}>
 								{ donations.map((donation, key) => <Player name={donation.name} key={key}/> )}
 							</List>
 						</Card>
-						
+
 					</Col>
 
 					<Col sm={12} lg={9}>
