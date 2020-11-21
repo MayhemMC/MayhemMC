@@ -43,9 +43,22 @@
 	    width: calc(100% + 16px)!important;
 	    margin: 12px 0!important;
 		margin-left: -8px!important;
+		border-color: @border-variant;
 	}
 	img {
 		max-width: 400px;
+	}
+	ul {
+		margin: 0;
+		li {
+			margin: 4px 0;
+			code {
+				padding: 2px 6px;
+			}
+		}
+	}
+	code {
+		font-size: 12px;
 	}
 }
 
@@ -59,21 +72,6 @@ code {
 	padding: 0 6px;
 	user-select: all;
 	display: inline-block;
-}
-
-.b-top-btm {
-	ul {
-		margin: 0;
-		li {
-			margin: 4px 0;
-			code {
-				padding: 2px 6px;
-			}
-		}
-	}
-	code {
-		font-size: 12px;
-	}
 }
 
 .card .md-container {

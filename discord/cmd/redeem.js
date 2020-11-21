@@ -45,9 +45,9 @@ module.exports = async function(args, message) {
 
 	// Define role constants
 	const role_ids = [ Roles.VIP, Roles.WARRIOR, Roles.HERO, Roles.LEGEND ];
-	const role_names = [ "vip", "warrior", "hero", "legend" ];
-	const role_formatted = [ "&2[&aVIP&2]", "&3[&bWARRIOR&3]", "&5[&dHERO&5]", "&6[&eLEGEND&6]" ];
-	const role_codes = [ "vip", "lite", "mid", "high" ];
+	const role_names = [ "vip", "warrior", "hero", "legend", "titan" ];
+	const role_formatted = [ "&2[&aVIP&2]", "&3[&bWARRIOR&3]", "&5[&dHERO&5]", "&6[&eLEGEND&6]", "&4[&cTITAN&4]" ];
+	const role_codes = [ "vip", "lite", "mid", "high", "titan" ];
 	const role = role_names.indexOf(rank.toLowerCase());
 
 	// Get discord id
