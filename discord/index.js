@@ -42,6 +42,16 @@ module.exports = async function() {
 	// Send welcome message
 	client.on("guildMemberAdd", require("./join.js"));
 
+	// Keep online
+	client.on("error", relog);
+	client.on("shardError", relog);
+
+	async function relog() {
+		await client.destroy();
+		global.client = new Discord.Client();
+		client.login(config["discord-secret"]);
+	}
+
 	// Log client in using token
 	client.login(config["discord-secret"]);
 
