@@ -67,7 +67,7 @@ module.exports = async function(req, res) {
 	const playerfile = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`), "utf8"));
 
 	// Get player geolocation
-	const { geolocation = { }} = await mmcApi("ip", { uuid: player.uuid, authorization: config["internal-api-key"] })
+	//#! const { geolocation = { }} = await mmcApi("ip", { uuid: player.uuid, authorization: config["internal-api-key"] })
 
 	// Start formulating response
 	const response = {
@@ -88,7 +88,7 @@ module.exports = async function(req, res) {
 		},
 		first_joined: (await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`))).birthtime,
 		last_joined: new Date(playerfile.timestamps.login),
-		timezone: geolocation.hasOwnProperty("timezone") && geolocation.timezone
+		//#! timezone: geolocation.hasOwnProperty("timezone") && geolocation.timezone
 	}
 
 	// Respond to request
