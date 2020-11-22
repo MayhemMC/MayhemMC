@@ -22,6 +22,7 @@ export default function Component() {
 				<hr/>
 				<Route to="/" icon="home">Home</Route>
 				<Route to="/store" icon="shopping_cart">Store</Route>
+				<Route to="/vote" icon="how_to_vote">Vote</Route>
 				<Fragment>
 					<hr/>
 					<Subheader>Servers</Subheader>

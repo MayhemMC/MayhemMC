@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Col, Container, Row } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
-import { Card, CardTitle } from "@photoncss/Card";
+import { Card } from "@photoncss/Card";
 import Markdown from "components/Markdown";
 import PlayerList from "components/PlayerList";
 

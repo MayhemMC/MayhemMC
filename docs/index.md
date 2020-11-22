@@ -3,9 +3,11 @@ Welcome to **Mayhem MC**!
 
 Server IP: `mayhemmc.uk.to`
 
+---
 # Content Creation
 Making videos on **Mayhem MC** is not only allowed, its encouraged. New players are needed to keep the community thriving and making content on platforms like YouTube and Twitch are great ways to do that.
 
+---
 # Community Rules
 1. Keep abusive language and profanities to a very minimum outside of NSFW channels.
 2. Keep talk of religion, controversial politics, and sexuality in NSFW channels
