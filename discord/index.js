@@ -10,6 +10,7 @@ module.exports = async function() {
 	// On client log in
 	client.on("ready", async () => {
 
+		// Log client
 	  	console.log(chalk.cyan("[DISCORD]"), "Logged into Discord as", chalk.blue(client.user.tag));
 
 		// Show server IP as subtitle
@@ -20,6 +21,21 @@ module.exports = async function() {
 		    },
 		    status: "online"
 		});
+
+		// Remind people to bump :P
+		client.setInterval(async function() {
+
+			// Get bumps channel
+			const guild = await client.guilds.fetch("708050277957238784")
+			const bumps = await guild.channels.resolve(Channels.BUMP)
+			let messages = Object.values(parseCollection(await bumps.messages.fetch({ limit: 10 })));
+			messages = messages.filter(message => message.author.id === "302050872383242240");
+			messages = messages.filter(message => message.embeds[0].color === 2406327);
+			messages = messages.sort((a, b) => b.createdTimestamp - a.createdTimestamp)[0];
+
+			if(Date.now() > messages.createdTimestamp + 2*60*60*1000) await bumps.send(`A bump is now available for this server. Do \`!d bump\``);
+
+		}, 300000);
 
 	});
 
