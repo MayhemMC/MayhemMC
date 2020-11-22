@@ -10,10 +10,15 @@ export function Player({ name, server = null }) {
 	const [ player, setState ] = useState(null);
 
 	// State resolver
-	const resolve = () => playercache.hasOwnProperty(name) ? setState(playercache[name]) : app.api("player", { name }).then(p => {
-		playercache[name] = p
-		setState(p)
-	});
+	const resolve = () => playercache.hasOwnProperty(name) ? (function(){
+		if(playercache[name] !== null) setState(playercache[name]);
+	}()) : (function() {
+		playercache[name] = false;
+		app.api("player", { name }).then(p => {
+			playercache[name] = p
+			setState(p)
+		});
+	}())
 
 	// If player hasnt resolved yet
 	if(player === null) {
@@ -63,9 +68,9 @@ export default function PlayerList({ only = false }) {
 		}
 	}
 
-	// Queue state to refresh every 5 seconds
+	// Queue state to refresh every 1 seconds
 	useEffect(function() {
-		const interval = setInterval(resolve, 5000)
+		const interval = setInterval(resolve, 1000)
 		return function() {
 			clearInterval(interval);
 		}

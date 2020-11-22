@@ -79,7 +79,7 @@ function View() {
 						</Col>
 						<Col lg={8}>
 							<Card>
-								<Markdown source={require(`../../docs/server/${server.key}.md`).default}/>
+								<Markdown source={require(`../../docs/server/${urlKey}.md`).default}/>
 							</Card>
 						</Col>
 					</Row>
