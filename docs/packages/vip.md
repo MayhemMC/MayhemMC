@@ -1,10 +1,10 @@
 **Anarchy**:
-- Use anvils to rename items with color codes.
-- Phantoms do not attack.
-- `/disposal`
-- `/hat`
-- `/rename` (use color codes)
-- `/sethome` (total of 3 homes)
+- <u>Use anvils to rename items with color codes.</u>
+- <u>Phantoms do not attack.</u>
+- <u>`/disposal`</u>
+- <u>`/hat`</u>
+- <u>`/rename` (use color codes)</u>
+- <u>`/sethome` (total of 3 homes)</u>
 
 ---
 
@@ -14,31 +14,31 @@ _(none)_
 ---
 
 **Factions**:
-- Use anvils to rename items with color codes.
-- `/clearinventory`
-- `/craft`
-- `/disposal`
-- `/hat`
-- `/kit`
-  * `xp` (every 2 hours)
-  * `common` (every 24 hours)
-- `/pv` (2 vaults)
-- `/rename` (use color codes)
-- `/sethome` (total of 5 homes)
+- <u>Use anvils to rename items with color codes.</u>
+- <u>`/clearinventory`</u>
+- <u>`/craft`</u>
+- <u>`/disposal`</u>
+- <u>`/hat`</u>
+- <u>`/kit`</u>
+  * <u>`xp` (every 2 hours)</u>
+  * <u>`common` (every 24 hours)</u>
+- <u>`/pv` (2 vaults)</u>
+- <u>`/rename` (use color codes)</u>
+- <u>`/sethome` (total of 5 homes)</u>
 
 ---
 
 **SMP**:
-- Use anvils to rename items with color codes.
-- `/clearinventory`
-- `/craft`
-- `/disposal`
-- `/hat`
-- `/rename` (use color codes)
-- `/sethome` (total of 5 homes)
+- <u>Use anvils to rename items with color codes.</u>
+- <u>`/clearinventory`</u>
+- <u>`/craft`</u>
+- <u>`/disposal`</u>
+- <u>`/hat`</u>
+- <u>`/rename` (use color codes)</u>
+- <u>`/sethome` (total of 5 homes)</u>
 
 ---
 
 **Super Vanilla**:
-- Use anvils to rename items with color codes.
-- `/rename` (use color codes)
+- <u>Use anvils to rename items with color codes.</u>
+- <u>`/rename` (use color codes)</u>
