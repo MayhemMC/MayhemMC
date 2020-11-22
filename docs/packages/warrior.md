@@ -3,56 +3,56 @@
 - Phantoms do not attack.
 - `/disposal`
 - `/hat`
-- `/nick` (use color codes)
+- <u>`/nick` (use color codes)</u>
 - `/rename` (use color codes)
-- `/sethome` (total of 4 homes)
+- <u>`/sethome` (total of 4 homes)</u>
 
 ---
 
 **Creative**:
-- `/nick` (use color codes)
+- <u>`/nick` (use color codes)</u>
 
 ---
 
 **Factions**:
 - Use anvils to rename items with color codes.
-- `/back`
+- <u>`/back`</u>
 - `/clearinventory`
 - `/craft`
-- `/condense`
+- <u>`/condense`</u>
 - `/disposal`
-- `/enderchest`
-- `/feed`
-- `/firework`
+- <u>`/enderchest`</u>
+- <u>`/feed`</u>
+- <u>`/firework`</u>
 - `/hat`
 - `/kit`
   * `xp` (every 2 hours)
   * `common` (every 24 hours)
-  * `uncommon` (every 36 hours)
-- `/nick` (use color codes)
-- `/pv` (3 vaults)
+  * <u>`uncommon` (every 36 hours)</u>
+- <u>`/nick` (use color codes)</u>
+- <u>`/pv` (3 vaults)</u>
 - `/rename` (use color codes)
-- `/sethome` (total of 10 homes)
+- <u>`/sethome` (total of 10 homes)</u>
 
 ---
 **SMP**:
 - Use anvils to rename items with color codes.
-- `/back`
+- <u>`/back`</u>
 - `/clearinventory`
 - `/craft`
-- `/condense`
+- <u>`/condense`</u>
 - `/disposal`
-- `/enderchest`
-- `/feed`
-- `/firework`
+- <u>`/enderchest`</u>
+- <u>`/feed`</u>
+- <u>`/firework`</u>
 - `/hat`
-- `/nick` (use color codes)
+- <u>`/nick` (use color codes)</u>
 - `/rename` (use color codes)
-- `/sethome` (total of 10 homes)
+- <u>`/sethome` (total of 10 homes)</u>
 
 --
 
 **Super Vanilla**:
 - Use anvils to rename items with color codes.
-- `/nick` (use color codes)
+- <u>`/nick` (use color codes)</u>
 - `/rename` (use color codes)

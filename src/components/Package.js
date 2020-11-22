@@ -15,7 +15,7 @@ export default function Package({ name, imageURL, expires, price, discount = 0, 
 		const dialog = new Photon.Dialog({
 			type: "alert",
 			transition: "grow",
-			title: `The ${renderToString(<MCText style={{ margin: "0 4px", display: "inline-block", transform: "translateY(2px)" }}>{display_prefix.replace(/\&/gm, "§")}</MCText>)} package includes:`,
+			title: `The ${renderToString(<code><MCText style={{ fontSize: 16 }}>{display_prefix.replace(/\&/gm, "§")}</MCText></code>)} package includes:`,
 			content: renderToString(<div style={{ maxHeight: "calc(100vh - 16px - 126px)", overflowY: "auto", marginTop: -28, borderTop: "1px solid #292b2f", borderBottom: "1px solid #292b2f" }}><Markdown source={features}/></div>),
 			actions: [{
 				name: "Purchase",

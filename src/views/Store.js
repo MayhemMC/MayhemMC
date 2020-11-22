@@ -57,15 +57,28 @@ function View() {
 				<Row>
 
 					<Col sm={12} lg={3}>
-
+						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
+							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
+							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All packages are a one-time purchase and last <b>forever</b>.</span>
+						</Card>
 						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
 							<Icon style={{ display: "inline-block" }} waves={false}>local_offer</Icon>
-							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: "2rem", fontWeight: "500", fontSize: "16px" }}>Enter your player name to log in and activate your personal discounts.</span>
-							<div style={{ marginLeft: 24 }}>
+							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>Enter your player name to log in and activate your personal discounts.</span>
+							<div style={{ marginLeft: 36 }}>
 								<Textfield label="Minecraft username" onKeyUp={checkdiscount}/>
 							</div>
 						</Card>
+					</Col>
 
+					<Col sm={12} lg={6}>
+						<Row>
+							<Masonry options={{ transitionDuration: 0 }}>
+								{ packages.map((p, key) => <Package key={key} {...p} discount={discount}/> )}
+							</Masonry>
+						</Row>
+					</Col>
+
+					<Col sm={12} lg={3}>
 						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }}>
 							<CardTitle>Recent Donations</CardTitle>
 							<hr/>
@@ -73,15 +86,6 @@ function View() {
 								{ donations.map((donation, key) => <Player name={donation.name} key={key}/> )}
 							</List>
 						</Card>
-
-					</Col>
-
-					<Col sm={12} lg={9}>
-						<Row>
-							<Masonry options={{ transitionDuration: 0 }}>
-								{ packages.map((p, key) => <Package key={key} {...p} discount={discount}/> )}
-							</Masonry>
-						</Row>
 					</Col>
 
 				</Row>

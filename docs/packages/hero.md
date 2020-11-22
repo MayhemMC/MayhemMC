@@ -1,26 +1,26 @@
 **Anarchy**:
 - Phantoms do not attack.
-- Talk in chat with color codes.
+- <u>Talk in chat with color codes.</u>
 - Use anvils to rename items with color codes.
 - `/disposal`
-- `/back` (does not work for deaths)
+- <u>`/back` (does not work for deaths)</u>
 - `/hat`
 - `/nick` (use color codes)
-- `/ptime`
-- `/pweather`
+- <u>`/ptime`</u>
+- <u>`/pweather`</u>
 - `/rename` (use color codes)
-- `/sethome` (total of 5 homes)
+- <u>`/sethome` (total of 5 homes)</u>
 
 ---
 
 **Creative**:
-- Talk in chat with color codes.
+- <u>Talk in chat with color codes.</u>
 - `/nick` (use color codes)
 
 ---
 
 **Factions**:
-- Talk in chat with color codes.
+- <u>Talk in chat with color codes.</u>
 - Use anvils to rename items with color codes.
 - `/back`
 - `/clearinventory`
@@ -28,29 +28,29 @@
 - `/condense`
 - `/disposal`
 - `/enderchest`
-- `/endersee`
-- `/ext`
+- <u>`/endersee`</u>
+- <u>`/ext`</u>
 - `/feed`
 - `/firework`
 - `/hat`
-- `/invsee`
+- <u>`/invsee`</u>
 - `/kit`
   * `xp` (every 2 hours)
   * `common` (every 24 hours)
   * `uncommon` (every 36 hours)
-  * `rare` (every 48 hours)
+  * <u>`rare` (every 48 hours)</u>
 - `/nick` (use color codes)
-- `/ptime`
-- `/pv` (4 vaults)
-- `/pweather`
+- <u>`/ptime`</u>
+- <u>`/pv` (4 vaults)</u>
+- <u>`/pweather`</u>
 - `/rename` (use color codes)
-- `/sethome` (total of 15 homes)
-- `/top`
+- <u>`/sethome` (total of 15 homes)</u>
+- <u>`/top`</u>
 
 ---
 
 **SMP**:
-- Talk in chat with color codes.
+- <u>Talk in chat with color codes.</u>
 - Use anvils to rename items with color codes.
 - `/back`
 - `/clearinventory`
@@ -58,23 +58,23 @@
 - `/condense`
 - `/disposal`
 - `/enderchest`
-- `/endersee`
+- <u>`/endersee`</u>
 - `/feed`
 - `/firework`
 - `/hat`
-- `/invsee`
-- `/me`
+- <u>`/invsee`</u>
+- <u>`/me`</u>
 - `/nick` (use color codes)
-- `/ptime`
-- `/pweather`
+- <u>`/ptime`</u>
+- <u>`/pweather`</u>
 - `/rename` (use color codes)
-- `/sethome` (total of 15 homes)
-- `/top`
+- <u>`/sethome` (total of 15 homes)</u>
+- <u>`/top`</u>
 
 ---
 
 **Super Vanilla**:
-- Talk in chat with color codes.
+- <u>Talk in chat with color codes.</u>
 - Use anvils to rename items with color codes.
 - `/nick` (use color codes)
 - `/rename` (use color codes)
