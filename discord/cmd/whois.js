@@ -66,7 +66,7 @@ module.exports = async function(args, message) {
 	embed.addField("First joined", dayjs(player.first_joined).format("`hh:mmA` • `MM/DD/YYYY`"))
 	embed.addField("Last seen", `**${dayjs(player.last_joined).fromNow(true)}** ago`)
 
-	if(player.timezone !== null) embed.addField("Timezone", `**${player.timezone}**`)
+	if(player.hasOwnProperty("timezone") && player.timezone !== null && player.timezone !== false) embed.addField("Timezone", `**${player.timezone}**`)
 
 	return await channel.send(embed);
 
