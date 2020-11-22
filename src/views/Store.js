@@ -3,7 +3,6 @@ import { Card, CardTitle } from "@photoncss/Card";
 import { Col, Container, Row } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
-import { Textfield } from "@photoncss/Textfield";
 import { List } from "@photoncss/List";
 import Masonry from "react-masonry-component";
 import { Player } from "components/PlayerList";
@@ -14,35 +13,12 @@ global.store_specimen = null;
 // Render view
 function View() {
 
-	const [ discount, setDiscount ] = useState(0);
 	const [{ packages }, _packages ] = useState({ packages: [] });
 	const [{ donations }, _donations ] = useState({ donations: [] });
 	useEffect(() => {
 		donations.length === 0 && app.api("donations").then(_donations);
 		packages.length === 0 && app.api("store").then(_packages);
 	});
-
-	async function checkdiscount({ target }) {
-
-		const name = $(target).val();
-		global.store_specimen = name;
-
-		if(name === "") return setDiscount(0);
-		if(name.length < 3 || name.length > 16) return;
-
-		const playerInfo = await app.api("player", { name });
-
-		if(playerInfo.success === false) return setDiscount(0);
-
-		if(playerInfo.donator === false) return setDiscount(0);
-
-		packages.map(({ name, price }) => {
-			if(name.toUpperCase() === playerInfo.donator.package) {
-				setDiscount(price);
-			}
-		})
-
-	}
 
 	return (
 		<Fragment>
@@ -62,18 +38,23 @@ function View() {
 							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All packages are a one-time purchase and last <b>forever</b>.</span>
 						</Card>
 						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
-							<Icon style={{ display: "inline-block" }} waves={false}>local_offer</Icon>
-							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>Enter your player name to log in and activate your personal discounts.</span>
-							<div style={{ marginLeft: 36 }}>
-								<Textfield label="Minecraft username" onKeyUp={checkdiscount}/>
-							</div>
+							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
+							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>If you already have a package and are looking to upgrade, the price of the previous package will automaticly be subtracted from your total.</span>
+						</Card>
+						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
+							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
+							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All purchases are strictly non-refundable due to how PayPal handles donations.</span>
+						</Card>
+						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
+							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
+							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All packages are limited to cosmetic and quality of life enhancements due to <a href="https://www.minecraft.net/en-us/eula" className="text-primary">Mojang's TOS</a>.</span>
 						</Card>
 					</Col>
 
 					<Col sm={12} lg={6}>
 						<Row>
 							<Masonry options={{ transitionDuration: 0 }}>
-								{ packages.map((p, key) => <Package key={key} {...p} discount={discount}/> )}
+								{ packages.map((p, key) => <Package key={key} {...p}/> )}
 							</Masonry>
 						</Row>
 					</Col>

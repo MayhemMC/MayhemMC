@@ -6,10 +6,7 @@ import Markdown from "components/Markdown";
 import { Col } from "@photoncss/Layout";
 import MCText from "components/MCText";
 
-export default function Package({ name, imageURL, expires, price, discount = 0, display_prefix, features }) {
-
-	const rprice = price - discount;
-	if(rprice <= 0) return null;
+export default function Package({ name, imageURL, expires, price, display_prefix, features, newFeatures }) {
 
 	function seeFeatures() {
 		const dialog = new Photon.Dialog({
@@ -21,7 +18,7 @@ export default function Package({ name, imageURL, expires, price, discount = 0, 
 				name: "Purchase",
 				click() {
 					dialog.close();
-					app.inAppPurchase({ player: store_specimen, name, price: rprice, display_prefix })
+					app.inAppPurchase({ player: store_specimen, name, price, display_prefix })
 				}
 			}, {
 				name: "Close",
@@ -44,11 +41,13 @@ export default function Package({ name, imageURL, expires, price, discount = 0, 
 					  top: 2,
 					  right: 16,
 					  fontFamily: "Roboto Condensed",
-				  }}>{ expires && <span className="text-red" style={{ paddingRight: 16 }}>(Offer ends soon)</span> }{ rprice <= 0 ? "":Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(rprice)}</h6>
+				  }}>{ expires && <span className="text-red" style={{ paddingRight: 16 }}>(Offer ends soon)</span> }{ Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(price)}</h6>
 				</CardTitle>
 				<hr/>
+				<p style={{ padding: 16 }}>This package contains <b>{newFeatures} upgrades</b> and also inherits the upgrades of all packages listed above.</p>
+				<hr/>
 				<CardActions>
-					<Button variant="raised" color="primary" style={{ float: "right", margin: 0 }} onClick={ () => app.inAppPurchase({ player: store_specimen, name, price: rprice, display_prefix }) }>PURCHASE</Button>
+					<Button variant="raised" color="primary" style={{ float: "right", margin: 0 }} onClick={ () => app.inAppPurchase({ player: store_specimen, name, price, display_prefix }) }>PURCHASE</Button>
 					<Button variant="outlined" color="primary" style={{ float: "right" }} onClick={ () => seeFeatures() }>SEE FEATURES</Button>
 				</CardActions>
 			</Card>

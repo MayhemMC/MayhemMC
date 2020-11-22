@@ -4,12 +4,13 @@
 - Use anvils to rename items with color and format codes.
 - `/disposal`
 - `/back` (does not work for deaths)
+- <u>`/exp` _(See others XP level)_</u>
 - `/hat`
 - `/nick` (use color and format codes)
 - `/ptime`
 - `/pweather`
 - `/rename` (use color and format codes)
-- `/sethome` (total of 6 homes)
+- <u>`/sethome` (total of 8 homes)</u>
 
 ---
 
@@ -20,19 +21,24 @@
 ---
 
 **Factions**:
+- <u>Keep your experience level when you die.</u>
 - Talk in chat with color and format codes.
 - Use anvils to rename items with color and format codes.
+- <u>`/ascend`</u>
 - `/back`
 - `/clearinventory`
 - `/craft`
 - `/condense`
+- <u>`/descend`</u>
 - `/disposal`
 - `/enderchest`
 - `/endersee`
+- <u>`/exp` _(See others XP level)_</u>
 - `/ext`
-- `/feed`
+- <u>`/feed` _(Free with no cooldown)_</u>
+- <u>`/fly`</u>
 - `/firework`
-- `/fix`
+- <u>`/fix` _(Free with no cooldown)_</u>
 - `/hat`
 - `/invsee`
 - `/kit`
@@ -41,28 +47,35 @@
   * `uncommon` (every 36 hours)
   * `rare` (every 48 hours)
   * `epic` (every 60 hours)
+  * <u>`ultra` (every 72 hours)</u>
 - `/near`
 - `/nick` (use color and format codes)
 - `/ptime`
-- `/pv` (5 vaults)
+- <u>`/pv` (6 vaults)</u>
 - `/pweather`
 - `/rename` (use color and format codes)
-- `/sethome` (total of 20 homes)
+- <u>`/sethome` (unlimited homes)</u>
+- <u>`/tnt`</u>
 - `/top`
 
 ---
 
 **SMP**:
+- <u>Keep your experience level when you die.</u>
 - Talk in chat with color and format codes.
 - Use anvils to rename items with color and format codes.
+- <u>`/ascend`</u>
 - `/back`
 - `/clearinventory`
 - `/craft`
 - `/condense`
+- <u>`/descend`</u>
 - `/disposal`
 - `/enderchest`
 - `/endersee`
-- `/feed`
+- <u>`/exp` _(See others XP level)_</u>
+- <u>`/feed` _(Free with no cooldown)_</u>
+- <u>`/fly`</u>
 - `/firework`
 - `/hat`
 - `/invsee`
@@ -72,7 +85,8 @@
 - `/ptime`
 - `/pweather`
 - `/rename` (use color and format codes)
-- `/sethome` (total of 20 homes)
+- <u>`/sethome` (unlimited homes)</u>
+- <u>`/thru`</u>
 - `/top`
 
 ---

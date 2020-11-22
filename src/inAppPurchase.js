@@ -4,7 +4,7 @@ import MCText from "components/MCText";
 
 export default function inAppPurchase({ player, name, price, display_prefix }) {
 
-	function ready(player) {
+	function ready(player, prefix = "&7") {
 
 		if(price < 0) {
 			return Photon.Dialog({
@@ -13,9 +13,9 @@ export default function inAppPurchase({ player, name, price, display_prefix }) {
 				dismissable: false,
 			    content: renderToString(<Fragment>
 					<div style={{ margin: "0 24px", marginTop: -24 }}>
-						You <code>{player}</code> have already purchased the <code><MCText style={{ display: "inline" }}>{display_prefix.replace(/\&/gm, "§").trim()}</MCText></code> package.
+						You <code><MCText style={{ display: "inline" }}>{(prefix + player).replace(/\&/gm, "§").trim()}</MCText></code> have already purchased the <code><MCText style={{ display: "inline" }}>{display_prefix.replace(/\&/gm, "§").trim()}</MCText></code> package.
 						<br/>
-						If you're buying this package as a gift, use that players name instead.
+						If you're buying this package as a gift for someone else, use that players name instead.
 					</div>
 				</Fragment>),
 				actions: [{
@@ -33,19 +33,21 @@ export default function inAppPurchase({ player, name, price, display_prefix }) {
 			dismissable: false,
 		    content: renderToString(<Fragment>
 				<div style={{ margin: "0 24px", marginTop: -24 }}>
-					You <code>{player}</code> are about to purchase the <code><MCText style={{ display: "inline" }}>{display_prefix.replace(/\&/gm, "§").trim()}</MCText></code> package for <code>{Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(price)}</code>
+					You <code><MCText style={{ display: "inline" }}>{(prefix + player).replace(/\&/gm, "§").trim()}</MCText></code> are about to purchase the <code><MCText style={{ display: "inline" }}>{display_prefix.replace(/\&/gm, "§").trim()}</MCText></code> package.
 				</div>
 				<br/>
 				<div style={{ margin: "0 24px" }}>
-					1. Make sure you're in our <a href="https://discord.gg/4FBnfPA" className="link" target="_blank">Discord Server</a>.
+					1. Make sure you're in our <a href="https://discord.gg/4FBnfPA" className="link" target="_blank">Discord Server</a> and registered.
 					<br/><br/>
-					2. DM me (<code>JoshM#0001</code>) the Transaction ID.
-					<br/><br/>
+					2. Copy and paste the Transaction ID and DM it to me(<code>JoshM#0001</code>).
+					<br/>
 					Transaction ID: <code>{btoa(`${player};${name.toUpperCase()}`)}</code>
+					<br/><br/>
+					3. Click "checkout" and enter in <code>{Intl.NumberFormat(navigator.language, { style: "currency", currency: "USD" }).format(price)}</code>. If you are eligable for a discount due to purchasing a package in the past and pay the full price, it will be treated as a donation.
 				</div>
 			</Fragment>),
 			actions: [{
-				name: "next",
+				name: "checkout",
 				click() {
 					window.open("//paypal.me/jmer05")
 				}
@@ -73,9 +75,10 @@ export default function inAppPurchase({ player, name, price, display_prefix }) {
 				name: "continue",
 				async click(dialog) {
 
-					function finalize(a = true) {
+					async function finalize(a = true) {
 						dialog.close();
-						a && ready(name);
+						const playerInfo = await app.api("player", { name });
+						a && ready(playerInfo.name, playerInfo.prefix);
 					}
 
 					let { name } = dialog.fields();
@@ -119,6 +122,15 @@ export default function inAppPurchase({ player, name, price, display_prefix }) {
 				}
 			}]
 		}).open();
+
+		$("input").off("keydown").on("keydown", function(event) {
+		    event.preventDefault();
+		    const val = $(this).val()
+		    if(event.key === "Backspace") return $(this).val(val.substr(0, val.length - 1))
+		    if(event.key.length > 1) return;
+		    $(this).val(val + event.key)
+		});
+
 	} else {
 		ready(player);
 	}
