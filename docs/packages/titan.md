@@ -38,7 +38,7 @@
 - <u>`/feed` _(Free with no cooldown)_</u>
 - <u>`/fly`</u>
 - `/firework`
-- <u>`/fix` _(Free with no cooldown)_</u>
+- <u>`/fix` _(Free)_</u>
 - `/hat`
 - `/invsee`
 - `/kit`
