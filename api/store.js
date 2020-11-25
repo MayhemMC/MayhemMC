@@ -64,19 +64,16 @@ module.exports = async function(req, res) {
 		imageURL: "https://i.ibb.co/4gGMkmG/3-legend.png"
 	})
 
-	// Push Titan package to packages
-	if(today > new Date("11/25/2020")) {
-		features = await fs.readFile(path.join(__dirname, "../docs/packages", "titan.md"), "utf8");
-		packages.push({
-			name: "Titan",
-			display_prefix: "&4[&cTITAN&4]&c",
-			expires: isOnSale(),
-			price: 40.00 * (isOnSale() ? DISCOUNT : 1),
-			features,
-			newFeatures: features.split("<u>").length,
-			imageURL: "https://i.ibb.co/wW3wVCX/4-titan.png"
-		})
-	}
+	features = await fs.readFile(path.join(__dirname, "../docs/packages", "titan.md"), "utf8");
+	packages.push({
+		name: "Titan",
+		display_prefix: "&4[&cTITAN&4]&c",
+		expires: isOnSale(),
+		price: 40.00 * (isOnSale() ? DISCOUNT : 1),
+		features,
+		newFeatures: features.split("<u>").length,
+		imageURL: "https://i.ibb.co/wW3wVCX/4-titan.png"
+	})
 
 	// Respond to request
 	res.json({
