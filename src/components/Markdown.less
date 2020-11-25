@@ -60,6 +60,33 @@
 	code {
 		font-size: 12px;
 	}
+
+	table {
+		border: 1px solid @border-variant;
+		border-radius: 5px;
+		thead tr {
+		    height: 56px;
+		    box-shadow: 0 1px 0 0 @border-variant;
+			th {
+			    opacity: .87;
+			    padding: 0 1rem;
+			    text-align: left;
+			}
+		}
+		tbody {
+			tr {
+				height: 48px;
+				&:not(:last-child) {
+		    		box-shadow: 0 1px 0 0 fade(@border-variant, 74%);
+				}
+			}
+			tr td {
+				padding: 1rem;
+				text-align: left;
+			}
+		}
+
+	}
 }
 
 code {

@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
-import Markdown from "react-markdown";
+import Markdown from "react-markdown/with-html";
+import gfm from "remark-gfm"
 
 export default function Component({ source }) {
 	const guid = Photon.guid();
@@ -10,7 +11,7 @@ export default function Component({ source }) {
 
 	return (
 		<div className="md-container" id={guid}>
-			<Markdown escapeHtml={false} source={source}/>
+			<Markdown plugins={[ gfm ]} escapeHtml={false} source={source}/>
 		</div>
 	)
 }
