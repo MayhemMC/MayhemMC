@@ -40,7 +40,7 @@ export function Player({ name, server = null }) {
 	return (
 		<ListItem waves={false}>
 			<img src={`https://crafatar.com/avatars/${player.uuid}?overlay=true`} alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight :12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
-			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix}${player.name}`}</MCText>
+			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix || ""}${player.name || "Loading..."}`}</MCText>
 			{ server !== null && <span style={{ position: "absolute", right: 16 }}>{server}</span>}
 		</ListItem>
 	)
