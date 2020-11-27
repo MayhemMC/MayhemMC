@@ -1,15 +1,13 @@
 # About
-An SMP Earth styled multiplayer server. Map is a 1:2000 scale representation of Earth. Has economy and mcMMO
+A custom terrain multiplayer server, little to no pressure environment, amazing landscapes, Play to your hearts content.
 
 # Rules
-1. No hacking
-  - Includes Xray, No tick, Killarua, Autoclicker or any other illegal modification.
-  - If you have a question about a specific mod, ask a helper/admin.
-  - Mods like Optifine & Fullbright are obviously allowed.
-2. No greifing
-  - No altering another player's property in any way.
-  - Includes stealing, raiding, ect.
-3. Be respectful
-  - Don't use derogatory terms in chat
-  - No racial/sexual slurs
-  - Keep swearing to a minimum
+1. No advertising.
+2. No teleport trapping.
+3. No griefing/looting
+4. No spamming/chat flood.
+5. No hacked clients or any unapproved client modifications.
+6. Be ethical and respectful.
+7. Report bugs instead of exploiting them. *(I will award bounties for discovering bugs)*
+8. **No automations**, Includes autoclickers, baritione etc.
+9. No scamming.

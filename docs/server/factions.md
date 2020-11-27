@@ -2,10 +2,10 @@
 Assemble groups, work together, battling, building massive bases, raiding and looting enemy's, make alliances, farm materials, grind mobs.
 
 # Rules
-1.	No advertising.
-2.	No teleport trapping.
-3.	No insiding. *(raiding your own faction)*
-4.	No spamming/chat flood.
+1. No advertising.
+2. No teleport trapping.
+3. No insiding. *(raiding your own faction)*
+4. No spamming/chat flood.
 5. No hacked clients or any unapproved client modifications.
 6. Be ethical and respectful.
 7. Report bugs instead of exploiting them. *(I will award bounties for discovering bugs)*
