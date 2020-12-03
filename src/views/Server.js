@@ -55,6 +55,13 @@ function View() {
 			<TabContent id={`${server.key}-about`}>
 				<Container>
 					<Row>
+
+						<Col>
+							<Card style={{ overflow: "hidden", zIndex: -1, position: "relative" }} id="x-parallax">
+								<img src={app.static(urlKey + "banner.jpg")} alt="" style={{ width: "100%", height: "100%" }}/>
+							</Card>
+						</Col>
+
 						<Col lg={4}>
 							<Card>
 								<CardTitle>
@@ -66,14 +73,12 @@ function View() {
 							</Card>
 							<Card>
 								<CardTitle>Server Info</CardTitle>
-
-									<div style={{ marginTop: -12, padding: 16, opacity: .7 }}>
-										<div><b>Status</b><span style={{ float: "right" }}>{server.online ? <span className="text-green text-accent-2">Online</span>:<span className="text-red text-accent-2">Offline</span>}</span></div>
-										<div><b>Server Version</b><span style={{ float: "right" }}>{server.version}</span></div>
-										<div><b>RAM</b><span style={{ float: "right" }}>{server.max_memory}</span></div>
-										<div><b>Players (All Time)</b><span style={{ float: "right" }}>{server.unique_joins}</span></div>
-									</div>
-
+								<div style={{ marginTop: -12, padding: 16, opacity: .7 }}>
+									<div><b>Status</b><span style={{ float: "right" }}>{server.online ? <span className="text-green text-accent-2">Online</span>:<span className="text-red text-accent-2">Offline</span>}</span></div>
+									{ server.online && <div><b>Server Version</b><span style={{ float: "right" }}>{server.version}</span></div> }
+									{ server.online && <div><b>RAM</b><span style={{ float: "right" }}>{server.max_memory}</span></div> }
+									{ server.online && <div><b>Players (All Time)</b><span style={{ float: "right" }}>{server.unique_joins}</span></div> }
+								</div>
 							</Card>
 							{ server.online && <PlayerList only={server.key}/> }
 						</Col>
