@@ -9,7 +9,7 @@ Voting is the easiest way to help the server grow. It only takes a few seconds t
   - 2 Shulker shells (33% chance)
 
 **Factions**:
-  - 1 Common crate key
+  - 1 Vote crate key
 
 **SMP**:
   - 1 Vote crate key
