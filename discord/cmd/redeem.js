@@ -5,7 +5,7 @@ module.exports = async function(args, message) {
 	// If user dosnt have permissions
 	if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) {
 	    const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("You don't have permission to use this command.")
 	    return channel.send(embed);
 	}

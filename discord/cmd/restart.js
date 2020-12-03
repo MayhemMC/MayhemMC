@@ -5,7 +5,7 @@ module.exports = async function(args, message) {
 	// If user dosnt have permissions
 	if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.MOD)) {
 	    const embed = new MessageEmbed()
-	    embed.setColor(0xc62828)
+	    embed.setColor(Color.ERROR)
 	    embed.setTitle("You don't have permission to use this command.")
 	    return channel.send(embed);
 	}
@@ -16,7 +16,7 @@ module.exports = async function(args, message) {
 	// If not enough args
 	if(server === null) {
 		const embed = new MessageEmbed()
-	    embed.setColor(0xffc107)
+	    embed.setColor(Color.WARN)
 	    embed.setTitle("Incorrect usage.")
 		embed.setDescription("`mmc restart <server> (delay = 15s)`")
 	    return channel.send(embed);
@@ -37,7 +37,7 @@ module.exports = async function(args, message) {
     }
 
 	const embed = new MessageEmbed()
-    embed.setColor(0x19d476)
+    embed.setColor(Color.SUCCESS)
     embed.setTitle("Restart queued.")
 	embed.setDescription(`Servers: \`${servers.join("`, `")}\` will restart in ${delay}!`);
     return channel.send(embed);
