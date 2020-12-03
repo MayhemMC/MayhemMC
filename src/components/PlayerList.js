@@ -29,7 +29,7 @@ export function Player({ name, server = null }) {
 		// Return placeholder component
 		return (
 			<ListItem waves={false}>
-				<img src="https://crafatar.com/avatars/8667ba71-b85a-4004-af54-457a9734eed7" alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight: 12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
+				<img src="https://crafatar.com/avatars/000000000000000000000000000000000?default=MHF_Steve&overlay" alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight: 12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
 				<MCText style={{ display: "inline-block" }} delimiter="&">{name}</MCText>
 				{ server !== null && <span style={{ position: "absolute", right: 16 }}>{server}</span>}
 			</ListItem>
@@ -39,8 +39,8 @@ export function Player({ name, server = null }) {
 
 	return (
 		<ListItem waves={false}>
-			<img src={`https://crafatar.com/avatars/${player.uuid}?overlay=true`} alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight :12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
-			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix || ""}${player.name || "Loading..."}`}</MCText>
+			<img src={`https://crafatar.com/avatars/${player.uuid || "000000000000000000000000000000000"}?default=MHF_Steve&overlay`} alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight :12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
+			<MCText style={{ display: "inline-block" }} delimiter="&">{`${player.prefix || "&7"}${player.name || name}`}</MCText>
 			{ server !== null && <span style={{ position: "absolute", right: 16 }}>{server}</span>}
 		</ListItem>
 	)

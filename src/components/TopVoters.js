@@ -6,7 +6,7 @@ import { Player } from "components/PlayerList";
 export default function Component() {
 
 	const [ votes, _votes ] = useState([]);
-	useEffect(() => votes.length === 0 && app.api("votes").then(({ votes: a }) => _votes(a)));
+	useEffect(() => votes.length === 0 && app.api("votes", { limit: 10 }).then(({ votes: a }) => _votes(a)));
 
 	return (
 		<Card>
