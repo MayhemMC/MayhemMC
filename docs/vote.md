@@ -12,4 +12,4 @@ Voting is the easiest way to help the server grow. It only takes a few seconds t
   - 1 Common crate key
 
 **SMP**:
-  - 1 Diamond
+  - 1 Vote crate key

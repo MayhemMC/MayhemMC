@@ -1,19 +1,37 @@
-# Welcome
-Welcome to **Mayhem MC**!
+# About
 
 Server IP: `mayhemmc.uk.to`
 
----
-# Content Creation
-Making videos on **Mayhem MC** is not only allowed, its encouraged. New players are needed to keep the community thriving and making content on platforms like YouTube and Twitch are great ways to do that.
+Website https://mayhemmc.uk.to/
+
+Web Store: https://mayhemmc.uk.to/store
+
+Discord Server: https://discord.gg/4FBnfPA
 
 ---
-# Community Rules
-1. Keep abusive language and profanities to a very minimum outside of NSFW channels.
-2. Keep talk of religion, controversial politics, and sexuality in NSFW channels
-3. No spamming or mass pinging people, includes ghost pinging.
-4. Doxing of any kind will not be tolerated. (This is not something you would want to try btw, especially with me being very good at it 😉)
-5. The punishment may vary from a temporary mute to a permanent ban from the Discord server. Typically bans are only used if Discord's TOS is violated.
-6. Punishments are up to the Discord Mod’s discretion, their decision is final, do not ping or DM me or any mod if you don’t like the outcome of something you did.
-7. If you are insulted inside an NSFW channel, do not ping a mod. Toxicity is allowed inside NSFW channels. If you don’t like this, change your notification settings to mute those channels.
-8. Do not spam. Yes, this is a no-brainer, this includes typing a bulk amount of messages in a row. If this seems to be a struggle for you, before you send, wait a few seconds and think, “what did I forget to add” and add it, Don’t be afraid to edit messages too. _(6 messages in a row in under 5 minutes is considered spam)_
+
+**Anarchy**: _[1.16.4]_
+- Hacks & exploits permitted
+- No anticheat/dupe protection
+- Kept up to date & High TPS
+- No admin corruption
+**Creative**: _[1.16.4]_
+- Unlimited Plots
+- Access to WorldEdit
+- Access to many admin tools
+- Create custom items
+**Factions**:  _[1.15.2]_
+- Custom Terrain Map
+- 1.8 Combat mechanics
+- Custom & Up to 32 Level Enchantments
+- Custom Crates & Envoys
+**SMP**:  _[1.16.4]_
+- 1:2000 Scale Earth Map
+- Grief Protection
+- Silk Touch Spawners
+- mcMMO & Economy
+**Super Vanilla**:  _[1.16.4]_
+- Complete and Simple Vanilla
+- Small World - 1k by 1k
+- No Greif Protection
+- No Hacks Allowed
