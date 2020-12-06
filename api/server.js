@@ -57,11 +57,11 @@ module.exports = async function(req, res) {
 		description: desc[index].join("\n"),
 		max_players: properties.get("max-players"),
 		players: stats !== null && stats.players,
-		plugins: stats !== null && stats.plugins.split("; "),
+		plugins: stats !== null && stats.plugins.split(": ")[1].split("; ").sort(),
 		max_memory: ((await fs.readFile(path.join(MMC_ROOT, server, "start.sh"), "utf8")).split("-jar -Xmx")[1].split(" ")[0] + "b").replace(/Gb/gm, " Gb"),
 		gamemode: properties.get("gamemode").toUpperCase(),
 		difficulty: properties.get("difficulty").toUpperCase(),
-		version: versions[versions.length - 1].split("_")[1].split(".jar")[0],
+		version: stats !== null ? stats.plugins.split(": ")[0] : versions[versions.length - 1].split("_")[1].split(".jar")[0],
 		unique_joins: (await fs.readdir(path.join(MMC_ROOT, server, properties.get("level-name"), "playerdata"))).filter(a => !a.includes(".dat_old")).length,
 	};
 
