@@ -25,6 +25,9 @@ module.exports = async function() {
 		// Remind people to bump :P
 		require("./bump.js");
 
+		// Spam annoying people
+		// require("./spam.js");
+
 	});
 
 	// On command
