@@ -154,7 +154,7 @@ The map is completely custom terrain. Forget default Minecraft terrain generatio
 - Get to the warzone with `/warzone`
 - 15 Crates drop in random locations in the village.
 - You can get the following keys from an envoy:
-  - Vote Key: 40%.
-  - Rare Key: 30%.
-  - Epic Key: 20%.
-  - Mighty Key: 10%.
+  - `Vote Key`: `40%`
+  - `Rare Key`: `30%`
+  - `Epic Key`: `20%`
+  - `Mighty Key`: `10%`
