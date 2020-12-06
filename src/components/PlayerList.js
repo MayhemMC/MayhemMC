@@ -62,8 +62,12 @@ export default function PlayerList({ only = false }) {
 			})
 		} else {
 			app.api("server", { server: only }).then(newState => {
-				if(!Array.equals(server, newState)) setState(null);
-				setState(newState);
+				if(newState.pid !== null) {
+					if(!Array.equals(server, newState)) setState(null);
+					setState(newState);
+				} else {
+					setState(server);
+				}
 			})
 		}
 	}
@@ -98,7 +102,7 @@ export default function PlayerList({ only = false }) {
 		const { servers } = server;
 		Object.keys(servers).map(server => servers[server].players !== false && servers[server].players.map(name => online.push({ name, server })));
 	} else {
-		server.players.map(name => online.push({ name }))
+		(server.players || []).map(name => online.push({ name }))
 	}
 
 	// Return complete component
