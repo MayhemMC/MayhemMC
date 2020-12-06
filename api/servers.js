@@ -45,7 +45,7 @@ module.exports = async function(req, res) {
 		max_players: player_limit,
 		software: bungeequery.map,
 		players: bungeequery.players,
-		motd: MOTD[Math.floor(Math.random() * MOTD.length)].replace(/\<\/section\>\;\<section\>/gm, "\n").replace(/<\/?section\>/gm, ""),
+		motd: MOTD[Math.floor(Math.random() * MOTD.length)].replace(/\;/gm, "\n").replace(/section/gm, "center"),
 		servers: serverList
 	};
 
