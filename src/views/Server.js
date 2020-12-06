@@ -3,6 +3,7 @@ import { Container, Row, Col } from "@photoncss/Layout";
 import { Card, CardTitle } from "@photoncss/Card";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
+import { Button } from "@photoncss/Button";
 import { Tabs, Tab, TabContent } from "@photoncss/Tabs";
 import { stripFormats } from "minecraft-text";
 import MCText from "components/MCText";
@@ -14,17 +15,22 @@ let __key = null;
 // Render view
 function View() {
 
-	//const [ server, _servers ] = useState(null);
-	//useEffect(() => Object.keys(servers).length === 0 && app.api("server", { server: location.pathname.split("/server/")[1].toLowerCase() }).then(_servers));
-	//server.key = location.pathname.split("/server/")[1].toLowerCase();
-
 	const urlKey = location.pathname.split("/server/")[1].toLowerCase()
 	const [ server, _server ] = useState({ display_name: urlKey, description: "" })
+
+	function resolve() {
+		app.api("server", { server: urlKey }).then(_server);
+	}
+
 	useEffect(() => {
 		if(__key !== urlKey) {
 			_server({ display_name: urlKey, description: "" })
-			app.api("server", { server: urlKey }).then(_server)
+			resolve()
 			__key = urlKey;
+		}
+		const interval = setInterval(resolve, 1000)
+		return function() {
+			clearInterval(interval);
 		}
 	});
 
@@ -43,12 +49,10 @@ function View() {
 			<Toolbar color="primary" variant="raised contains-tabs" position="fixed">
 				<Icon onClick={() => Photon.Drawer("#web-nav").open()}>menu</Icon>
 				<ToolbarTitle subtitle="Mayhem MC">{stripFormats(server.display_name, "&")}</ToolbarTitle>
-				{ server.online && (
 					<Tabs>
 						<Tab htmlFor={`${server.key}-about`}>about</Tab>
-						{ server.plugins.filter(plugin => plugin.indexOf("dynmap") !== -1).length === 1 && <Tab htmlFor={`${server.key}-map`}>dynmap</Tab> }
+						<Tab htmlFor={`${server.key}-map`} active={location.search.includes("dynmap")}>dynmap</Tab>
 					</Tabs>
-				)}
 			</Toolbar>
 			<ToolbarSpacer/>
 
@@ -91,11 +95,10 @@ function View() {
 				</Container>
 			</TabContent>
 
-			{ server.online && server.plugins.filter(plugin => plugin.indexOf("dynmap") !== -1).length === 1 && (
-				<TabContent id={`${server.key}-map`}>
-					<iframe src={`/dynmap/${server.key}/#`} frameBorder="0" className="full-frame" id={dynmapid}></iframe>
-				</TabContent>
-			)}
+			<TabContent id={`${server.key}-map`} style={{ position: "relative" }}>
+				<iframe src={`/dynmap/${server.key}/#`} frameBorder="0" className="full-frame" id={dynmapid} style={{ zIndex: 1 }}></iframe>
+				<Button variant="raised" style={{ position: "absolute", right: 8, bottom: 8, zIndex: 2 }} onClick={ () => $(`#${server.key}-map`).toggleClass("fullscreen")}>fullscreen</Button>
+			</TabContent>
 
 		</Fragment>
 	)

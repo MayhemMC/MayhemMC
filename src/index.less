@@ -58,3 +58,21 @@ footer.legacy.dark {
 .list-item .subtitle {
 	margin-left: 3rem;
 }
+
+.fullscreen {
+	position: fixed!important;
+	top: 24px;
+	left: 24px;
+	right: 24px;
+	bottom: 24px;
+	@media @sm {
+		top: 12px;
+		left: 12px;
+		right: 12px;
+		bottom: 12px;
+	}
+	z-index: 20000;
+	iframe {
+		height: 100vh!important;
+	}
+}
