@@ -86,7 +86,7 @@ if (process.env.NODE_ENV === "dev") {
 		});
 
 		app.use("/dynmap/:server", ({ params, url }, response) => {
-			const file = path.join(MMC_ROOT, params.server, "/plugins/dynmap/web/", url.split("?")[0]);
+			const file = path.join("/mnt/sdb/dynmap/", params.server, "/web/", url.split("?")[0]);
 			response.sendFile(file);
 		});
 
@@ -138,7 +138,7 @@ if (process.env.NODE_ENV === "dev") {
 	});
 
 	app.use("/dynmap/:server", ({ params, url }, response) => {
-		const file = path.join(MMC_ROOT, params.server, "/plugins/dynmap/web/", url.split("?")[0]);
+		const file = path.join("/mnt/sdb/dynmap/", params.server, "/web/", url.split("?")[0]);
 		response.sendFile(file);
 	});
 
