@@ -3,7 +3,7 @@ const pb = require("pretty-bytes");
 const osu = require("node-os-utils");
 
 // Formulate response
-let response = { success: false, error: "API warming up - try again in a few seconds" }
+let response = { success: false, error: "API warming up, please wait..." }
 
 // Use timer to reduce duration
 setInterval(profile, 1000); profile();
