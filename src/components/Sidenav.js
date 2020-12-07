@@ -21,6 +21,7 @@ export default function Component() {
 				<img src={ app.static("icon-transparent.png") } alt="" style={{ margin: "0 auto", width: "66%" }}/>
 				<hr/>
 				<Route to="/" icon="home">Home</Route>
+				<Route to="/performance" icon="speed">Server Performance</Route>
 				<Route to="/store" icon="shopping_cart">Store</Route>
 				<Route to="/vote" icon="how_to_vote">Vote</Route>
 				<Fragment>

@@ -63,6 +63,7 @@ async function profile() {
 	response.network.send = pb(network.tx_sec * 8, { bits: true }) + "/s"
 	response.network.recieve = pb(network.rx_sec * 8, { bits: true }) + "/s"
 	response.network.ping = network.ping
+	response.network.usage = Math.floor((network.rx_sec * 8 + network.tx_sec * 8)/Math.pow(1024, 3) * 100)/100;
 
 }
 
