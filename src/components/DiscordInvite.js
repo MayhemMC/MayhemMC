@@ -8,7 +8,7 @@ export default function({ palette = "dark", inviteCode = "YPmMwGQ" }) {
 		stateSet: false,
         serverIcon: "https://steamuserimages-a.akamaihd.net/ugc/961973556167374789/672A76928C54C3E57E081E0EB9E9A752B18B1778/",
 		serverName: "Loading...",
-		memberCount: [0, 0]
+		memberCount: ["∅", "∅"]
     });
 
 	useEffect(function() {
@@ -20,7 +20,7 @@ export default function({ palette = "dark", inviteCode = "YPmMwGQ" }) {
 		            stateSet: true,
 		            serverIcon: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=128`,
 		            serverName: guild.name,
-		            memberCount: [0, 0]
+		            memberCount: ["∅", "∅"]
 		        });
 		});
 	})

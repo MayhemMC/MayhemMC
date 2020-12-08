@@ -14,7 +14,7 @@ export default function Component() {
 							<div className="title" style={{ display: "inline-block" }}><h2>Mayhem MC</h2></div>
 						</Col>
 						<Col lg={4}>
-							<div style={{ display: "inline-block", margin: 4, float: "right" }}>
+							<div style={{ alignItems: "right", marginTop: 8, marginBottom: -4 }}>
 								<DiscordInvite inviteCode="4FBnfPA"/>
 							</div>
 						</Col>

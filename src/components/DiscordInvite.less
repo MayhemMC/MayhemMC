@@ -169,6 +169,26 @@
 		}
 	}
 
+	@media only screen and (max-width: 600px) {
+
+		width: 100%;
+
+		.DiscordInvite-content {
+			flex: none;
+    		width: calc(100% - 64px);
+		}
+
+		.DiscordInvite-joinLink {
+			margin: 0;
+			margin-top: 62px;
+			margin-left: calc(-100% - 2px);
+			width: 100%;
+			text-align: center;
+			display: block!important;
+		}
+
+	}
+
 	&.palette-dark {
 		background: @palette-dark-background;
 		color: @palette-dark-header;
