@@ -36,8 +36,9 @@ async function profile() {
 
 	// Add cpu data to response
 	response.cpu = {};
-	response.cpu.model = `${cpu.cores}x ${cpu.manufacturer} ${cpu.brand} @ ${cpu.speedmax}GHz`;
+	response.cpu.model = `${cpu.manufacturer} ${cpu.brand} @ ${cpu.speedmax}GHz`;
 	response.cpu.speed = `${cpu.speed}GHz`;
+	response.cpu.cores = cpu.cores
 	response.cpu.temp = `${cpu.temp} °C`;
 	response.cpu.usage = cpu.usage
 

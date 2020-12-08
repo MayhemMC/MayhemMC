@@ -47,6 +47,7 @@ function View() {
 										<Col sm={9}>
 											<div style={{ margin: 16 }}>
 												<div><b>Clock Speed</b><span style={{ float: "right" }}>{state.cpu.speed}</span></div>
+												<div><b>Cores</b><span style={{ float: "right" }}>{state.cpu.cores}</span></div>
 												<div><b>Core Temp</b><span style={{ float: "right" }}>{state.cpu.temp}</span></div>
 											</div>
 										</Col>
