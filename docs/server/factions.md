@@ -144,6 +144,10 @@ The map is completely custom terrain. Forget default Minecraft terrain generatio
 - After you have stood on the volcano for 5 minutes without being overturned, you have captured the KOTH.
 - KOTH rewards are `3x Mythic Crate Keys`.
 
+# Masks
+- Masks are heads that give you special effects when you where them.
+- You can get masks from __________________
+
 # Spawners
 - You can buy spawners from the shop.
 - You can mine spawners with silk touch.
