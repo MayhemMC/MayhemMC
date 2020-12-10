@@ -82,6 +82,7 @@ function View() {
 									{ server.online && <div><b>Server Version</b><span style={{ float: "right" }}>{server.version}</span></div> }
 									{ server.online && <div><b>RAM</b><span style={{ float: "right" }}>{server.max_memory}</span></div> }
 									{ server.online && <div><b>Players (All Time)</b><span style={{ float: "right" }}>{server.unique_joins}</span></div> }
+									{ server.online && <div><b>Plugins</b><span style={{ float: "right" }}>{server.plugins.length}</span></div> }
 								</div>
 							</Card>
 							{ server.online && <PlayerList only={server.key}/> }
