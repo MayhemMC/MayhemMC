@@ -43,7 +43,6 @@ module.exports = async function(req, res) {
 	// Get properties
 	const index = Object.keys(servers).indexOf(server);
 	const properties = propReader(path.join(MMC_ROOT, server, "server.properties"));
-	const versions = await fs.readdir(path.join(MMC_ROOT, server, "cache"));
 	const port = parseInt(servers[server].address.split(":")[1]);
 	const pid = parseInt((await exec(`sudo netstat -plant | grep :::${port} | awk '{print $NF}'`)).split("/")[0]);
 	const stats = await query(port);
@@ -61,7 +60,7 @@ module.exports = async function(req, res) {
 		max_memory: ((await fs.readFile(path.join(MMC_ROOT, server, "start.sh"), "utf8")).split("-jar -Xmx")[1].split(" ")[0] + "b").replace(/Gb/gm, " Gb"),
 		gamemode: properties.get("gamemode").toUpperCase(),
 		difficulty: properties.get("difficulty").toUpperCase(),
-		version: stats !== null ? stats.plugins.split(": ")[0].split("-")[0] : false,
+		version: stats !== null ? stats.plugins.split(": ")[0].split("-")[0].replace(" on Bukkit ", " ") : false,
 		unique_joins: (await fs.readdir(path.join(MMC_ROOT, server, properties.get("level-name"), "playerdata"))).filter(a => !a.includes(".dat_old")).length,
 	};
 
