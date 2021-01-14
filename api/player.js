@@ -1,101 +1,94 @@
-const { lookupName, lookupUUID } = require("namemc");
+import path from "path";
+import namemc from "namemc";
+import { promises as fs } from "fs";
 
-// Create a cache store in memory
-const usercache = {};
+export default req => new Promise(async function(resolve, reject) {
 
-module.exports = async function(req, res) {
+	// If no query was given
+	if((req.query.q || req.query.query) === undefined) return reject(`No query specified. See https://github.com/MayhemMC/MayhemMC/wiki/api-player`)
 
-	// Set a timer to timeout request after 5 seconds
-	setTimeout(function() {
-		if(res.headersSent) return;
-		res.json({ success: false, error: "Request timed out" });
-	}, 10000)
+	// Get query params
+	const query = (req.query.q || req.query.query).split(",");
 
-	// Get params
-	const params = { ...req.body, ...req.query };
-	let { name = undefined, uuid = undefined } = params;
+	// Iterate through queried players
+	let result = await Promise.allSettled(query.map(search => {
+		return new Promise(async function(resolve, reject) {
 
-	// If not enough params were sent
-	if(name === undefined && uuid === undefined) return res.json({ success: false, error: "No player specified. Use the 'name' or 'uuid' parameters to specify a target player." });
+			// Set timeout to autoreject
+			setTimeout(reject, 500);
 
-	// Attempt to resolve player from cache
-	const cached = usercache[(name || uuid).toUpperCase()];
-	if(cached !== undefined && cached.expires > Date.now()) {
-		const cached_response = { ...cached };
-		delete cached_response.expires;
-		return res.json({ ...cached_response, cached: true });
-	}
+			// Get appropriate lookup method by search
+			const lookup = search.match(/^[0-9a-f]{8}(-)?[0-9a-f]{4}(-)?[0-9a-f]{4}(-)?[0-9a-f]{4}(-)?[0-9a-f]{12}/g) ? namemc.lookupUUID : namemc.lookupName;
 
-	// Get player
-	let player = null;
+			// Lookup user
+			let user = await lookup(search);
+				user = user[0] || user;
 
-	// Get player from username
-	if(name !== undefined) player = (await lookupName(name).catch(() => null));
+			// Initialize response object
+			const resp = {};
 
-	// Get player from username
-	if(uuid !== undefined) player = [(await lookupUUID(uuid).catch(() => null))];
+			// Add static props to response
+			resp.name = user.currentName;
+			resp.uuid = user.uuid;
+			resp.avatar = user.imageUrls.face
 
-	// If the player dosnt exist
-	if(player === null) return res.json({ success: false, error: `Player '${name}' dosn't exist.` });
+			// Check to see if player ever joined the server
+			const stat = await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata/", `${user.uuid}.yml`)).catch(() => false);
+			resp.has_joined = stat !== false;
 
-	// Make sure namemc returned the right player,
-	player = player.filter(a => a.currentName.toLowerCase() === (name || "").toLowerCase() || a.uuid === uuid)[0] || player[0];
+			// If the player has never joined
+			if(!resp.has_joined) return resolve(resp);
 
-	// Make sure player has joined the server before
-	if(!await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`)).catch(() => false)) return res.json({ success: false, error: `'${player.currentName}' has never joined Mayhem MC before.` });
+			// Get player timestamps
+			resp.first_joined = Math.floor(stat.birthtimeMs);
+			resp.last_joined = Math.floor(stat.mtimeMs);
 
-	// Get administrators from server api
-	const { WHITELIST_PLAYERS } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/plugins/BungeeAdvancedProxy/config.yml"), "utf8"));
+			// Get discord snowflake from registration
+			const [[ registration ]] = await mysql.query(`SELECT * FROM discord_players WHERE uuid="${user.uuid}"`);
+			resp.discord_id = registration !== undefined ? registration.discordid : null;
 
-	// Get players discord_id
-	const { discordid: discord_id = false } = (await mysql.query(`SELECT * FROM discord_players WHERE uuid = "${player.uuid}"`))[0][0] || {};
+			// Get if player is a legacy account
+			resp.migrated = Math.abs(stat.birthtimeMs - 1591471029345) < 20000;
 
-	// Get players votes
-	const [ allvotes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC`);
-	const votes = allvotes.filter(vote => vote.uuid === player.uuid);
+			// Get group from permissions database
+			const [[{ primary_group: group } = { primary_group: null }]] = await mysql.query(`SELECT * FROM luckperms_players WHERE uuid="${user.uuid}"`);
+			resp.group = group;
 
-	// Get if player is a donator
-	const [ donations ] = await mysql.query(`SELECT * FROM donations WHERE uuid = "${player.uuid}"`);
+			// If account needs data upgrade
+			resp.updated = group !== null;
+			if(group === null) return resolve(resp);
 
-	// Get players prefix
-	let prefix = "&7";
-	if(donations.length !== 0) prefix = (await mmcApi("store")).packages.filter(p => p.name.toUpperCase() === donations[0].package)[0].display_prefix + " ";
-	if(WHITELIST_PLAYERS.includes(player.currentName)) prefix = "&8[&7&lADMIN&8]&f&l "
-	if(player.uuid === "1eb084b8-588e-43e6-bdd3-e05e53682987") prefix = "&8[&3&lOWNER&8]&f&l "
+			// Get prefix from group
+			const [ permissions ] = await mysql.query(`SELECT * FROM luckperms_group_permissions WHERE name="${group}"`);
+			const prefix = permissions.filter(({ permission: node }) => node.includes("prefix"))[0].permission.split(".")[2];
+			resp.prefix = prefix;
 
-	// Get players playerfile
-	const playerfile = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`), "utf8"));
+			// Get players votes
+			const [ allvotes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC`);
+			const votes = allvotes.filter(vote => vote.uuid === user.uuid);
+			resp.votes = votes.length === 0 ? null : {
+				amount: votes[0].votes,
+				timestamp: new Date(votes[0].last_vote).getTime(),
+				place: allvotes.indexOf(votes[0])
+			}
 
-	// Get player geolocation
-	//#! const { geolocation = { }} = await mmcApi("ip", { uuid: player.uuid, authorization: config["internal-api-key"] })
+			// Get if player is a donator
+			const [ donations ] = await mysql.query(`SELECT * FROM donations WHERE uuid = "${user.uuid}"`);
+			resp.donator = donations.length === 0 ? null : {
+				package: donations[0].package,
+				timestamp: new Date(donations[0].timestamp).getTime(),
+			}
 
-	// Start formulating response
-	const response = {
-		success: true,
-		uuid: player.uuid,
-		name: player.currentName,
-		administrator: WHITELIST_PLAYERS.includes(player.currentName),
-		discord_id,
-		donator: donations.length === 0 ? false : {
-			package: donations[0].package,
-			timestamp: donations[0].timestamp,
-		},
-		prefix,
-		votes: votes.length === 0 ? false : {
-			amount: votes[0].votes,
-			timestamp: votes[0].last_vote,
-			place: allvotes.indexOf(votes[0])
-		},
-		first_joined: (await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${player.uuid}.yml`))).birthtime,
-		last_joined: new Date(playerfile.timestamps.login),
-		//#! timezone: geolocation.hasOwnProperty("timezone") && geolocation.timezone
-	}
+			// Resolve user
+			resolve(resp);
 
-	// Respond to request
-	res.json({ ...response, cached: false });
+		});
+	}));
 
-	// Cache response for 1 hour
-	response.expires = Date.now() + 3600000;
-	usercache[(name || uuid).toUpperCase()] = response;
+	// Filter output
+	result = result.filter(element => element.status === "fulfilled").map(element => element.value)
 
-}
+	// Resolve API with result
+	resolve({ result });
+
+});
