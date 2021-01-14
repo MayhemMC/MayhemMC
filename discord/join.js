@@ -1,4 +1,4 @@
-module.exports = async function(member) {
+export default async function(member) {
 
 	// Get discord members id
 	const { id } = member;

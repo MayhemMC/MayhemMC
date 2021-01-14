@@ -1,4 +1,4 @@
-module.exports = async function(args, message) {
+export default async function(args, message) {
 
 	const { channel } = message;
 	const { servers, max_players } = await mmcApi("servers");

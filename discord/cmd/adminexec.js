@@ -1,6 +1,6 @@
-module.exports = async function(args, message) {
+export default async function(args, message) {
 
-	const { channel, member, guild } = message;
+	const { channel, member } = message;
 
 	// If user dosnt have permissions
 	if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) {
