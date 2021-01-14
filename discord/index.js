@@ -37,10 +37,9 @@ export default async function() {
 			try {
 				(await import(`./cmd/${command.toLowerCase()}.js`)).default(args, message);
 			} catch(e) {
+				console.error(chalk.red("[ERROR]"), chalk.magenta("[DISCORD]"), e)
 				if(e.toString() === "TypeError: Cannot read property 'toLowerCase' of undefined" || e.toString().includes("Cannot find module")) {
 					(await import(`./cmd/help.js`)).default(args, message);
-				} else {
-					console.error(chalk.red("[ERROR]"), chalk.magenta("[DISCORD]"), e)
 				}
 			}
 		}

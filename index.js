@@ -11,9 +11,16 @@ import url from "url";
 import rateLimit from "express-rate-limit";
 import mysql from "mysql2";
 import mysqlPromise from "mysql-promise";
+import Query from "minecraft-query";
 
 // Get server root path
 global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
+
+// Get API function for internal use
+global.api = async (endpoint, query) => await (await import(`./api/${endpoint}.js`)).default({ query });
+
+// Query function for querying servers
+global.mcquery = port => new Query({ host: "localhost", port, timeout: 50 }).fullStat().catch(() => null);
 
 // Log errors to console instead of killing the application
 process.on("uncaughtException", err => console.error(chalk.red("[ERROR]"), err));

@@ -1,5 +1,11 @@
+import { MessageEmbed } from "discord.js";
+import { stripFormats } from "minecraft-text";
+import dayjs from "dayjs";
+import ordinal from "ordinal";
+
 export default async function(args, message) {
 
+	// Get stuff from message
 	const { channel, mentions, guild } = message;
 
 	// Get args
@@ -7,67 +13,67 @@ export default async function(args, message) {
 
 	// If not enough args
 	if(user === null) {
-		const embed = new MessageEmbed()
-	    embed.setColor(Color.WARN)
-	    embed.setTitle("Incorrect usage.")
-		embed.setDescription("`mmc whois <username | @user>`")
-	    return channel.send(embed);
+		const embed = new MessageEmbed();
+	    embed.setColor(Color.WARN);
+	    embed.setTitle("Incorrect usage.");
+		embed.setDescription("`mmc whois <username | @user>`");
+	    return await channel.send(embed);
 	}
 
+	// Initialize player
 	let player = false;
 
+	// Get player from ping or name or uuid
 	try {
-		discordid = mentions.users.first().id;
+		const discordid = mentions.users.first().id;
 		const [ rows ] = await mysql.query(`SELECT * FROM discord_players WHERE discordid="${discordid}"`);
 		if(rows.length > 0) {
 			const [{ uuid }] = rows;
-			const result = await mmcApi("player", { uuid });
-			if(result.success) player = result;
+			const result = await api("player", { query: uuid });
+			if(!result.error) player = result.result[0];
 		}
 	} catch(e) {
-		const result = await mmcApi("player", { name: user });
-		if(result.success) player = result;
+		const result = await api("player", { query: user });
+		if(!result.error) player = result.result[0];
 	}
 
-	if(player === false) {
-		if(Object.keys(parseCollection(mentions.users)).length === 0) {
-			const embed = new MessageEmbed()
-		    embed.setColor(Color.ERROR)
-		    embed.setTitle("Player not found.")
-			embed.setDescription(`\`${user}\` has never joined the server before.`)
-		    return channel.send(embed);
-		}
-		const embed = new MessageEmbed()
-		embed.setColor(Color.ERROR)
-		embed.setTitle("Player not found.")
-		embed.setDescription(`${mentions.users.first().toString()} is not registered.`)
-		return channel.send(embed);
+	// If player wasn't found
+	if(player === false || player === null) {
+		const embed = new MessageEmbed();
+	    embed.setColor(Color.ERROR);
+	    embed.setTitle("Player isn't registered.");
+		embed.setDescription("Use the name of the player or make sure you ping a registered player.");
+	    return await channel.send(embed);
 	}
 
-	player.discord = await (await client.guilds.fetch("708050277957238784")).members.fetch(player.discord_id)
-
-	const rank = player.donator ? [
-		`${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === "VIP")} __**\`VIP\`**__`,
-		`${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === "WARRIOR")} __**\`WARRIOR\`**__`,
-		`${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === "HERO")} __**\`HERO\`**__`,
-		`${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === "LEGEND")} __**\`LEGEND\`**__`
-	]["VIP;WARRIOR;HERO;LEGEND".split(";").indexOf(player.donator.package)]: false;
-
+	// Formulate success embed
 	const embed = new MessageEmbed();
 	embed.setColor(Color.INFO);
-	embed.setTitle(`Who is '${player.name}'`);
-	embed.setThumbnail(`https://crafatar.com/renders/head/${player.uuid}?overlay`);
+	embed.setTitle(stripFormats(`${player.prefix || ""}${player.name}`, "&"));
+	embed.setThumbnail(player.avatar);
 
-	embed.setDescription(player.discord.toString());
+	// Add data fields to embed
+	embed.addField("UUID", `\`${player.uuid}\``);
+	if(player.hasOwnProperty("discord_id") && player.discord_id !== null) embed.addField("Registered as", `<@${player.discord_id}>`, true);
 
-	rank && embed.addField("Donator Rank", rank);
-	player.votes && embed.addField("Votes", `**${ordinal(player.votes.place + 1)}** place • **${player.votes.amount}** votes • **${dayjs(player.votes.timestamp).fromNow(true)}** ago`)
+	if(!player.has_joined) return await channel.send(embed);
 
-	embed.addField("First joined", dayjs(player.first_joined).format("`hh:mmA` • `MM/DD/YYYY`"))
-	embed.addField("Last seen", `**${dayjs(player.last_joined).fromNow(true)}** ago`)
+	embed.addField("Status", player.online ? `🟢 Playing` : `🔴 Offline`, true);
+	embed.addField("Votes This Month", !player.hasOwnProperty("votes") || player.votes === null ? "0 Votes" : `${player.votes.amount} Votes • ${ordinal(player.votes.place)} Place`, true)
+	embed.addField("First Joined", dayjs(player.first_joined).format("DD/MM/YYYY hh:mm:ss A"), true)
+	embed.addField("Last Seen", dayjs(player.last_joined).format("DD/MM/YYYY hh:mm:ss A"), true)
+	embed.addField("Group", player.group, true)
 
-	if(player.hasOwnProperty("timezone") && player.timezone !== null && player.timezone !== false) embed.addField("Timezone", `**${player.timezone}**`)
+	// Initialize and add badges to array
+	const badges = [];
+	if(player.discord_id !== null) badges.push(guild.emojis.cache.find(emoji => emoji.name === "verified"))
+	badges.push(guild.emojis.cache.find(emoji => emoji.name === player.group))
+	if(player.migrated === true) badges.push(guild.emojis.cache.find(emoji => emoji.name === "saplayer"))
 
+	// Add badges to embed
+	if(badges.length > 0) embed.setDescription(`Badges: ${badges.join(" ")}`);
+
+	// Send to channel
 	return await channel.send(embed);
 
 }
