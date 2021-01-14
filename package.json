@@ -4,7 +4,7 @@
     "entry": "index.js",
     "scripts": {
         "build": "uuid > hash && webpack --config webpack.prod.cjs && mv hash public_html/",
-        "dev-api": "env NODE_ENV=dev nodemon .",
+        "dev-api": "env NODE_ENV=dev nodemon --trace-warnings --unhandled-rejections=strict .",
         "dev-webpack": "webpack-dev-server --config webpack.dev.cjs",
         "dev": "concurrently --kill-others -p \"[{name}]\" -n \"WEBPACK,EXPRESS\" -c \"blue,magenta\" \"npm:dev-webpack\" \"npm:dev-api\"",
         "serve": "node ."

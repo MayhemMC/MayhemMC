@@ -12,6 +12,9 @@ import rateLimit from "express-rate-limit";
 import mysql from "mysql2";
 import mysqlPromise from "mysql-promise";
 
+// Get server root path
+global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
+
 // Log errors to console instead of killing the application
 process.on("uncaughtException", err => console.error(chalk.red("[ERROR]"), err));
 
@@ -117,6 +120,15 @@ process.on("uncaughtException", err => console.error(chalk.red("[ERROR]"), err))
 
 	// Listen and pass API calls
 	app.all("/api/**", cors(), apiParser);
+
+	// Dynmap handler
+	app.use("/dynmap/:server", ({ params, url }, response) => {
+		const file = path.join("/mnt/sdb/dynmap/", params.server, "/web/", url.split("?")[0]);
+		response.sendFile(file);
+	});
+
+	// Initialize discord bot
+	(await import("./discord/index.js")).default();
 
 	// If the application is running in development mode
 	if (process.env.NODE_ENV === "dev") {
