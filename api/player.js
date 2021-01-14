@@ -76,7 +76,7 @@ export default req => new Promise(async function(resolve, reject) {
 			resp.votes = votes.length === 0 ? null : {
 				amount: votes[0].votes,
 				timestamp: new Date(votes[0].last_vote).getTime(),
-				place: allvotes.indexOf(votes[0])
+				place: allvotes.indexOf(votes[0]) + 1
 			}
 
 			// Get if player is a donator
