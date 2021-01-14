@@ -1,162 +1,165 @@
-const bodyParser = require("body-parser");
-const compression = require("compression");
-const propReader = require("properties-reader");
-const cors = require("cors");
-const express = require("express");
-const fs = require("fs").promises;
-const http = require("http");
-const path = require("path");
-const YAML = require("yaml");
-const chalk = require("chalk");
-const namemc = require("namemc");
-const ms = require("ms");
-const prettyms = require("pretty-ms");
-const fetch = require("node-fetch");
-const ordinal = require("ordinal");
-const dayjs = require("dayjs");
-dayjs.extend(require("dayjs/plugin/relativeTime"))
-
-global.fs = fs;
-global.path = path;
-global.YAML = YAML;
-global.chalk = chalk;
-global.namemc = namemc;
-global.propReader = propReader;
-global.ms = ms;
-global.ordinal = ordinal;
-global.dayjs = dayjs;
-global.prettyms = prettyms;
-global.fetch = fetch;
-global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
-
-const Query = require("minecraft-query");
-global.query = port => new Query({ host: "localhost", port, timeout: 50 }).fullStat().catch(() => null);
-
-const { exec } = require("child_process");
-global.exec = (cmd, opts) => new Promise(function(resolve, reject) {
-	exec(cmd, opts, function(err, out) {
-		if(err) reject(err);
-		resolve(out);
-	})
-});
-
-global.mmcExec = (server, cmd) => new Promise(function(resolve, reject) {
-	exec(`sudo -u mmc /usr/bin/screen -S mc-${server} -X stuff '${cmd}'^M`, {}, function(err, out) {
-		if(err) reject(err);
-		resolve(out);
-	})
-});
-
-global.mmcApi = (api, params) => new Promise(resolve => {
-	const req = { body: params };
-	const res = { json: resolve };
-	require(`${__dirname}/api/${api}.js`)(req, res);
-});
-
-// Start Discord bot
+import bodyParser from "body-parser";
+import compression from "compression";
+import cors from "cors";
+import express from "express";
+import { promises as fs } from "fs";
+import http from "http";
+import path from "path";
+import YAML from "yaml";
+import chalk from "chalk";
+import url from "url";
+import rateLimit from "express-rate-limit";
+import mysql from "mysql2";
+import mysqlPromise from "mysql-promise";
 
 // Log errors to console instead of killing the application
-process.on("uncaughtException", err => console.error("[ERROR]", err));
+process.on("uncaughtException", err => console.error(chalk.red("[ERROR]"), err));
 
-// If the application is running in development mode
-if (process.env.NODE_ENV === "dev") {
-
-	// Start development server
-	(async function server(app) {
-
-		// Get config from config.yml
-		global.config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
-		//require("./discord/index.js")();
-
-		// Configure MySQL
-		global.mysql = await require("./mysql.js")();
-
-		// Use body parser to parse fields
-		app.use(bodyParser.json());
-
-		// Listen and pass API calls to individual files
-		app.all("/api/*", cors(), (req, res) => {
-			try {
-				require(`${__dirname}${req.url.split("?")[0]}.js`)(req, res)
-				console.error("[INFO]", "Responded to API call", req.url);
-			} catch({ error }) {
-				console.error("[ERROR]", req.url, error);
-				res.json({ status: 500, error });
-			}
-		});
-
-		app.use("/dynmap/:server", ({ params, url }, response) => {
-			const file = path.join("/mnt/sdb/dynmap/", params.server, "/web/", url.split("?")[0]);
-			response.sendFile(file);
-		});
-
-		// Start HTTP server
-		http.createServer(app).listen(4000);
-		console.log("[INFO]", `Development server running on :4000 (http).`);
-
-	}(express()));
-
-	// Prevent production server from starting aswell
-	return;
-
-}
-
-// Start production server
+// Start server
 (async function server(app) {
 
 	// Get config from config.yml
 	global.config = YAML.parse(await fs.readFile("./config.yml", "utf8"));
-	require("./discord/index.js")();
+	console.info(chalk.blue("[INFO]"), "Parsed configuration from", chalk.cyan("config.yml"));
 
-	// Configure MySQL
-	global.mysql = await require("./mysql.js")();
+	if(config.mysql.use) {
 
-	// Use gzip when serving files
-	app.use(compression());
+		const conf = config.mysql;
+		delete conf.use;
+		const db = mysqlPromise();
+
+		try {
+			db.configure(conf, mysql);
+			global.mysql = db;
+			await db.query(`show tables`)
+			console.info(chalk.blue("[INFO]"), "Logged into MySQL as", chalk.cyan(`${config.mysql.user}@${config.mysql.host}`));
+		} catch (error) {
+			console.error(chalk.red("[ERROR]"), "Could not log into MySQL as", chalk.cyan(`${config.mysql.user}@${config.mysql.host}`));
+			console.error(error);
+		}
+
+	}
+
+	// Configure rate limiting
+	const limiter = rateLimit({
+  		windowMs: config["rate-limit"]["window-time"] * 1000,
+  		max: config["rate-limit"]["max-requests"]
+	});
+
+	// API parser middleware
+	async function apiParser(req, res) {
+
+		// Deconstruct request URL
+		const { pathname } = url.parse(req.url);
+
+		// Start timer
+		const time = Date.now();
+
+		// Log API request
+		console.info(chalk.blue("[INFO]"), "Received API request", chalk.cyan(pathname));
+
+		// Set timer to make request time out
+		setTimeout(function() {
+			if(!res.headersSent) {
+				res.status(408);
+				res.header("Content-Type", 'application/json');
+        		res.send(JSON.stringify({ success: false, status: `Request Timeout (${config["timeout-time"]}s)` }, null, 4));
+				console.error(chalk.red("[ERROR]"), "API request to", chalk.cyan(pathname), "timed out after", chalk.cyan(`${Date.now() - time}ms`));
+			}
+		}, config["timeout-time"] * 1000)
+
+		// Attempt to respond
+		try {
+
+			const endpoint = (await import(`.${pathname}.js`)).default(req, res);
+
+			endpoint.then(response => {
+				console.info(chalk.blue("[INFO]"), "API request to", chalk.cyan(pathname), "responded in", chalk.cyan(`${Date.now() - time}ms`));
+				res.status(res.statusCode || 200);
+				res.header("Content-Type", 'application/json');
+        		res.send(JSON.stringify({
+					success: true,
+					...response
+				}, null, 4));
+			}).catch(error => {
+				console.info(chalk.blue("[INFO]"), "API request to", chalk.cyan(pathname), "responded in", chalk.cyan(`${Date.now() - time}ms`));
+				res.status(res.statusCode || 400);
+				res.header("Content-Type", 'application/json');
+        		res.send(JSON.stringify({ success: false, status: "Request Rejected", error }, null, 4));
+			})
+
+		} catch(error) {
+
+			if(error.code === "ERR_MODULE_NOT_FOUND") {
+				// Send 404 error
+				res.status(404);
+				res.header("Content-Type", 'application/json');
+        		res.send(JSON.stringify({ success: false, status: "Not Found" }, null, 4));
+			} else {
+				// Send 500 error
+				res.status(500);
+				res.header("Content-Type", 'application/json');
+        		res.send(JSON.stringify({ success: false, status: "Internal Server Error" }, null, 4));
+			}
+
+			// Log error to console
+			console.error(chalk.red("[ERROR]"), "API request to", chalk.cyan(pathname), "failed in", chalk.cyan(`${Date.now() - time}ms`));
+			console.error(error);
+
+		}
+	}
 
 	// Use body parser to parse fields
 	app.use(bodyParser.json());
 
-	// Redirect HTTP to HTTPS
-	app.all("*", ({ secure, hostname, url }, res, next) => {
-	  	if (config.ssl.use === false || config.ssl.redirect === false || secure) return next();
-	  	else res.redirect(`https://${hostname}${url}`);
-	});
+	// Enable rate limiting on API
+	if(config["rate-limit"].use) app.use("/api/**", limiter);
 
-	// Server static files from the last built server
-	app.use(express.static("public_html", { extensions: ["html"] }));
+	// Listen and pass API calls
+	app.all("/api/**", cors(), apiParser);
 
-	// Listen and pass API calls to individual files
-	app.all("/api/*", cors(), (req, res) => {
-		try {
-			require(`${__dirname}${req.url.split("?")[0]}.js`)(req, res)
-			console.error("[INFO]", "Responded to API call", req.url);
-		} catch({ error }) {
-			console.error("[ERROR]", req.url, error);
-			res.json({ status: 500, error });
-		}
-	});
+	// If the application is running in development mode
+	if (process.env.NODE_ENV === "dev") {
 
-	app.use("/dynmap/:server", ({ params, url }, response) => {
-		const file = path.join("/mnt/sdb/dynmap/", params.server, "/web/", url.split("?")[0]);
-		response.sendFile(file);
-	});
+		// Start HTTP server
+		http.createServer(app).listen(4000);
+		console.info(chalk.blue("[INFO]"), "Development server running on", chalk.cyan(`:4000 (http)`));
 
-	// Catch 404's and send the index document - history-fallback-api
-	app.get("*", (_request, response) => response.sendFile(path.join(__dirname, "public_html/", require("./web-app.json").config["spa_root"])));
-
-	// Start HTTP server
-	http.createServer(app).listen(config["port"]);
-	console.log("[INFO]", `HTTP server running on :${config["port"]} (http).`);
-
-	// Start HTTPS server
-	if(config.ssl.use === true) {
-		(async function() {
-			const cert = await fs.readFile(`${config.ssl["cert-root"]}/cert.pem`, "utf8");
-			const key = await fs.readFile(`${config.ssl["cert-root"]}/privkey.pem`, "utf8");
-			https.createServer({ key, cert }, app).listen(config.ssl.port);
-			console.log("[INFO]", `SSL server running on :${config.ssl.port} (https).`);
-		}());
 	}
 
-}(express()));
+	// If the application is running in production mode
+	else {
+
+		// Use gzip when serving files
+		app.use(compression());
+
+		// Redirect HTTP to HTTPS
+		app.all("*", ({ secure, hostname, url }, res, next) => {
+		  	if (config.ssl.use === false || config.ssl.redirect === false || secure) return next();
+		  	else res.redirect(`https://${hostname}${url}`);
+		});
+
+		// Serve static files from the last built server
+		app.use(express.static("public_html", { extensions: ["html"] }));
+
+		// Catch 404's and send the index document - history-fallback-api
+		const { spa_root } = JSON.parse(await fs.readFile("./web-app.json", "utf8")).config;
+		app.get("*", (_request, response) => response.sendFile(path.resolve("public_html/", spa_root)));
+
+		// Start HTTP server
+		http.createServer(app).listen(config["port"]);
+		console.info(chalk.blue("[INFO]"), "Production server running on", chalk.cyan(`:${config["port"]} (http)`));
+
+		// Start HTTPS server
+		if(config.ssl.use === true) {
+			(async function() {
+				const cert = await fs.readFile(`${config.ssl["cert-root"]}/cert.pem`, "utf8");
+				const key = await fs.readFile(`${config.ssl["cert-root"]}/privkey.pem`, "utf8");
+				https.createServer({ key, cert }, app).listen(config.ssl.port);
+				console.info(chalk.blue("[INFO]"), "SSL server running on", chalk.cyan(`:${config.ssl.port} (https)`));
+			}());
+		}
+
+	}
+
+}(express()))
