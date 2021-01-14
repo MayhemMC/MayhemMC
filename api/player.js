@@ -10,6 +10,9 @@ export default req => new Promise(async function(resolve, reject) {
 	// Get query params
 	const query = (req.query.q || req.query.query).split(",");
 
+	// Get online players
+	const online_players = (await mcquery(25577)).players;
+
 	// Iterate through queried players
 	let result = await Promise.allSettled(query.map(search => {
 		return new Promise(async function(resolve, reject) {
@@ -62,6 +65,10 @@ export default req => new Promise(async function(resolve, reject) {
 			const [ permissions ] = await mysql.query(`SELECT * FROM luckperms_group_permissions WHERE name="${group}"`);
 			const prefix = permissions.filter(({ permission: node }) => node.includes("prefix"))[0].permission.split(".")[2];
 			resp.prefix = prefix;
+
+			// Get if player is online
+			resp.online = false;
+			if(resp.updated) resp.online = online_players.includes(resp.name);
 
 			// Get players votes
 			const [ allvotes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC`);
