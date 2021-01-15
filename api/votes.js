@@ -1,27 +1,41 @@
-module.exports = async function(req, res) {
+import namemc from "namemc";
 
-	// Get params
-	const params = { ...req.body, ...req.query };
-	let { limit = 5 } = params;
+export default req => new Promise(async function(resolve, reject) {
 
-	// Convert limit to int
-	limit = parseInt(limit);
-	if(limit === -1) limit = 50000;
+	// Get limit
+	let limit = parseInt(req.query.limit || req.query.max || 5);
+	if(limit === -1) limit = Infinity;
+
+	// If limit is less than 1
+	if(limit < 1) return reject("Limit can not be less than 1.");
+	if(isNaN(limit)) return reject("Limit must be a number.");
 
 	// Get votes from database
-	const [ votes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC LIMIT ${limit}`)
+	let [ votes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC${isFinite(limit) ? ` LIMIT ${limit}` : ""}`);
+	votes = await Promise.allSettled(votes.map((vote, place) => {
+		return new Promise(async function(resolve, reject) {
+			try {
 
-	// Respond to request
-	res.json({
-		success: true,
-		limit: limit === 50000 ? false : limit,
-		links: [
-			"https://minecraftservers.org/vote/583568",
-			"https://minecraft-server-list.com/server/459450/vote/",
-			"https://minecraft-mp.com/server/255961/vote/",
-			"https://topg.org/Minecraft/in-605738"
-		],
-		votes
-	})
+				// Get other properties
+				const { votes, uuid, last_vote } = vote;
 
-}
+				// Get current username from namemc
+				const { currentName: name } = await namemc.lookupUUID(uuid);
+
+				// Return with data
+				resolve({ name, uuid, amount: votes, place: place + 1, timestamp: new Date(last_vote).getTime() })
+
+			} catch (e) {
+
+				reject(e);
+
+			}
+		})
+	}));
+
+	votes = votes.filter(element => element.status === "fulfilled").map(element => element.value)
+
+	// Resolve API with result
+	resolve({ limit, votes });
+
+});
