@@ -1,4 +1,3 @@
-import { MessageEmbed } from "discord.js";
 import { stripFormats } from "minecraft-text";
 import dayjs from "dayjs";
 import ordinal from "ordinal";
