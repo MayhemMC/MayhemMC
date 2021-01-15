@@ -5,7 +5,7 @@ import { promises as fs } from "fs";
 export default req => new Promise(async function(resolve, reject) {
 
 	// If no query was given
-	if((req.query.q || req.query.query) === undefined) return reject(`No query specified. See https://github.com/MayhemMC/MayhemMC/wiki/api-player`)
+	if((req.query.q || req.query.query) === undefined) return reject(`No query specified.`)
 
 	// Get query params
 	const query = (req.query.q || req.query.query).split(",");
