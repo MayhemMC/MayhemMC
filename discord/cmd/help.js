@@ -7,7 +7,7 @@ export default async function(args, message) {
     embed.setColor(Color.INFO)
     embed.setTitle("Mayhem MC Commands")
 	//if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) embed.addField("Adminexec", `Usage: \`mmc adminexec \\\`command to run\\\`\`\nRuns a command on all servers **(Owner only)**.\n`)
-	//embed.addField("List", `Usage: \`mmc list\`\nShows all the players that are currently online.\n`)
+	embed.addField("List", `Usage: \`mmc list\`\nShows all the players that are currently online.\n`)
 	//if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) embed.addField("Lottery", `Usage: \`mmc lottery\`\nSelects a vote winner for this month and purges databases **(Owner only)**.\n`)
 	//if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) embed.addField("Redeem", `Usage: \`mmc redeem <token>\`\nRedeem a rank from the web store **(Owner only)**.\n`)
 	//if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.VERIFIED)) embed.addField("Register", `Usage: \`mmc register <username>\`\nRegisters your Discord account with MMC.\n`)

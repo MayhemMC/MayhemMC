@@ -9,7 +9,7 @@ export default req => new Promise(async function(resolve, reject) {
 
 	// Get all active server ports
 	const ports = {};
-	const { servers } = YAML.parse(await fs.readFile(path.resolve(MMC_ROOT, "bungee", "config.yml"), "utf8"));
+	const { servers, player_limit: limit } = YAML.parse(await fs.readFile(path.resolve(MMC_ROOT, "bungee", "config.yml"), "utf8"));
 	Object.keys(servers).map(server => ports[server] = parseInt(servers[server].address.split(":")[1]));
 
 	// Query each server
@@ -20,6 +20,6 @@ export default req => new Promise(async function(resolve, reject) {
 	}
 
 	// Resolve players and their locations
-	resolve({ players });
+	resolve({ players, limit, online: players.length });
 
 });
