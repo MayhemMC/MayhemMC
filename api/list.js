@@ -4,6 +4,13 @@ import YAML from "yaml";
 
 export default req => new Promise(async function(resolve, reject) {
 
+	// Get timeout
+	const timeout = parseInt(req.query.timeout || 5);
+
+	// If timeout is less than 1
+	if(timeout < 1) return reject("Timeout can not be less than 1.");
+	if(isNaN(timeout)) return reject("Timeout must be a number.");
+
 	// Initialize players
 	const players = [];
 
@@ -15,7 +22,7 @@ export default req => new Promise(async function(resolve, reject) {
 	// Query each server
 	for (const server in ports) {
 		const port = ports[server];
-		const result = await mcquery(port);
+		const result = await mcquery(port, timeout);
 		if(result !== null) result.players.map(player => players.push({ player, server }));
 	}
 
