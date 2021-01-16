@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import namemc from "namemc";
 
 export default req => new Promise(async function(resolve, reject) {
@@ -27,6 +28,8 @@ export default req => new Promise(async function(resolve, reject) {
 
 			} catch (e) {
 
+				// Reject and log error
+				console.error(chalk.red("[ERROR]"), e)
 				reject(e);
 
 			}
