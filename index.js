@@ -20,7 +20,7 @@ global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
 global.api = async (endpoint, query) => await (await import(`./api/${endpoint}.js`)).default({ query });
 
 // Query function for querying servers
-global.mcquery = port => new Query({ host: "localhost", port, timeout: 50 }).fullStat().catch(() => null);
+global.mcquery = port => new Query({ host: "localhost", port, timeout: 5 }).fullStat().catch(() => null);
 
 // Log errors to console instead of killing the application
 process.on("uncaughtException", err => console.error(chalk.red("[ERROR]"), err));
