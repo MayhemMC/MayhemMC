@@ -1,3 +1,6 @@
+import { promises as fs } from "fs";
+import path from "path";
+
 export default async function(member) {
 
 	// Get discord members id
