@@ -35,6 +35,7 @@ export default async function() {
 		const [ root, command, ...args ] = message.content.split(" ");
 		if(root.toLowerCase() === ".mmc" || root.toLowerCase() === "mmc") {
 			try {
+				if(command === "" || command === undefined) throw "Cannot find module";
 				(await import(`./cmd/${command.toLowerCase()}.js`)).default(args, message);
 			} catch(e) {
 				console.error(chalk.red("[ERROR]"), chalk.magenta("[DISCORD]"), e)
