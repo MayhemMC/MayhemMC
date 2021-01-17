@@ -12,8 +12,8 @@ export default async function(member) {
 	if(rows.length !== 0) return member.roles.add(Roles.VERIFIED);
 
 	const embed = new MessageEmbed()
-	  .setColor("#1976d4")
-	  .setThumbnail("https://cdn.discordapp.com/avatars/709480797781885000/62633d48422e87edfd80df254d12f8c3.webp?size=128")
+	  .setColor(Color.INFO)
+	  .setThumbnail("https://cdn.discordapp.com/avatars/709480797781885000/1d29cbebea56bea8d909d770434d0fb6.png?size=128")
 	  .setTitle("Welcome to Mayhem MC")
 	  .setDescription(await fs.readFile(path.resolve("docs/welcome.md"), "utf8"))
 	return member.send(embed);
