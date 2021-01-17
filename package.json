@@ -69,7 +69,7 @@
         "http": "0.0.1-security",
         "https": "^1.0.0",
         "minecraft-query": "^1.0.9",
-        "minecraft-text": "^1.2.16",
+        "minecraft-text": "^1.2.17",
         "mysql-promise": "^5.0.0",
         "mysql2": "^2.2.5",
         "namemc": "^0.2.7",
