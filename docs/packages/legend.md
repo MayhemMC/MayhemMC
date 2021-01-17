@@ -82,3 +82,10 @@
 - <u>Use anvils to rename items with color and format codes.</u>
 - <u>`/nick` (use color and format codes)</u>
 - <u>`/rename` (use color and format codes)</u>
+
+```json
+
+{
+	"price": 25.00,
+	"tier": 4
+}

@@ -42,3 +42,10 @@ _(none)_
 **Super Vanilla**:
 - <u>Use anvils to rename items with color codes.</u>
 - <u>`/rename` (use color codes)</u>
+
+```json
+
+{
+	"price": 2.50,
+	"tier": 1
+}

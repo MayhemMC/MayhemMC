@@ -78,3 +78,10 @@
 - Use anvils to rename items with color codes.
 - `/nick` (use color codes)
 - `/rename` (use color codes)
+
+```json
+
+{
+	"price": 15.00,
+	"tier": 3
+}
