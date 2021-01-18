@@ -1,3 +1,6 @@
+import { promises as fs } from "fs";
+import namemc from "namemc";
+
 export default async function(args, message) {
 
 	const { channel, member, guild } = message;
@@ -27,7 +30,7 @@ export default async function(args, message) {
 	const [ name, rank ] = decoded.split(";");
 
 	// Get player
-	let player = await namemc.lookupName(name)
+	let player = await namemc.lookupName(name);
 	player = player.filter(a => a.currentName.toLowerCase() === name.toLowerCase())[0] || player[0];
 	const { currentName, uuid } = player;
 
@@ -44,10 +47,9 @@ export default async function(args, message) {
 	}
 
 	// Define role constants
-	const role_ids = [ Roles.VIP, Roles.WARRIOR, Roles.HERO, Roles.LEGEND ];
+	const role_ids = [ Roles.VIP, Roles.WARRIOR, Roles.HERO, Roles.LEGEND, Roles.TITAN ];
 	const role_names = [ "vip", "warrior", "hero", "legend", "titan" ];
 	const role_formatted = [ "&2[&aVIP&2]", "&3[&bWARRIOR&3]", "&5[&dHERO&5]", "&6[&eLEGEND&6]", "&4[&cTITAN&4]" ];
-	const role_codes = [ "vip", "lite", "mid", "high", "titan" ];
 	const role = role_names.indexOf(rank.toLowerCase());
 
 	// Get discord id
@@ -66,12 +68,11 @@ export default async function(args, message) {
 		await mysql.query(`UPDATE \`donations\` SET package="${role_names[role].toUpperCase()}", timestamp=NOW() WHERE uuid="${uuid}"`);
 	}
 
-	const { servers } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/config.yml"), "utf8"));
-	for (const server of Object.keys(servers)) {
-		await mmcExec(server, `bc Thank you &f${name}&7 for supporting the server! You have recieved your ${role_formatted[role]}&7 rank!`);
-		await mmcExec(server, `lp user ${name} parent set ${role_codes[role]}`);
-	};
+	// Send commands
+	await inject("lobby", `lp user ${name} parent set ${role_names[role]}`);
+	await inject("bungee", `alert &7Thank you &f${name}&7 for supporting the server! You have recieved your ${role_formatted[role]}&7 rank!`);
 
+	// Send message to joins
 	client.channels.cache.get(Channels.JOINS).send(`Thank you ${rows.length !== 0 ? `<@${discordid}>`:`\`${name}\``} for supporting the server! You have recieved your ${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === role_names[role].toUpperCase())} __**\`${role_names[role].toUpperCase()}\`**__ rank!`)
 
 	const embed = new MessageEmbed()

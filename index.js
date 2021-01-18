@@ -34,7 +34,7 @@ global.exec = (cmd, opts) => new Promise(function(resolve, reject) {
 
 // Inject command to run a command in a server context
 global.inject = (server, cmd) => new Promise(function(resolve, reject) {
-	exec(`sudo -u mmc /usr/bin/screen -S mc-${server} -X stuff '${cmd}'^M`, {}, function(err, out) {
+	execute(`sudo -u mmc /usr/bin/screen -S mc-${server} -X stuff '${cmd}'^M`, {}, function(err, out) {
 		if(err) reject(err);
 		resolve(out);
 		console.info(chalk.blue("[INFO]"), "Injected command", chalk.cyan(`"${cmd}"`), "into", chalk.cyan(server));
