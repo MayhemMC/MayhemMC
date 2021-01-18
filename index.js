@@ -12,6 +12,7 @@ import rateLimit from "express-rate-limit";
 import mysql from "mysql2";
 import mysqlPromise from "mysql-promise";
 import Query from "minecraft-query";
+import { exec } from "child_process";
 
 // Get server root path
 global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
@@ -21,6 +22,14 @@ global.api = async (endpoint, query) => await (await import(`./api/${endpoint}.j
 
 // Query function for querying servers
 global.mcquery = (port, timeout = 5) => new Query({ host: "localhost", port, timeout }).fullStat().catch(() => null);
+
+// Execute function to run a bash command
+global.exec = (cmd, opts) => new Promise(function(resolve, reject) {
+	exec(cmd, opts, function(err, out) {
+		if(err) reject(err);
+		resolve(out);
+	})
+});
 
 // Log errors to console instead of killing the application
 process.on("uncaughtException", err => console.error(chalk.red("[ERROR]"), err));

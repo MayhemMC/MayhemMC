@@ -11,14 +11,14 @@ export default async function(args, message) {
 	}
 
 	// Get args
-	const [ server = null, delay = "15s" ] = args;
+	const [ server = null ] = args;
 
 	// If not enough args
 	if(server === null) {
 		const embed = new MessageEmbed()
 	    embed.setColor(Color.WARN)
 	    embed.setTitle("Incorrect usage.")
-		embed.setDescription("`mmc restart <server> (delay = 15s)`")
+		embed.setDescription("`mmc restart <server>`")
 	    return channel.send(embed);
 	}
 
@@ -26,20 +26,12 @@ export default async function(args, message) {
 	const servers = server.toLowerCase().split(",");
 
 	// For each server of the specified servers
-    for (let server of servers) {
-        (async function announce(msleft) {
-            await mmcExec(server, `title @a times 0 240 0`);
-            await mmcExec(server, `title @a subtitle ["",{"text":">>","color":"dark_gray"},{"text":" Restarting in","bold":true,"color":"yellow"},{"text":": ","color":"gray"},{"text":"${prettyms(msleft, { compact: true })}","color":"white"},{"text":" <<","color":"dark_gray"}]`);
-            await mmcExec(server, `title @a title {"text":" "}`)
-            if (msleft > 1000) setTimeout(() => announce(msleft - 1000), 1000);
-	    else await exec(`sudo service mmc@${server} restart`);
-        }(ms(delay)));
-    }
+    for (let server of servers) await exec(`sudo service mmc@${server} restart`);
 
 	const embed = new MessageEmbed()
     embed.setColor(Color.SUCCESS)
-    embed.setTitle("Restart queued.")
-	embed.setDescription(`Servers: \`${servers.join("`, `")}\` will restart in ${delay}!`);
+    embed.setTitle("Servers Restarting.")
+	embed.setDescription(`Servers: \`${servers.join("`, `")}\` are shutting down!`);
     return channel.send(embed);
 
 }
