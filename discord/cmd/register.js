@@ -1,3 +1,5 @@
+import namemc from "namemc";
+
 export default async function(args, message) {
 
 	const { channel, member } = message;
@@ -14,8 +16,10 @@ export default async function(args, message) {
 	    return channel.send(embed);
 	}
 
+	// Look up user on namemc
 	const results = await namemc.lookupName(username).catch(() => []);
 
+	// If there are no users
 	if(results.length === 0) {
 		const embed = new MessageEmbed()
 	    embed.setColor(Color.ERROR)
