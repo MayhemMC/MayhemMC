@@ -13,7 +13,7 @@ export default async function(args, message) {
 	if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.VERIFIED)) 	embed.addField("Register", `Usage: \`mmc register <username>\`\nRegisters your Discord account with MMC.\n`)
 	if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.MOD)) 		embed.addField("Restart", `Usage: \`mmc restart <server>\`\nQueues a server restart **(Moderator only)**.\n`)
 	//if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) 	embed.addField("Sync Ranks", `Usage: \`mmc syncranks\`\nReruns all donation commands **(Owner only)**.\n`)
-	//if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.VERIFIED)) embed.addField("Unregister", `Usage: \`mmc unregister\`\nUnregisters your Discord account.\n`)
+	if(Object.keys(parseCollection(member.roles.cache)).includes(Roles.VERIFIED)) 	embed.addField("Unregister", `Usage: \`mmc unregister\`\nUnregisters your Discord account.\n`)
 																					embed.addField("Votes", `Usage: \`mmc votes\`\nShows the top 5 voters aswell as some basic vote stats.\n`)
 																					embed.addField("Whois", `Usage: \`mmc whois <username | @user>\`\nGets the users name, rank and other information from the server.\n`)
 
