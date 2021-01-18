@@ -1,74 +1,59 @@
-const servercache = {};
+import path from "path";
+import { stripFormats } from "minecraft-text";
+import { promises as fs } from "fs";
+import YAML from "yaml";
 
-module.exports = async function(req, res) {
+export default req => new Promise(async function(resolve, reject) {
 
-	// Get params
-	const params = { ...req.body, ...req.query };
-	let { server = undefined } = params;
+	// Get timeout
+	const timeout = parseInt(req.query.timeout || 15);
+
+	// If timeout is less than 1
+	if(timeout < 1) return reject("Timeout can not be less than 1.");
+	if(isNaN(timeout)) return reject("Timeout must be a number.");
+
+	// Get specified server
+	const { server = null } = req.query;
 
 	// If no server
-	if(server === undefined) return res.json({ success: false, error: "No server specified. Use the 'server' parameter to specify a target server." });
+	if(server === null) return reject("No server specified.");
 
-	// Get servers
-	const { servers } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/config.yml"), "utf8"));
+	// Get all active server ports
+	const ports = {};
+	const { servers: srvs } = YAML.parse(await fs.readFile(path.resolve(MMC_ROOT, "bungee", "config.yml"), "utf8"));
+	Object.keys(srvs).map(server => ports[server] = parseInt(srvs[server].address.split(":")[1]));
 
-	// If server not found
-	if(!servers.hasOwnProperty(server)) return res.json({ success: false, error: `Target server '${server}' does not exist.` });
+	// If server does not exist
+	if(!ports.hasOwnProperty(server.toLowerCase())) return reject(`Server '${server}' does not exist.`);
 
-	// Attempt to resolve server from cache
-	const cached = servercache[server.toUpperCase()];
-	if(cached !== undefined && cached.expires > Date.now()) {
-		const cached_response = { ...cached };
-		delete cached_response.expires;
-		return res.json({ ...cached_response, cached: true });
-	}
+	// Query server
+	const query = await mcquery(ports[server.toLowerCase()], timeout);
 
-	// Get server config
-	const { PROTOCOL_VERSION } = YAML.parse(await fs.readFile(path.join(MMC_ROOT, "bungee/plugins/BungeeAdvancedProxy/config.yml"), "utf8"));
-	const { COUNT } = PROTOCOL_VERSION;
+	// If query failed
+	if(query === null) return reject("Server query failed.");
 
-	// Get stuff from bungee config
-	const names = [];
-	const desc = [];
-	COUNT.map(line => {
-		if(line.includes("&f: &7({Server@")) {
-			names.push(line.split("&f: &7({Server@")[0].replace(/\s\s+/g, ""));
-			desc.push([]);
-		}
-		if(line.includes("&f● &")) {
-			desc[desc.length - 1] = [ ...desc[desc.length - 1], line.replace(/\s\s+/g, "") ]
-		}
-	})
+	// Get server menu
+	const menu = YAML.parse(await fs.readFile(path.resolve(MMC_ROOT, "lobby/plugins/ChestCommands/menu", "servers.yml"), "utf8"));
 
-	// Get properties
-	const index = Object.keys(servers).indexOf(server);
-	const properties = propReader(path.join(MMC_ROOT, server, "server.properties"));
-	const port = parseInt(servers[server].address.split(":")[1]);
-	const pid = parseInt((await exec(`sudo netstat -plant | grep :::${port} | awk '{print $NF}'`)).split("/")[0]);
-	const stats = await query(port);
+	// Get properties from the server menu
+	const { NAME: name_formatted, MATERIAL: icon, LORE: description } = menu[server];
+	const name = stripFormats(name_formatted, "&");
+
+	description.shift();
+	description.shift();
 
 	// Formulate server response
-	const response = {
-		pid,
-		port,
-		online: stats !== null,
-		display_name: names[index],
-		description: desc[index].join("\n"),
-		max_players: properties.get("max-players"),
-		players: stats !== null && stats.players,
-		plugins: stats !== null && stats.plugins.split(": ")[1].split("; ").sort(),
-		max_memory: ((await fs.readFile(path.join(MMC_ROOT, server, "start.sh"), "utf8")).split("-jar -Xmx")[1].split(" ")[0] + "b").replace(/Gb/gm, " Gb"),
-		gamemode: properties.get("gamemode").toUpperCase(),
-		difficulty: properties.get("difficulty").toUpperCase(),
-		version: stats !== null ? stats.plugins.split(": ")[0].split("-")[0].replace(" on Bukkit ", " ") : false,
-		unique_joins: (await fs.readdir(path.join(MMC_ROOT, server, properties.get("level-name"), "playerdata"))).filter(a => !a.includes(".dat_old")).length,
-	};
+	const resp = {
+		name_formatted, name, icon, description: stripFormats(description.join("\n"), "&"),
+		plugins: query.plugins.split(": ")[1].split("; ").reduce((acc, curr) => (acc[curr.split(" ")[0]] = curr.split(" ")[1], acc), {}),
+		players: query.players.map(player => ({ player, server: server.toLowerCase() })),
+		online: query.players.length,
+		limit: parseInt(query.max_players),
+		port: ports[server.toLowerCase()],
+		version: query.version
+	}
 
-	// Send response
-	res.json({ ...response, cached: false})
+	// Respons to request
+	resolve({ server: resp });
 
-	// Cache response for 5 seconds
-	response.expires = Date.now() + 5000;
-	servercache[server.toUpperCase()] = response;
-
-}
+});
