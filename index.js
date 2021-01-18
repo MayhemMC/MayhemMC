@@ -12,7 +12,7 @@ import rateLimit from "express-rate-limit";
 import mysql from "mysql2";
 import mysqlPromise from "mysql-promise";
 import Query from "minecraft-query";
-import { exec } from "child_process";
+import { exec as execute } from "child_process";
 
 // Get server root path
 global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
@@ -25,9 +25,19 @@ global.mcquery = (port, timeout = 5) => new Query({ host: "localhost", port, tim
 
 // Execute function to run a bash command
 global.exec = (cmd, opts) => new Promise(function(resolve, reject) {
-	exec(cmd, opts, function(err, out) {
+	execute(cmd, opts, function(err, out) {
 		if(err) reject(err);
 		resolve(out);
+		console.info(chalk.blue("[INFO]"), "Injected shell script", chalk.cyan(`"${cmd}"`), "into terminal");
+	})
+});
+
+// Inject command to run a command in a server context
+global.inject = (server, cmd) => new Promise(function(resolve, reject) {
+	exec(`sudo -u mmc /usr/bin/screen -S mc-${server} -X stuff '${cmd}'^M`, {}, function(err, out) {
+		if(err) reject(err);
+		resolve(out);
+		console.info(chalk.blue("[INFO]"), "Injected command", chalk.cyan(`"${cmd}"`), "into", chalk.cyan(server));
 	})
 });
 
