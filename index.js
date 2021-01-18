@@ -18,7 +18,7 @@ import { exec as execute } from "child_process";
 global.MMC_ROOT = path.resolve("/mnt/sdc/MMC/");
 
 // Get API function for internal use
-global.api = async (endpoint, query) => await (await import(`./api/${endpoint}.js`)).default({ query });
+global.api = async (endpoint, query = {}) => await (await import(`./api/${endpoint}.js`)).default({ query });
 
 // Query function for querying servers
 global.mcquery = (port, timeout = 5) => new Query({ host: "localhost", port, timeout }).fullStat().catch(() => null);
