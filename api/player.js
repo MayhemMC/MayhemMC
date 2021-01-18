@@ -96,6 +96,6 @@ export default req => new Promise(async function(resolve, reject) {
 	result = result.filter(element => element.status === "fulfilled").map(element => element.value)
 
 	// Resolve API with result
-	resolve({ result });
+	resolve({ players: result });
 
 });
