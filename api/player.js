@@ -5,10 +5,10 @@ import { promises as fs } from "fs";
 export default req => new Promise(async function(resolve, reject) {
 
 	// If no query was given
-	if((req.query.q || req.query.query) === undefined) return reject(`No query specified.`)
+	if((req.query.q || req.query.query || req.body.q || req.body.query) === undefined) return reject(`No query specified.`)
 
 	// Get query params
-	const query = (req.query.q || req.query.query).split(",");
+	const query = (req.query.q || req.query.query || req.body.q || req.body.query).split(",");
 
 	// Get online players
 	const online_players = (await mcquery(25577)).players;

@@ -5,7 +5,7 @@ import YAML from "yaml";
 export default req => new Promise(async function(resolve, reject) {
 
 	// Get timeout
-	const timeout = parseInt(req.query.timeout || 50);
+	const timeout = parseInt(req.query.timeout || req.body.timeout || 50);
 
 	// If timeout is less than 1
 	if(timeout < 1) return reject("Timeout can not be less than 1.");

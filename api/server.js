@@ -6,14 +6,14 @@ import YAML from "yaml";
 export default req => new Promise(async function(resolve, reject) {
 
 	// Get timeout
-	const timeout = parseInt(req.query.timeout || 15);
+	const timeout = parseInt(req.query.timeout || req.body.timeout || 15);
 
 	// If timeout is less than 1
 	if(timeout < 1) return reject("Timeout can not be less than 1.");
 	if(isNaN(timeout)) return reject("Timeout must be a number.");
 
 	// Get specified server
-	const { server = null } = req.query;
+	const { server = null } = req.query || req.body;
 
 	// If no server
 	if(server === null) return reject("No server specified.");
