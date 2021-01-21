@@ -8,7 +8,16 @@ export default req => new Promise(async function(resolve, reject) {
 	if((req.query.q || req.query.query || req.body.q || req.body.query) === undefined) return reject(`No query specified.`)
 
 	// Get query params
-	const query = (req.query.q || req.query.query || req.body.q || req.body.query).split(",");
+
+	// Get timeout
+	const timeout = parseInt(
+		(req.query !== undefined && (req.query.timeout)) ||
+		(req.body !== undefined && (req.body.timeout)) || 200);
+
+	// Get query
+	const query = (
+		(req.query !== undefined && (req.query.q || req.query.query || req.query.search)) ||
+		(req.body !== undefined && (req.body.q || req.body.query || req.body.search))).split(",");
 
 	// Get online players
 	const online_players = (await mcquery(25577)).players;
@@ -18,7 +27,7 @@ export default req => new Promise(async function(resolve, reject) {
 		return new Promise(async function(resolve, reject) {
 
 			// Set timeout to autoreject
-			setTimeout(reject, 500);
+			setTimeout(reject, timeout);
 
 			// Get appropriate lookup method by search
 			const lookup = search.match(/^[0-9a-f]{8}(-)?[0-9a-f]{4}(-)?[0-9a-f]{4}(-)?[0-9a-f]{4}(-)?[0-9a-f]{12}/g) ? namemc.lookupUUID : namemc.lookupName;
