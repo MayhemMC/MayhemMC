@@ -4,7 +4,7 @@ import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
 import { Card } from "@photoncss/Card";
 import Markdown from "components/Markdown";
-import PlayerList from "components/PlayerList";
+import { GlobalList } from "components/PlayerList";
 
 (function animation(){
 	$("#x-parallax").css("transform", `translateY(${ $(window).scrollTop()/1.2 }px) scale(${ Math.max(1 - $(window).scrollTop()/1920, .4) })`)
@@ -35,7 +35,7 @@ function View() {
 					</Col>
 
 					<Col sm={12} lg={4}>
-						<PlayerList/>
+						<GlobalList/>
 					</Col>
 
 					<Col sm={12} lg={8}>
