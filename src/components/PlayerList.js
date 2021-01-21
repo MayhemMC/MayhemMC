@@ -17,7 +17,7 @@ export function Player({ prefix, alt = null, name, uuid }) {
 		<ListItem waves={false}>
 			<img src={`https://crafatar.com/avatars/${uuid || "000000000000000000000000000000000"}?default=MHF_Steve&overlay`} alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight :12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
 			<MCText style={{ display: "inline-block" }} delimiter="&">{`${prefix}${name}`}</MCText>
-			{ alt !== null && <span style={{ position: "absolute", right: 16 }}>{alt}</span>}
+			{ alt !== null && <span className="alt-text">{alt}</span>}
 		</ListItem>
 	)
 }
@@ -46,7 +46,7 @@ export function GlobalList() {
 
 		// Fetch player data
 		const data = await app.api("player", { query });
-		data.players = data.players.map(player => ({
+		data.players = (data.players || []).map(player => ({
 			...player,
 			alt: list.players.filter(a => a.player === player.name)[0].server
 		}));

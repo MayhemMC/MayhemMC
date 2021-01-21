@@ -4,10 +4,6 @@ import { promises as fs } from "fs";
 
 export default req => new Promise(async function(resolve, reject) {
 
-	// If no query was given
-	if((req.query.q || req.query.query || req.body.q || req.body.query) === undefined) return reject(`No query specified.`)
-
-	// Get query params
 
 	// Get timeout
 	const timeout = parseInt(
@@ -15,9 +11,14 @@ export default req => new Promise(async function(resolve, reject) {
 		(req.body !== undefined && (req.body.timeout)) || 500);
 
 	// Get query
-	const query = (
+	let query = (
 		(req.query !== undefined && (req.query.q || req.query.query || req.query.search)) ||
-		(req.body !== undefined && (req.body.q || req.body.query || req.body.search))).split(",");
+		(req.body !== undefined && (req.body.q || req.body.query || req.body.search)))
+
+	// If no query was given
+	if(query === undefined) return reject(`No query specified.`)
+
+	query = query.split(",");
 
 	// Get online players
 	const online_players = (await mcquery(25577)).players;
