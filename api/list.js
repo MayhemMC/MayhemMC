@@ -22,6 +22,9 @@ export default req => new Promise(async function(resolve, reject) {
 	// Initialize partial
 	let partial = false;
 
+	// Query bungeecord
+	const bx = await mcquery(25577, timeout);
+
 	// Query each server
 	for (const server in ports) {
 		const port = ports[server];
@@ -32,6 +35,14 @@ export default req => new Promise(async function(resolve, reject) {
 			partial = true;
 		}
 	}
+
+	// For whatever reason, anarchy querys dont include players!?
+	// This is a fix...
+	bx.players.map(player => {
+		if(players.filter(a => a.player === player).length === 0) {
+			players.push({ player, server: "anarchy" })
+		}
+	})
 
 	// Resolve players and their locations
 	resolve({ players, limit, online: players.length, partial });
