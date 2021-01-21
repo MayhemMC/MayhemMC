@@ -12,7 +12,7 @@ export default req => new Promise(async function(resolve, reject) {
 	// Get timeout
 	const timeout = parseInt(
 		(req.query !== undefined && (req.query.timeout)) ||
-		(req.body !== undefined && (req.body.timeout)) || 200);
+		(req.body !== undefined && (req.body.timeout)) || 500);
 
 	// Get query
 	const query = (
@@ -34,7 +34,10 @@ export default req => new Promise(async function(resolve, reject) {
 
 			// Lookup user
 			let user = await lookup(search);
-				user = user.filter(u => u.currentName.toLowerCase() === search.toLowerCase())[0] || user;
+				user = Array.isArray(user) ? (user.filter(u => {
+					console.log({ currentName: u.currentName.toLowerCase(), search: search.toLowerCase() })
+					return u.currentName.toLowerCase() === search.toLowerCase()
+				})[0] || user[0]) : user;
 
 			// Initialize response object
 			const resp = {};
