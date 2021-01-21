@@ -1,5 +1,5 @@
 {
-	"logo": "./src/static/icon.png",
+	"logo": "./src/static/maskable.png",
 	"output": "/",
 	"prefix": "",
 	"config": {
