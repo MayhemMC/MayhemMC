@@ -38,10 +38,10 @@ export default req => new Promise(async function(resolve, reject) {
 		}
 	}
 
-	// If the server query didnt return the player list, fill in from bungee
+	// If the server query didnt return the player list, fill in from bungee - its probably anarchy
 	bx.players.map(player => {
 		if(players.filter(a => a.player === player).length === 0) {
-			players.push({ player, server: "?" })
+			players.push({ player, server: "anarchy" })
 		}
 	})
 
