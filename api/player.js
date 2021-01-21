@@ -34,10 +34,7 @@ export default req => new Promise(async function(resolve, reject) {
 
 			// Lookup user
 			let user = await lookup(search);
-				user = Array.isArray(user) ? (user.filter(u => {
-					console.log({ currentName: u.currentName.toLowerCase(), search: search.toLowerCase() })
-					return u.currentName.toLowerCase() === search.toLowerCase()
-				})[0] || user[0]) : user;
+				user = Array.isArray(user) ? (user.filter(u => u.currentName.toLowerCase() === search.toLowerCase())[0] || user[0]) : user;
 
 			// Initialize response object
 			const resp = {};
