@@ -1,3 +1,5 @@
+import { promises as fs } from "fs";
+import path from "path";
 import namemc from "namemc";
 
 export default async function(args, message) {
