@@ -62,4 +62,21 @@ export default async function() {
 	// Log client in using token
 	client.login(config["discord-secret"]);
 
+	// Get data from discord bot
+	global.discordStat = async function() {
+
+		const guildId = "708050277957238784";
+		const guild = await client.guilds.fetch(guildId);
+
+		return {
+			guildId,
+			memberCount: [
+				guild.members.cache.filter(member => member.presence.status !== "offline").size,
+				guild.memberCount
+			],
+			serverIcon: guild.iconURL(),
+			serverName: guild.name
+		}
+	}
+
 }

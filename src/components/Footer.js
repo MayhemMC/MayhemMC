@@ -15,7 +15,7 @@ export default function Component() {
 						</Col>
 						<Col lg={4}>
 							<div style={{ alignItems: "right", marginTop: 8, marginBottom: -4 }}>
-								<DiscordInvite inviteCode="4FBnfPA"/>
+								<DiscordInvite/>
 							</div>
 						</Col>
 					</Row>

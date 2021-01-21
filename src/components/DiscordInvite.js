@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
-import nodeFetch from "node-fetch";
 import "./DiscordInvite.less";
 
-export default function({ palette = "dark", inviteCode = "YPmMwGQ" }) {
+export default function({ palette = "dark", inviteCode }) {
 
+	// Initialize state
     const [ state, setState ] = useState({
-		stateSet: false,
         serverIcon: "https://steamuserimages-a.akamaihd.net/ugc/961973556167374789/672A76928C54C3E57E081E0EB9E9A752B18B1778/",
 		serverName: "Loading...",
 		memberCount: ["∅", "∅"]
     });
 
+	// Function to set players
+	async function fetch() {
+
+		// Fetch player list
+		const newState = await app.api("discord");
+
+		// Set state
+		setState(newState);
+
+	}
+
+	// Have state sync with server every second while component is mounted
 	useEffect(function() {
-		nodeFetch(`//discord.com/api/invites/${inviteCode}`)
-		  .then(r => r.json())
-		  .then(({ guild }) => {
-		    state.stateSet === false &&
-		        setState({
-		            stateSet: true,
-		            serverIcon: `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.webp?size=128`,
-		            serverName: guild.name,
-		            memberCount: ["∅", "∅"]
-		        });
-		});
-	})
+		const sync = setInterval(fetch, 1000);
+		return () => clearInterval(sync);
+	});
 
     return (
 		<div className={`DiscordInvite-root palette-${palette}`}>
@@ -39,7 +41,7 @@ export default function({ palette = "dark", inviteCode = "YPmMwGQ" }) {
 	                    <span>{state.memberCount[1]} Members</span>
 	                </strong>
 	            </div>
-				<a className="DiscordInvite-joinLink" href={`//discord.gg/${inviteCode}`}>Join</a>
+				<a className="DiscordInvite-joinLink" href="//discord.gg/4FBnfPA">Join</a>
 	        </div>
 	    </div>
 	);
