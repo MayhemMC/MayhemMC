@@ -3,9 +3,9 @@ import { Card } from "@photoncss/Card";
 import { Col, Container, Row } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
-import TopVoters from "components/TopVoters";
-import VoteLinks from "components/VoteLinks";
 import Markdown from "components/Markdown";
+import { VoteList } from "components/PlayerList";
+
 
 // Render view
 function View() {
@@ -22,18 +22,14 @@ function View() {
 			<Container>
 				<Row>
 
-					<Col sm={12} lg={3}>
-						<VoteLinks/>
+					<Col sm={12} lg={4}>
+						<VoteList/>
 					</Col>
 
-					<Col sm={12} lg={6}>
+					<Col sm={12} lg={8}>
 						<Card>
 							<Markdown source={require("../../docs/vote.md").default}/>
 						</Card>
-					</Col>
-
-					<Col sm={12} lg={3}>
-						<TopVoters/>
 					</Col>
 
 				</Row>

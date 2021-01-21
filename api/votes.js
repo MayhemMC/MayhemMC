@@ -12,7 +12,14 @@ export default req => new Promise(async function(resolve, reject) {
 	if(isNaN(limit)) return reject("Limit must be a number.");
 
 	// Get votes from database
-	let [ votes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC${isFinite(limit) ? ` LIMIT ${limit}` : ""}`);
+	let [ votes ] = await mysql.query(`SELECT * FROM votes ORDER BY votes DESC`);
+
+	// Get number of voters
+	const numvoters = votes.length;
+	const numvotes = votes.reduce((total, { votes }) => votes + total, 0);
+
+	// Get new names for all players
+	votes = (isFinite(limit) ? votes.slice(0, limit) : votes);
 	votes = await Promise.allSettled(votes.map((vote, place) => {
 		return new Promise(async function(resolve, reject) {
 			try {
@@ -39,6 +46,6 @@ export default req => new Promise(async function(resolve, reject) {
 	votes = votes.filter(element => element.status === "fulfilled").map(element => element.value)
 
 	// Resolve API with result
-	resolve({ limit, votes });
+	resolve({ limit, votes, numvoters, numvotes });
 
 });
