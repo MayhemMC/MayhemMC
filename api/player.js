@@ -34,7 +34,7 @@ export default req => new Promise(async function(resolve, reject) {
 
 			// Lookup user
 			let user = await lookup(search);
-				user = user[0] || user;
+				user = user.filter(u => u.currentName.toLowerCase() === search.toLowerCase())[0] || user;
 
 			// Initialize response object
 			const resp = {};
