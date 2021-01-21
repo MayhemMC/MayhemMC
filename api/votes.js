@@ -9,8 +9,6 @@ export default req => new Promise(async function(resolve, reject) {
 		(req.body !== undefined && (req.body.limit || req.body.max)) || 5);
 	if(limit === -1) limit = Infinity;
 
-	console.log({ limit })
-
 	// If limit is less than 1
 	if(limit < 1) return reject("Limit can not be less than 1.");
 	if(isNaN(limit)) return reject("Limit must be a number.");

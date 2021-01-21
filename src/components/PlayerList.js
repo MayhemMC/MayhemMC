@@ -16,7 +16,7 @@ export function Player({ prefix, alt = null, name, uuid }) {
 	return (
 		<ListItem waves={false}>
 			<img src={`https://crafatar.com/avatars/${uuid || "000000000000000000000000000000000"}?default=MHF_Steve&overlay`} alt="" style={{ height: 36, width: 36, display: "inline-block", marginRight :12, marginBottom: -20, borderRadius: 4, transform: "translateY(-9px)" }}/>
-			<MCText style={{ display: "inline-block" }} delimiter="&">{`${prefix}${name}`}</MCText>
+			<MCText style={{ display: "inline-block", verticalAlign: "text-bottom" }} delimiter="&">{`${prefix}${name}`}</MCText>
 			{ alt !== null && <span className="alt-text">{alt}</span>}
 		</ListItem>
 	)
@@ -155,7 +155,7 @@ export function VoteList() {
 				  height: 32,
 				  padding: "0 10px",
 				  right: 16
-			  }}>{state.numvoters} players voted {state.numvotes} times</span>
+			  }}>{state.numvoters} players • {state.numvotes} votes</span>
 			</CardTitle>
 			{ state.players.length > 0 && <Fragment>
 				<hr/>

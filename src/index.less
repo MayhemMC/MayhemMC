@@ -79,3 +79,19 @@ footer.legacy.dark {
 .card-title {
 	font-family: @headline-type;
 }
+
+.alt-text {
+	position: absolute;
+	right: 16px;
+	top: 0;
+	line-height: 48px;
+	font-size: 14px;
+}
+
+.list-item {
+	.mc, .alt-text {
+		@media @sm {
+			font-size: 10px;
+		}
+	}
+}
