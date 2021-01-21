@@ -5,7 +5,7 @@ import YAML from "yaml";
 export default req => new Promise(async function(resolve, reject) {
 
 	// Get timeout
-	const timeout = parseInt(req.query.timeout || req.body.timeout || 50);
+	const timeout = parseInt(req.query.timeout || req.body.timeout || 15);
 
 	// If timeout is less than 1
 	if(timeout < 1) return reject("Timeout can not be less than 1.");
@@ -16,7 +16,7 @@ export default req => new Promise(async function(resolve, reject) {
 
 	// Get all active server ports
 	const ports = {};
-	const { servers, player_limit: limit } = YAML.parse(await fs.readFile(path.resolve(MMC_ROOT, "bungee", "config.yml"), "utf8"));
+	const { servers } = YAML.parse(await fs.readFile(path.resolve(MMC_ROOT, "bungee", "config.yml"), "utf8"));
 	Object.keys(servers).map(server => ports[server] = parseInt(servers[server].address.split(":")[1]));
 
 	// Initialize partial
@@ -36,15 +36,14 @@ export default req => new Promise(async function(resolve, reject) {
 		}
 	}
 
-	// For whatever reason, anarchy querys dont include players!?
-	// This is a fix...
+	// If the server query didnt return the player list, fill in from bungee
 	bx.players.map(player => {
 		if(players.filter(a => a.player === player).length === 0) {
-			players.push({ player, server: "anarchy" })
+			players.push({ player, server: "?" })
 		}
 	})
 
 	// Resolve players and their locations
-	resolve({ players, limit, online: players.length, partial });
+	resolve({ players, limit: parseInt(bx.max_players), online: bx.players.length, partial });
 
 });
