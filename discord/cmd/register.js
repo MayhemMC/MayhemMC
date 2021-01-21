@@ -1,5 +1,5 @@
-import { promises as fs } from "fs";
-import path from "path";
+//import { promises as fs } from "fs";
+//import path from "path";
 import namemc from "namemc";
 
 export default async function(args, message) {
@@ -31,16 +31,16 @@ export default async function(args, message) {
 	}
 
 	// Get player data
-	const [{ currentName, uuid }] = results;
+	const { currentName, uuid } = results.filter(u => u.currentName.toLowerCase() === username.toLowerCase())[0];
 
 	// If player never joined the server
-	if(await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${uuid}.yml`)).then(() => false).catch(() => true)) {
-		const embed = new MessageEmbed()
-	    embed.setColor(Color.ERROR)
-	    embed.setTitle("Can't register.")
-		embed.setDescription(`\`${currentName}\` has never joined the server before.`)
-	    return channel.send(embed);
-	}
+	//if(await fs.stat(path.join(MMC_ROOT, "lobby/plugins/Essentials/userdata", `${uuid}.yml`)).then(() => false).catch(() => true)) {
+	//	const embed = new MessageEmbed()
+	//    embed.setColor(Color.ERROR)
+	//    embed.setTitle("Can't register.")
+	//	embed.setDescription(`\`${currentName}\` has never joined the server before.`)
+	//    return channel.send(embed);
+	//}
 
 	// Get discord id
 	const discordid = member.id;
