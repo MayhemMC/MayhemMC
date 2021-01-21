@@ -1,3 +1,3 @@
-# Welcome to Mayhem MC
+# Welcome
 
 Server IP: `mayhemmc.uk.to`
