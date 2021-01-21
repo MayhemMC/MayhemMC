@@ -3,13 +3,9 @@ Voting is the easiest way to help the server grow. It only takes a few seconds t
 
 ---
 # Vote Rewards
-**Anarchy**:
-  - 1 Enchanted golden apple
-  - 8 Bottles of experience
-  - 2 Shulker shells (33% chance)
-
-**Factions**:
-  - 1 Vote crate key
-
-**SMP**:
-  - 1 Vote crate key
+| Server | Rewards (per vote) |
+| - | - |
+| **Anarchy** | 1 Enchanted golden apple<br/>8 Bottles of experience<br/>2 Shulker shells |
+| **Factions** | 1 Vote crate key |
+| **Skyblock** | 1 Vote crate key |
+| **SMP** | 1 Vote crate key |
