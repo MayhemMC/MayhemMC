@@ -19,8 +19,9 @@ export default function Component() {
 				<hr/>
 				<Route to="/" icon="home">Home</Route>
 
-				<Route to="/store" icon="shopping_cart">Store</Route>
+				{ /* <Route to="/store" icon="shopping_cart">Store</Route> */ }
 				<Route to="/vote" icon="how_to_vote">Vote</Route>
+				<a href="//joshmerlino.github.io/performance" target="_blank"><ListItem rounded leadingIcon="speed">Server Performance</ListItem></a>
 
 			</Drawer>
 		</Fragment>
