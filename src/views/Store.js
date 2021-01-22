@@ -24,13 +24,16 @@ export function PlayerLogin() {
 			// Get value
 			const query = $(`#${guid}`).val();
 
-			console.log({query, last_name}, query === last_name)
-
 			// Prevent duplicate searches
 			if(query === last_name) return;
 
 			// Lookup player
 			const lookup = await app.api("player", { query });
+
+			// If error
+			if(lookup.success === false) return;
+
+			// Get player
 			const [ player ] = lookup.players;
 
 			// Set state
