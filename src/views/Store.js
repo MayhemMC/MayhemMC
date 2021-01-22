@@ -1,31 +1,90 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Card, CardTitle } from "@photoncss/Card";
-import { Col, Container, Row } from "@photoncss/Layout";
+import React, { Fragment, useState, useEffect } from "react";
+import { Container, Row, Col } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
-import { List } from "@photoncss/List";
-import Masonry from "react-masonry-component";
-import { Player } from "components/PlayerList";
-import Package from "components/Package";
+import { DonationList } from "components/PlayerList";
+import { Textfield } from "@photoncss/Textfield";
 
-global.store_specimen = null;
+// Cache last name
+let last_name = ""
+
+// PlayerLogin component
+export function PlayerLogin() {
+
+	// Initialize state
+	const [ state, setState ] = useState(null);
+
+	// Get unique id
+	const guid = Photon.guid();
+
+	// Make sure duplicate requests arent send
+	useEffect(function() {
+		const fetch = setInterval(async function() {
+
+			// Get value
+			const query = $(`#${guid}`).val();
+
+			console.log({query, last_name}, query === last_name)
+
+			// Prevent duplicate searches
+			if(query === last_name) return;
+
+			// Lookup player
+			const lookup = await app.api("player", { query });
+			const [ player ] = lookup.players;
+
+			// Set state
+			setState(player === undefined ? null : player);
+			setStorePlayer(player === undefined ? null : player);
+			last_name = query;
+
+		}, 100);
+		return () => clearInterval(fetch);
+	})
+
+	// Render component
+	return (
+		<div className="player-login" style={{ marginLeft: -8 }}>
+			<Textfield variant="outlined" size="dense" label="Username" placeholder="Vacuro" id={guid}/>
+			<div className="icon-wrapper" style={{ lineHeight: "74px", display: "inline-block", height: 74 }}>
+				{ state === null && <div className="text-red"><Icon className="material-icons">error_outline</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>Please use a valid username or uuid</span></div> }
+				{ state !== null && state.has_joined === false && <div className="text-amber"><Icon className="material-icons">warning</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>"{state.name}" has never joined before</span></div> }
+				{ state !== null && state.updated === false && <div className="text-amber"><Icon className="material-icons">warning</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>"{state.name}" has not joined recently</span></div> }
+				{ state !== null && state.has_joined === true && state.updated === true && <div className="text-green"><Icon className="material-icons">check_circle_outlined</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>Showing packages available for "{state.name}"</span></div> }
+			</div>
+		</div>
+	);
+}
+
+// Packages component
+export function Packages() {
+
+	// Initialize state
+	const [ state, setState ] = useState(null);
+	global.setStorePlayer = player => setState(player);
+
+	// If null state
+	//if (state === null) return (
+	//	<p>Please log in above to view packages</p>
+	//)
+
+	return (
+		<div>
+			{JSON.stringify(state)}
+		</div>
+	)
+
+}
 
 // Render view
 function View() {
-
-	const [{ packages }, _packages ] = useState({ packages: [] });
-	const [{ donations }, _donations ] = useState({ donations: [] });
-	useEffect(() => {
-		donations.length === 0 && app.api("donations").then(_donations);
-		packages.length === 0 && app.api("store").then(_packages);
-	});
 
 	return (
 		<Fragment>
 
 			<Toolbar color="primary" variant="raised" position="fixed">
 				<Icon onClick={() => Photon.Drawer("#web-nav").open()}>menu</Icon>
-				<ToolbarTitle subtitle="Mayhem MC">Store</ToolbarTitle>
+				<ToolbarTitle subtitle="Mayhem MC">Web Store</ToolbarTitle>
 			</Toolbar>
 			<ToolbarSpacer/>
 
@@ -33,40 +92,17 @@ function View() {
 				<Row>
 
 					<Col sm={12} lg={3}>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
-							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
-							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All packages are a one-time purchase and last <b>forever</b>.</span>
-						</Card>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
-							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
-							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>If you already have a package and are looking to upgrade, the price of the previous package will automaticly be subtracted from your total.</span>
-						</Card>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
-							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
-							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All purchases are strictly non-refundable due to how PayPal handles donations.</span>
-						</Card>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", padding: 16 }}>
-							<Icon style={{ display: "inline-block" }} waves={false}>info_outline</Icon>
-							<span style={{ lineHeight: "24px", verticalAlign: "middle", marginTop: "-24px", marginLeft: 40, fontWeight: "500", fontSize: "16px" }}>All packages are limited to cosmetic and quality of life enhancements due to <a href="https://www.minecraft.net/en-us/eula" className="text-primary">Mojang's TOS</a>.</span>
-						</Card>
+						<DonationList/>
 					</Col>
 
-					<Col sm={12} lg={6}>
-						<Row>
-							<Masonry options={{ transitionDuration: 0 }}>
-								{ packages.map((p, key) => <Package key={key} {...p}/> )}
-							</Masonry>
-						</Row>
-					</Col>
+					<Col sm={12} lg={9}>
+						<div className="right-col-wrapper">
 
-					<Col sm={12} lg={3}>
-						<Card style={{ margin: 4, width: "calc(100% - 8px)", overflow: "hidden" }}>
-							<CardTitle>Recent Donations</CardTitle>
-							<hr/>
-							<List style={{ margin: "0 -1px" }}>
-								{ donations.map((donation, key) => <Player name={donation.name} key={key}/> )}
-							</List>
-						</Card>
+							<PlayerLogin/>
+							<div className="title"><h2>Packages</h2></div>
+							<Packages/>
+
+						</div>
 					</Col>
 
 				</Row>
