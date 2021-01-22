@@ -59,6 +59,7 @@ export function GlobalList() {
 	// Have state sync with server every second while component is mounted
 	useEffect(function() {
 		const sync = setInterval(fetch, 1000);
+		fetch();
 		return () => clearInterval(sync);
 	});
 
@@ -132,6 +133,7 @@ export function VoteList() {
 	// Have state sync with server every second while component is mounted
 	useEffect(function() {
 		const sync = setInterval(fetch, 1000);
+		fetch();
 		return () => clearInterval(sync);
 	});
 
