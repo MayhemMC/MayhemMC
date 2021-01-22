@@ -167,3 +167,63 @@ export function VoteList() {
 	);
 
 }
+
+/* Donation List Component
+ *
+ * List players that most
+ * recently donated
+ */
+export function DonationList() {
+
+	// Initialize state
+	const [ state, setState ] = useState(null);
+
+	// Function to set players
+	async function fetch() {
+
+		// Fetch voter list
+		const list = await app.api("donations");
+
+		// Convert votes to list
+		let query = [];
+		list.donations.map(({ name }) => query.push(name));
+		query = query.join(",");
+
+		// Fetch player data
+		const data = await app.api("player", { query });
+
+		// Set state
+		setState({ ...list, ...data });
+
+	}
+
+	// Have state sync with server every second while component is mounted
+	useEffect(function() {
+		const sync = setInterval(fetch, 1000);
+		return () => clearInterval(sync);
+	});
+
+	// Return default card if its loading
+	if (state === null) return (
+		<Card>
+			<CardTitle>Recent Donators</CardTitle>
+			<Indeterminate/>
+		</Card>
+	)
+
+	// Return component
+	return (
+		<Card>
+			<CardTitle>
+				<span>Recent Donators</span>
+			</CardTitle>
+			{ state.players.length > 0 && <Fragment>
+				<hr/>
+				<List>
+					{ state.players.map((player, key) => <Player key={key} {...player}/>)}
+				</List>
+			</Fragment>}
+		</Card>
+	);
+
+}
