@@ -4,6 +4,7 @@ import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
 import { DonationList } from "components/PlayerList";
 import { Textfield } from "@photoncss/Textfield";
+import MCText from "components/MCText";
 
 // Cache last name
 let last_name = ""
@@ -26,6 +27,14 @@ export function PlayerLogin() {
 
 			// Prevent duplicate searches
 			if(query === last_name) return;
+
+			// If empty field
+			if(query === "") {
+				last_name = query;
+				setState(null);
+				setStorePlayer(null);
+				return;
+			}
 
 			// Lookup player
 			const lookup = await app.api("player", { query });
@@ -66,16 +75,37 @@ export function Packages() {
 	const [ state, setState ] = useState(null);
 	global.setStorePlayer = player => setState(player);
 
-	// If null state
-	//if (state === null) return (
-	//	<p>Please log in above to view packages</p>
-	//)
+	// Render component
+	return <PackageList buyer={state}/>
 
-	return (
-		<div>
-			{JSON.stringify(state)}
-		</div>
-	)
+}
+
+// PackageList component
+export function PackageList({ buyer }) {
+
+	// Initialize state
+	const [ state, setState ] = useState(null);
+
+	// Fetch latest state from server
+	const fetch = async function() {
+		if(state !== null) return;
+		const store = await app.api("store");
+		setState(store);
+	}
+
+	// Have state sync with server every second while component is mounted
+	useEffect(function() {
+		fetch();
+	});
+
+	// If null state
+	if(state === null) return null;
+
+	// Get packages from state
+	let { packages } = state;
+
+	// Render component
+	return <pre><code>{JSON.stringify(buyer, null, 4)}</code></pre>
 
 }
 
