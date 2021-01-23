@@ -5,6 +5,9 @@ import { Icon } from "@photoncss/Icon";
 import { DonationList } from "components/PlayerList";
 import { Textfield } from "@photoncss/Textfield";
 import MCText from "components/MCText";
+import { stripFormats } from "minecraft-text";
+import { Card, CardTitle } from "@photoncss/Card";
+import { List, ListItem } from "@photoncss/List";
 
 // Cache last name
 let last_name = ""
@@ -105,7 +108,41 @@ export function PackageList({ buyer }) {
 	let { packages } = state;
 
 	// Render component
-	return <pre><code>{JSON.stringify(buyer, null, 4)}</code></pre>
+	return (
+		<div className="package-list">
+			<Card>
+				<CardTitle><div className="title" style={{ marginBottom: -16 }}><h2>Packages</h2></div></CardTitle>
+				<List style={{ border: "none" }}>
+					{packages.map(rank => <Package rank={rank} buyer={buyer} packages={packages} key={rank.tier}/>)}
+				</List>
+			</Card>
+		</div>
+	);
+
+}
+
+// Package component
+export function Package({ rank, buyer, packages }) {
+
+	// Get index of rank
+	const index = buyer !== null && buyer.hasOwnProperty("donator") && buyer.donator !== null ? packages.indexOf(packages.filter(({ name }) => name === buyer.donator.package.toLowerCase())[0]) : -1;
+
+	// Get is player baught this package before
+	const baught = index >= rank.tier - 1;
+
+	// If player already baught the rank
+	if(baught) return (
+		<ListItem>
+			<MCText delimiter="&">{`&7${stripFormats(rank.prefix, "&")}`}</MCText>
+		</ListItem>
+	);
+
+	// Render component
+	return (
+		<ListItem>
+			<MCText delimiter="&">{rank.prefix}</MCText>
+		</ListItem>
+	);
 
 }
 
@@ -131,8 +168,8 @@ function View() {
 					<Col sm={12} lg={9}>
 						<div className="right-col-wrapper">
 
+							<div className="title"><h2>Log In</h2></div>
 							<PlayerLogin/>
-							<div className="title"><h2>Packages</h2></div>
 							<Packages/>
 
 						</div>
