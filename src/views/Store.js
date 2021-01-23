@@ -60,8 +60,8 @@ export function PlayerLogin() {
 	// Render component
 	return (
 		<div className="player-login" style={{ marginLeft: -8 }}>
-			<Textfield variant="outlined" size="dense" label="Username" placeholder="Vacuro" id={guid}/>
-			<div className="icon-wrapper" style={{ lineHeight: "74px", display: "inline-block", height: 74 }}>
+			<Textfield variant="outlined" size="dense" label="Username" placeholder="Vacuro" id={guid} />
+			<div className="icon-wrapper" style={{ lineHeight: "74px", display: "inline-block" }}>
 				{ state === null && <div className="text-red"><Icon className="material-icons">error_outline</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>Please use a valid username or uuid</span></div> }
 				{ state !== null && state.has_joined === false && <div className="text-amber"><Icon className="material-icons">warning</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>"{state.name}" has never joined before</span></div> }
 				{ state !== null && state.updated === false && <div className="text-amber"><Icon className="material-icons">warning</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>"{state.name}" has not joined recently</span></div> }
