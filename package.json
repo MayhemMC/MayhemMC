@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "entry": "index.js",
     "scripts": {
-        "dev-webpack": "webpack-dev-server --config webpack.dev.cjs",
+        "dev-webpack": "uuid > hash && webpack-dev-server --config webpack.dev.cjs",
         "build": "uuid > hash && webpack --config webpack.prod.cjs && mv hash public_html/",
         "dev-api": "env NODE_ENV=dev nodemon --trace-warnings --unhandled-rejections=strict .",
         "dev": "concurrently --kill-others -p \"[{name}]\" -n \"WEBPACK,EXPRESS\" -c \"blue,magenta\" \"npm:dev-webpack\" \"npm:dev-api\"",
