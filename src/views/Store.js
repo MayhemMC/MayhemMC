@@ -111,9 +111,9 @@ export function PackageList({ buyer }) {
 	return (
 		<div className="package-list">
 			<Card>
-				<CardTitle><div className="title" style={{ marginBottom: -16 }}><h2>Packages</h2></div></CardTitle>
+				<CardTitle>Packages</CardTitle>
 				<List style={{ border: "none" }}>
-					{packages.map(rank => <Package rank={rank} buyer={buyer} packages={packages} key={rank.tier}/>)}
+					{ packages.map(rank => <Package rank={rank} buyer={buyer} packages={packages} key={rank.tier}/>) }
 				</List>
 			</Card>
 		</div>
