@@ -5,9 +5,8 @@ import { Icon } from "@photoncss/Icon";
 import { DonationList } from "components/PlayerList";
 import { Textfield } from "@photoncss/Textfield";
 import MCText from "components/MCText";
-import { stripFormats } from "minecraft-text";
 import { Card, CardTitle } from "@photoncss/Card";
-import { List, ListItem } from "@photoncss/List";
+import { List } from "@photoncss/List";
 import classnames from "classnames";
 
 // Cache last name
