@@ -61,5 +61,6 @@
 
 {
 	"price": 7.50,
-	"tier": 2
+	"tier": 2,
+	"iconURL": "https://i.ibb.co/2Z4k4kt/1-warrior.png"
 }

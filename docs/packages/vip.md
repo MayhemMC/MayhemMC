@@ -47,5 +47,6 @@ _(none)_
 
 {
 	"price": 2.50,
-	"tier": 1
+	"tier": 1,
+	"iconURL": "https://i.ibb.co/56hz0Td/0-vip.png"
 }

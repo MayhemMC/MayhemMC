@@ -87,5 +87,6 @@
 
 {
 	"price": 25.00,
-	"tier": 4
+	"tier": 4,
+	"iconURL": "https://i.ibb.co/Xb6yGGs/3-legend.png"
 }

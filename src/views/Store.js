@@ -10,7 +10,7 @@ import { List } from "@photoncss/List";
 import classnames from "classnames";
 
 // Cache last name
-let last_name = ""
+let last_name = "";
 
 // PlayerLogin component
 export function PlayerLogin() {
@@ -59,8 +59,8 @@ export function PlayerLogin() {
 
 	// Render component
 	return (
-		<div className="player-login" style={{ marginLeft: -8 }}>
-			<Textfield variant="outlined" size="dense" label="Username" placeholder="Vacuro" id={guid} />
+		<div className="player-login" style={{ marginLeft: -8, marginBottom: -8 }}>
+			<Textfield variant="outlined" size="dense" label="Username or UUID" placeholder="Vacuro" id={guid} />
 			<div className="icon-wrapper" style={{ lineHeight: "74px", display: "inline-block" }}>
 				{ state === null && <div className="text-red"><Icon className="material-icons">error_outline</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>Please use a valid username or uuid</span></div> }
 				{ state !== null && state.has_joined === false && <div className="text-amber"><Icon className="material-icons">warning</Icon><span style={{ transform: "translate(8px, -6px)", display: "inline-block" }}>"{state.name}" has never joined before</span></div> }
@@ -133,6 +133,7 @@ export function Package({ rank, buyer, packages }) {
 	// Render component
 	return (
 		<li className={classnames("list-item package", { baught })}>
+			<img src={rank.iconURL} alt="" style={{ height: "calc(100% - 22px)", width: "auto", margin: 8 }}/>
 			<MCText delimiter="&">{rank.prefix}</MCText>
 		</li>
 	);

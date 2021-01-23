@@ -101,5 +101,6 @@
 
 {
 	"price": 40.00,
-	"tier": 5
+	"tier": 5,
+	"iconURL": "https://i.ibb.co/ZGv9YCr/4-titan.png"
 }

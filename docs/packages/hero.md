@@ -83,5 +83,6 @@
 
 {
 	"price": 15.00,
-	"tier": 3
+	"tier": 3,
+	"iconURL": "https://i.ibb.co/ck80bQx/2-hero.png"
 }
