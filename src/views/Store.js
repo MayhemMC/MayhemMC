@@ -8,6 +8,7 @@ import MCText from "components/MCText";
 import { stripFormats } from "minecraft-text";
 import { Card, CardTitle } from "@photoncss/Card";
 import { List, ListItem } from "@photoncss/List";
+import classnames from "classnames";
 
 // Cache last name
 let last_name = ""
@@ -130,18 +131,11 @@ export function Package({ rank, buyer, packages }) {
 	// Get is player baught this package before
 	const baught = index >= rank.tier - 1;
 
-	// If player already baught the rank
-	if(baught) return (
-		<ListItem>
-			<MCText delimiter="&">{`&7${stripFormats(rank.prefix, "&")}`}</MCText>
-		</ListItem>
-	);
-
 	// Render component
 	return (
-		<ListItem>
+		<li className={classnames("list-item package", { baught })}>
 			<MCText delimiter="&">{rank.prefix}</MCText>
-		</ListItem>
+		</li>
 	);
 
 }
