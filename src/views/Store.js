@@ -6,7 +6,8 @@ import { DonationList } from "components/PlayerList";
 import { Textfield } from "@photoncss/Textfield";
 import MCText from "components/MCText";
 import { Card, CardTitle } from "@photoncss/Card";
-import { List } from "@photoncss/List";
+import { List, ListItem } from "@photoncss/List";
+import { Menu } from "@photoncss/Menu";
 import classnames from "classnames";
 
 // Cache last name
@@ -137,13 +138,38 @@ export function Package({ rank, player, packages }) {
 	// Get price
 	const price = player !== null && player.hasOwnProperty("donator") && player.donator !== null ? (rank.price - (player.donator === null ? 0 : packages.filter(({ name }) => name.toLowerCase() === player.donator.package.toLowerCase())[0].price)) : rank.price;
 
+	// Generate menu guid
+	const guid = Photon.guid();
+
+	// Reload photon on render
+	requestAnimationFrame(Photon.reload);
+
+	// Show details popup
+	async function details() {
+
+	}
+
+	// Purchase
+	async function purchase() {
+
+	}
+
 	// Render component
 	return (
-		<li className={classnames("list-item package", { baught })}>
-			<img src={rank.iconURL} alt="" style={{ height: "calc(100% - 22px)", width: "auto", margin: 8 }}/>
-			<MCText delimiter="&" style={{ width: 112, display: "inline-block" }}>{rank.prefix}</MCText>
-			<span className="price">{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}</span>
-		</li>
+		<Fragment>
+			<li className={classnames("list-item package", { baught })}>
+				<img src={rank.iconURL} alt="" style={{ height: "calc(100% - 22px)", width: "auto", margin: 8 }}/>
+				<MCText delimiter="&" style={{ width: 112, display: "inline-block" }}>{rank.prefix}</MCText>
+				<span className="price">{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}</span>
+				<div className="meta">
+					<Icon style={{ width: 48, height: 48, lineHeight: "48px", color: "#dcddde" }} id={guid + "icon"}onClick={ () => Photon.Menu(`#${guid}`).anchor(`#${guid}icon`).open() }>more_vert</Icon>
+				</div>
+			</li>
+			<Menu id={guid}>
+				<ListItem leadingIcon="info_outlined" onClick={details}>Package Details</ListItem>
+				<ListItem leadingIcon="add_shopping_cart" onClick={purchase}>Purchase</ListItem>
+			</Menu>
+		</Fragment>
 	);
 
 }
