@@ -4,7 +4,6 @@ import { promises as fs } from "fs";
 
 export default req => new Promise(async function(resolve, reject) {
 
-
 	// Get timeout
 	const timeout = parseInt(
 		(req.query !== undefined && (req.query.timeout)) ||
