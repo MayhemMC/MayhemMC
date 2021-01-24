@@ -50,7 +50,7 @@
 - `/rename` (use color codes)
 - <u>`/sethome` (total of 10 homes)</u>
 
---
+---
 
 **Super Vanilla**:
 - Use anvils to rename items with color codes.
