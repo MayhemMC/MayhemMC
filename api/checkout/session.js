@@ -39,11 +39,11 @@ export default req => new Promise(async function(resolve) {
 	        quantity: 1,
 	    }],
 	    mode: "payment",
-	    success_url: `https://mayhemmc.uk.to/store`,
+	    success_url: `https://mayhemmc.uk.to/store/thankyou`,
 	    cancel_url: `https://mayhemmc.uk.to/store`,
 	});
 
 	// Resolve API
-	resolve({ id: session.id, price, rank, player: player.uuid, public_key: config.stripe.public_key });
+	resolve({ sessionid: session.id, price, rank, player, public_key: config.stripe.public_key });
 
 });
