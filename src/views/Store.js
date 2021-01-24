@@ -1,17 +1,24 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { render } from "react-dom";
+import { renderToString } from "react-dom/server";
 import { Container, Row, Col } from "@photoncss/Layout";
 import { Toolbar, ToolbarTitle, ToolbarSpacer } from "@photoncss/Toolbar";
 import { Icon } from "@photoncss/Icon";
 import { DonationList } from "components/PlayerList";
 import { Textfield } from "@photoncss/Textfield";
+import Markdown from "components/Markdown";
 import MCText from "components/MCText";
 import { Card, CardTitle } from "@photoncss/Card";
 import { List, ListItem } from "@photoncss/List";
 import { Menu } from "@photoncss/Menu";
 import classnames from "classnames";
+import { Spinner } from "@photoncss/Progress";
 
 // Cache last name
 let last_name = "";
+
+// Cache store player
+let store_player = null;
 
 // PlayerLogin component
 export function PlayerLogin() {
@@ -81,7 +88,10 @@ export function Packages() {
 
 	// Initialize state
 	const [ state, setState ] = useState(null);
-	global.setStorePlayer = player => setState(player);
+	global.setStorePlayer = player => {
+		store_player = player;
+		setState(player);
+	}
 
 	// Render component
 	return <PackageList buyer={state}/>
@@ -146,11 +156,45 @@ export function Package({ rank, player, packages }) {
 
 	// Show details popup
 	async function details() {
-
+		const dialog = new Photon.Dialog({
+			type: "alert",
+			transition: "grow",
+			title: renderToString(<MCText delimiter="&">{rank.prefix}</MCText>),
+			content: renderToString(<div style={{ maxHeight: "calc(100vh - 16px - 126px)", overflowY: "auto", marginTop: -28, borderTop: "1px solid #292b2f", borderBottom: "1px solid #292b2f" }}><Markdown source={rank.features}/></div>),
+			actions: [{
+				name: "Purchase",
+				click() {
+					dialog.close();
+					purchase();
+				}
+			}, {
+				name: "Close",
+				click() {
+					dialog.close()
+				}
+			}]
+		}).open();
 	}
 
 	// Purchase
 	async function purchase() {
+
+		// Get player
+		const player = store_player;
+
+		// Make sure a player is logged in
+		if(player === null) return Photon.Snackbar({ duration: 7500, classes: "red", content: `Please use a valid username or uuid` })
+
+		// Open dialog
+		new Photon.Dialog({
+			type: "alert",
+			transition: "grow",
+			dismissable: false,
+			content: `<div id="purchase-root"></div>`
+		}).open();
+
+		// Render checkout to dialog
+		render(<Checkout player={player} rank={rank} price={price}/>, $("#purchase-root").parent()[0]);
 
 	}
 
@@ -167,11 +211,26 @@ export function Package({ rank, player, packages }) {
 			</li>
 			<Menu id={guid}>
 				<ListItem leadingIcon="info_outlined" onClick={details}>Package Details</ListItem>
-				<ListItem leadingIcon="add_shopping_cart" onClick={purchase}>Purchase</ListItem>
+				<ListItem leadingIcon="add_shopping_cart" onClick={ () => purchase()}>Purchase</ListItem>
 			</Menu>
 		</Fragment>
 	);
 
+}
+
+// Checkout Dialog Component
+export function Checkout({ player, rank }) {
+
+	// Initialize state
+	const [ state, setState ] = useState(null);
+
+	// If loading
+	if(state === null) return (
+		<center style={{ padding: 64 }}>
+			<Spinner/>
+		</center>
+	);
+	
 }
 
 // Render view
