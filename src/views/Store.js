@@ -123,15 +123,23 @@ export function PackageList({ buyer }) {
 	if(state === null) return null;
 
 	// Get packages from state
-	let { packages } = state;
+	let { packages, sale } = state;
 
 	// Render component
 	return (
 		<div className="package-list">
+			{ sale < 1 && (
+				<Card>
+					<CardTitle>
+						<Icon style={{ transform: "translateY(4px)", paddingRight: 12 }} className="material-icons text-blue">info_outline</Icon>
+						<span>All items are {Math.round((1 - sale)*100)}% off!</span>
+					</CardTitle>
+				</Card>
+			)}
 			<Card>
 				<CardTitle>Packages</CardTitle>
 				<List style={{ border: "none" }}>
-					{ packages.map(rank => <Package rank={rank} player={buyer} packages={packages} key={rank.tier}/>) }
+					{ packages.map(rank => <Package rank={rank} player={buyer} packages={packages} sale={sale} key={rank.tier}/>) }
 				</List>
 			</Card>
 		</div>
@@ -140,7 +148,7 @@ export function PackageList({ buyer }) {
 }
 
 // Package component
-export function Package({ rank, player, packages }) {
+export function Package({ rank, player, packages, sale }) {
 
 	// Get index of rank
 	const index = player !== null && player.hasOwnProperty("donator") && player.donator !== null ? packages.indexOf(packages.filter(({ name }) => name === player.donator.package.toLowerCase())[0]) : -1;
@@ -207,7 +215,14 @@ export function Package({ rank, player, packages }) {
 			<li className={classnames("list-item package", { baught })}>
 				<img src={rank.iconURL} alt="" style={{ height: "calc(100% - 22px)", width: "auto", margin: 8 }}/>
 				<MCText delimiter="&" style={{ width: 112, display: "inline-block" }}>{rank.prefix}</MCText>
-				<span className="price">{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}</span>
+				<span className="price">
+					{ sale === 1 ? <Fragment>
+						<span>{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}</span>
+					</Fragment> : <Fragment>
+						<span style={{ paddingRight: 16, textDecoration: "line-through" }} className="text-grey">{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}</span>
+						<span>{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price * sale)}</span>
+					</Fragment> }
+				</span>
 				<div className="meta">
 					<Icon style={{ width: 48, height: 48, lineHeight: "48px", color: "#dcddde" }} id={guid + "icon"}onClick={ () => Photon.Menu(`#${guid}`).anchor(`#${guid}icon`).open() }>more_vert</Icon>
 				</div>
