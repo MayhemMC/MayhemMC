@@ -14,6 +14,9 @@ import { Menu } from "@photoncss/Menu";
 import classnames from "classnames";
 import { Spinner } from "@photoncss/Progress";
 
+// Add stripe
+$(() => $(`<script src="https://js.stripe.com/v3/" async></script>`).appendTo($("head")));
+
 // Cache last name
 let last_name = "";
 
@@ -224,13 +227,23 @@ export function Checkout({ player, rank }) {
 	// Initialize state
 	const [ state, setState ] = useState(null);
 
+	// Fetch state
+	useEffect(function() {
+		if(state === null) app.api("checkout/session", { rank: rank.name, player: player.name }).then(setState);
+	})
+
 	// If loading
 	if(state === null) return (
 		<center style={{ padding: 64 }}>
 			<Spinner/>
 		</center>
 	);
-	
+
+	const stripe = Stripe(state.public_key);
+	stripe.redirectToCheckout({ sessionId: state.sessionid });
+
+	return null;
+
 }
 
 // Render view
