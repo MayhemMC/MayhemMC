@@ -31,11 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 });
 
-import inAppPurchase from "./inAppPurchase";
 import "./utils";
 
 // Create global `app` definition
-global.app = { inAppPurchase };
+global.app = {};
 
 // Resolve assets from the static folder
 app.static = asset => require(`./static/${asset}`).default;
