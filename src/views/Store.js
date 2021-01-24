@@ -164,7 +164,7 @@ function View() {
 				<Row>
 
 					<Col sm={12} lg={3}>
-						{ /*<DonationList/>*/ }
+						<DonationList/>
 					</Col>
 
 					<Col sm={12} lg={9}>
