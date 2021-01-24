@@ -23,24 +23,29 @@ export function PlayerLogin() {
 
 	// Make sure duplicate requests arent send
 	useEffect(function() {
-		const fetch = setInterval(async function() {
+		let pull_active = true;
+		(async function fetch() {
 
 			// Get value
-			const query = $(`#${guid}`).val();
+			const query = $(`#${guid}`).val().toLowerCase();
 
 			// Prevent duplicate searches
-			if(query === last_name) return;
+			if(query === last_name) return setTimeout(fetch);
+			last_name = query;
 
 			// If empty field
 			if(query === "") {
-				last_name = query;
 				setState(null);
 				setStorePlayer(null);
-				return;
+				return setTimeout(fetch);
 			}
+
 
 			// Lookup player
 			const lookup = await app.api("player", { query });
+
+			// If still pulling, fetch again in 10ms
+			if(pull_active) setTimeout(fetch)
 
 			// If error
 			if(lookup.success === false) return;
@@ -51,10 +56,9 @@ export function PlayerLogin() {
 			// Set state
 			setState(player === undefined ? null : player);
 			setStorePlayer(player === undefined ? null : player);
-			last_name = query;
 
-		}, 100);
-		return () => clearInterval(fetch);
+		}());
+		return () => { pull_active = false };
 	})
 
 	// Render component
@@ -113,7 +117,7 @@ export function PackageList({ buyer }) {
 			<Card>
 				<CardTitle>Packages</CardTitle>
 				<List style={{ border: "none" }}>
-					{ packages.map(rank => <Package rank={rank} buyer={buyer} packages={packages} key={rank.tier}/>) }
+					{ packages.map(rank => <Package rank={rank} player={buyer} packages={packages} key={rank.tier}/>) }
 				</List>
 			</Card>
 		</div>
@@ -122,19 +126,23 @@ export function PackageList({ buyer }) {
 }
 
 // Package component
-export function Package({ rank, buyer, packages }) {
+export function Package({ rank, player, packages }) {
 
 	// Get index of rank
-	const index = buyer !== null && buyer.hasOwnProperty("donator") && buyer.donator !== null ? packages.indexOf(packages.filter(({ name }) => name === buyer.donator.package.toLowerCase())[0]) : -1;
+	const index = player !== null && player.hasOwnProperty("donator") && player.donator !== null ? packages.indexOf(packages.filter(({ name }) => name === player.donator.package.toLowerCase())[0]) : -1;
 
 	// Get is player baught this package before
 	const baught = index >= rank.tier - 1;
+
+	// Get price
+	const price = player !== null && player.hasOwnProperty("donator") && player.donator !== null ? (rank.price - (player.donator === null ? 0 : packages.filter(({ name }) => name.toLowerCase() === player.donator.package.toLowerCase())[0].price)) : rank.price;
 
 	// Render component
 	return (
 		<li className={classnames("list-item package", { baught })}>
 			<img src={rank.iconURL} alt="" style={{ height: "calc(100% - 22px)", width: "auto", margin: 8 }}/>
-			<MCText delimiter="&">{rank.prefix}</MCText>
+			<MCText delimiter="&" style={{ width: 112, display: "inline-block" }}>{rank.prefix}</MCText>
+			<span className="price">{baught ? "" : Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(price)}</span>
 		</li>
 	);
 
@@ -156,7 +164,7 @@ function View() {
 				<Row>
 
 					<Col sm={12} lg={3}>
-						<DonationList/>
+						{ /*<DonationList/>*/ }
 					</Col>
 
 					<Col sm={12} lg={9}>
