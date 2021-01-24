@@ -229,7 +229,7 @@ export function Checkout({ player, rank }) {
 
 	// Fetch state
 	useEffect(function() {
-		if(state === null) app.api("checkout/session", { rank: rank.name, player: player.name }).then(setState);
+		if(state === null) app.api("checkout/package", { rank: rank.name, player: player.name }).then(setState);
 	})
 
 	// If loading

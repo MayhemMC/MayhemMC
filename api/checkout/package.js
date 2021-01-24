@@ -7,7 +7,7 @@ const stripe = Stripe(config.stripe.secret_key);
 export default req => new Promise(async function(resolve) {
 
 	// Get packages
-	const { packages } = await api("store");
+	const { packages, sale } = await api("store");
 
 	// Get player
 	let player = (
@@ -22,7 +22,14 @@ export default req => new Promise(async function(resolve) {
 	rank = packages.filter(({ name }) => name.toLowerCase() === rank.toLowerCase())[0]
 
 	// Get package price
-	const price = (rank.price - (player.donator === null ? 0 : packages.filter(({ name }) => name.toLowerCase() === player.donator.package.toLowerCase())[0].price)) * 100;
+	const amount_off = (player.donator === null ? 0 : packages.filter(({ name }) => name.toLowerCase() === player.donator.package.toLowerCase())[0].price) * 100 * sale;
+
+	const coupon = await stripe.coupons.create({
+	  	amount_off,
+	  	duration: "once",
+		currency: "usd",
+		name: `${player.donator.package.toUpperCase()} Discount`
+	});
 
 	// Await payment gateway
 	const session = await stripe.checkout.sessions.create({
@@ -31,19 +38,22 @@ export default req => new Promise(async function(resolve) {
 	        price_data: {
 	          	currency: "usd",
 	          	product_data: {
-	            	name: `${stripFormats(rank.prefix, "&")} Rank`,
+	            	name: `${rank.name.toUpperCase()} Package for ${player.name}`,
 	            	images: [ rank.iconURL ],
 	          	},
-	          	unit_amount: price,
+	          	unit_amount: rank.price * 100 * sale,
 	        },
 	        quantity: 1,
 	    }],
 	    mode: "payment",
+		discounts: amount_off > 0 ? [{
+    		coupon: coupon.id
+  		}] : [],
 	    success_url: `https://mayhemmc.uk.to/store/thankyou`,
 	    cancel_url: `https://mayhemmc.uk.to/store`,
 	});
 
 	// Resolve API
-	resolve({ sessionid: session.id, price, rank, player, public_key: config.stripe.public_key });
+	resolve({ sessionid: session.id, public_key: config.stripe.public_key });
 
 });
