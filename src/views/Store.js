@@ -239,8 +239,8 @@ export function Checkout({ player, rank }) {
 		</center>
 	);
 
-	const stripe = Stripe(state.public_key);
-	stripe.redirectToCheckout({ sessionId: state.sessionid });
+	const stripe = Stripe(state.publicKey);
+	stripe.redirectToCheckout({ sessionId: state.sessionId });
 
 	return null;
 
