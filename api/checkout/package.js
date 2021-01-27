@@ -2,6 +2,8 @@
 import Stripe from "stripe";
 const stripe = Stripe(config.stripe.secret_key);
 
+import uuid from "uuid";
+
 // API resolver
 export default req => new Promise(async function(resolve, reject) {
 
@@ -40,11 +42,14 @@ export default req => new Promise(async function(resolve, reject) {
 	// Attempt to create a payment gateway
 	try {
 
+		// Create new transaction ID
+		const txn = uuid();
+
 		// Await payment gateway
 		const session = await stripe.checkout.sessions.create({
 
 			// The URL the customer will be directed to if they decide to cancel payment and return to your website.
-			cancel_url: `http://${req.hostname}/store`,
+			cancel_url: `https://mayhemmc.uk.to/store`,
 
 			// A unique string to reference the Checkout Session. This can be a customer ID, a cart ID, or similar, and can be used to reconcile the Session with your internal systems.
 			client_reference_id: `${player.name};${player.uuid};${rank.name}`,
@@ -59,7 +64,7 @@ export default req => new Promise(async function(resolve, reject) {
 		    mode: "payment",
 
 			// The URL to which Stripe should send customers when payment or setup is complete.
-		    success_url: `http://${req.hostname}/store/thankyou`,
+		    success_url: `https://mayhemmc.uk.to/store/fulfill?order=${txn}`,
 
 			// The line items purchased by the customer.
 		    line_items: [{
@@ -94,6 +99,9 @@ export default req => new Promise(async function(resolve, reject) {
 			discounts,
 
 		});
+
+		// Insert pending txn to database
+		await mysql.query(`INSERT INTO pending_transactions (txn, sessionId, player, purchase) VALUES ("${txn}", "${session.id}", "${player.uuid}", "${rank.name}")`);
 
 		// Resolve API
 		resolve({ sessionId: session.id, publicKey: config.stripe.public_key });

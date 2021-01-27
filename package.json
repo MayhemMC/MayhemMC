@@ -72,11 +72,13 @@
         "express-rate-limit": "^5.2.3",
         "http": "0.0.1-security",
         "https": "^1.0.0",
+        "markdown-it": "^12.0.4",
         "minecraft-query": "^1.0.9",
         "minecraft-text": "^1.2.17",
         "mysql-promise": "^5.0.0",
         "mysql2": "^2.2.5",
         "namemc": "^0.2.7",
+        "nodemailer": "^6.4.17",
         "ordinal": "^1.0.3",
         "stripe": "^8.132.0",
         "yaml": "^1.10.0"
