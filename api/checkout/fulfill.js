@@ -8,7 +8,7 @@ import Stripe from "stripe";
 const stripe = Stripe(config.stripe.secret_key);
 
 // Do work
-async function fulfill({ oldPlayer, prefix, purchase, charge, email, newRank, order }) {
+async function fulfill({ oldPlayer, prefix, purchase, charge, email, newRank, order, query }) {
 
 	// Send commands
 	await inject("lobby", `lp user ${oldPlayer.name} parent set ${purchase}`);
@@ -18,14 +18,6 @@ async function fulfill({ oldPlayer, prefix, purchase, charge, email, newRank, or
 	const guildId = "708050277957238784";
 	const guild = await client.guilds.fetch(guildId);
 	(await client.channels.cache.get(Channels.JOINS)).send(`Thank you ${oldPlayer.discord_id === null ? `\`${oldPlayer.name}\``:`<@${oldPlayer.discord_id}>`} for supporting the server! You have received your ${guild.emojis.cache.find(emoji => emoji.name.toUpperCase() === purchase.toUpperCase())} __**\`${purchase.toUpperCase()}\`**__ rank!`)
-
-	// Give player donator role
-	if(oldPlayer.discord_id !== null) {
-		const specimen = await guild.members.fetch(oldPlayer.discord_id);
-		Object.values(Roles).map(role => specimen.roles.remove(role));
-		specimen.roles.add(Roles[purchase.toUpperCase()]);
-		specimen.roles.add(Roles.VERIFIED);
-	}
 
 	// Insert donation into donators database
 	const [ donators ] = await mysql.query(`SELECT * FROM \`donations\` WHERE uuid="${oldPlayer.uuid}"`);
@@ -64,6 +56,16 @@ async function fulfill({ oldPlayer, prefix, purchase, charge, email, newRank, or
 
 	// Make sure order cant be redeemed twice
 	await mysql.query(`UPDATE pending_transactions SET purchase="TXN_FULFILLED" WHERE txn="${order}"`);
+
+	try {
+		// Give player donator role
+		if(oldPlayer.discord_id !== null) {
+			const specimen = await guild.members.fetch(oldPlayer.discord_id);
+			Object.values(Roles).map(role => specimen.roles.remove(role));
+			specimen.roles.add(Roles[purchase.toUpperCase()]);
+			specimen.roles.add(Roles.VERIFIED);
+		}
+	} catch(e) {}
 
 	// Return new player object
 	return newPlayer;
@@ -122,7 +124,7 @@ export default req => new Promise(async function(resolve, reject) {
 	const { prefix } = newRank;
 
 	// Fulfill user
-	const newPlayer = await fulfill({ oldPlayer, prefix, purchase, charge, email, newRank, order });
+	const newPlayer = await fulfill({ oldPlayer, prefix, purchase, charge, email, newRank, order, query });
 
 	// Resolve API request
 	resolve({ oldPlayer, email, paid: session.amount_total/100, newPlayer });

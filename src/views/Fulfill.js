@@ -39,7 +39,7 @@ function View() {
 	return (
 		<VHAlign>
 			<center>
-				<Icon style={{ fontSize: 96, width: "auto" }} className="material-icons green-red">check_circle_outline</Icon>
+				<Icon style={{ fontSize: 96, width: "auto" }} className="material-icons text-green">check_circle_outline</Icon>
 				<p>Thank you for supporting Mayhem MC!</p>
 			</center>
 		</VHAlign>

@@ -11,7 +11,8 @@ global.Roles = {
 
 global.Channels = {
 	JOINS: "708050510166622360",
-	BUMP: "761400825951551499"
+	BUMP: "761400825951551499",
+	DEV: "803280746738352228"
 }
 
 global.Color = {
