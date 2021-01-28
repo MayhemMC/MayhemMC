@@ -29,11 +29,11 @@ export default async function(args, message) {
 		if(rows.length > 0) {
 			const [{ uuid }] = rows;
 			const result = await api("player", { query: uuid });
-			if(!result.error) player = result.result[0];
+			if(!result.error) player = result.players[0];
 		}
 	} catch(e) {
 		const result = await api("player", { query: user });
-		if(!result.error) player = result.result[0];
+		if(!result.error) player = result.players.filter(({ name }) => name.toLowerCase() === user.toLowerCase())[0];
 	}
 
 	// If player wasn't found
@@ -68,9 +68,6 @@ export default async function(args, message) {
 	if(player.discord_id !== null) badges.push(guild.emojis.cache.find(emoji => emoji.name === "verified"))
 	badges.push(guild.emojis.cache.find(emoji => emoji.name === player.group))
 	if(player.migrated === true) badges.push(guild.emojis.cache.find(emoji => emoji.name === "saplayer"))
-
-	// Add badges to embed
-	if(badges.length > 0) embed.setDescription(`Badges: ${badges.join(" ")}`);
 
 	// Send to channel
 	return await channel.send(embed);
