@@ -80,6 +80,7 @@
         "namemc": "^0.2.7",
         "nodemailer": "^6.4.17",
         "ordinal": "^1.0.3",
+        "pretty-bytes": "^5.5.0",
         "stripe": "^8.132.0",
         "yaml": "^1.10.0"
     }
