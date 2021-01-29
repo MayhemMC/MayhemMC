@@ -1,7 +1,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 
-export default req => new Promise(async function(resolve, reject) {
+export default () => new Promise(async function(resolve) {
 
 	// Set sale factor
 	const sale = 1;
