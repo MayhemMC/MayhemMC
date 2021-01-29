@@ -98,6 +98,80 @@ export function GlobalList() {
 
 }
 
+/* Server List Component
+ *
+ * List players only
+ * by one server
+ */
+export function ServerList({ spec }) {
+
+	// Initialize state
+	const [ state, setState ] = useState(null);
+
+	// Function to set players
+	async function fetch() {
+
+		// Fetch player list
+		const list = await app.api("server", { server: spec });
+
+		// Convert online players to list
+		let query = [];
+		list.server.players.map(({ player }) => query.push(player));
+		query = query.join(",");
+
+		// Fetch player data
+		const data = await app.api("player", { query });
+		data.players = (data.players || []).map(player => ({
+			...player,
+		}));
+
+		// Make sure player query is successful
+		if(data.success === false) return;
+
+		// Set state
+		setState({ ...list, ...data });
+
+	}
+
+	// Have state sync with server every second while component is mounted
+	useEffect(function() {
+		const sync = setInterval(fetch, 1000);
+		return () => clearInterval(sync);
+	});
+
+	// Return default card if its loading
+	if (state === null) return (
+		<Card>
+			<CardTitle>Players</CardTitle>
+			<Indeterminate/>
+		</Card>
+	)
+
+	// Return component
+	return (
+		<Card>
+			<CardTitle>
+				<span>Players</span>
+				<span className="color-primary text-on-primary" style={{
+				  fontSize: 14,
+				  borderRadius: 24,
+				  position: "absolute",
+				  height: 32,
+				  padding: "0 10px",
+				  right: 16
+			  }}>{state.server.online}/{state.server.limit}</span>
+			</CardTitle>
+			{ state.server.players.length > 0 && <Fragment>
+				<hr/>
+				<List>
+					{ state.players.map((player, key) => <Player key={key} {...player}/>)}
+				</List>
+			</Fragment>}
+		</Card>
+	);
+
+}
+
 /* Vote List Component
  *
  * List players and the
