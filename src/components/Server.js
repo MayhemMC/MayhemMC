@@ -31,14 +31,17 @@ export function Plugins(server) {
 
 export function Dynmap(server) {
 
+	// Generate uuid
 	const uuid = Photon.guid();
 
+	// Make sure dynmap fills window
 	useEffect(function() {
 		$(window).on("resize", () => $(`#${uuid}`).css({ height: window.innerHeight - $("footer").height() - 128 }));
 		requestAnimationFrame(() => $(`#${uuid}`).css({ height: window.innerHeight - $("footer").height() - 128 }))
 		return () => $(window).off("resize");
 	})
 
+	// Return structure
 	return (
 		<div style={{ position: "relative" }}>
 			<iframe src={`/dynmap/${server.name}/#`} frameBorder="0" className="full-frame" id={uuid}></iframe>
