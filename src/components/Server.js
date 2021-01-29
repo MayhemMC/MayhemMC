@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Col, Row, Container } from "@photoncss/Layout";
 import { ServerList } from "components/PlayerList";
 import { Button } from "@photoncss/Button";
+import { Card, CardTitle } from "@photoncss/Card";
 
 export function Overview(server) {
 	return (
@@ -18,12 +19,28 @@ export function Overview(server) {
 }
 
 export function Plugins(server) {
+
+	function Plugin({ name, version }) {
+		return (
+			<Card>
+				<CardTitle>
+					<span>{name}</span>
+					<span style={{ float: "right", fontFamily: "roboto condensed", opacity: 0.78 }}>{version}</span>
+				</CardTitle>
+			</Card>
+		)
+	}
+
 	return (
 		<Container>
 			<Row>
-
-				plugins
-
+				<Col sm={12} md={10} lg={8} xl={6}>{
+					Object.keys(server.plugins)
+					  .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+					  .map(plugin =>
+						<Plugin name={plugin} version={server.plugins[plugin]}/>
+					  )
+				}</Col>
 			</Row>
 		</Container>
 	);
