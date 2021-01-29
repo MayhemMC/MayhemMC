@@ -15,7 +15,9 @@ export default req => new Promise(async function(resolve, reject) {
 	if(isNaN(timeout)) return reject("Timeout must be a number.");
 
 	// Get specified server
-	const { server = null } = req.query || req.body;
+	const server =
+		(req.query !== undefined && (req.query.server)) ||
+		(req.body !== undefined && (req.body.server)) || null;
 
 	// If no server
 	if(server === null) return reject("No server specified.");
@@ -39,7 +41,7 @@ export default req => new Promise(async function(resolve, reject) {
 
 	// Get properties from the server menu
 	const { NAME: name_formatted, MATERIAL: icon, LORE: description } = menu[server];
-	const name = stripFormats(name_formatted, "&");
+	const name = server;
 
 	description.shift();
 	description.shift();

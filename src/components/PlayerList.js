@@ -45,10 +45,7 @@ export function GlobalList() {
 		query = query.join(",");
 
 		// Fetch player data
-		const data = await app.api("player", { query });
-
-		// Make sure player query is successful
-		if(data.success === false) return;
+		const data = query === "" ? [] : await app.api("player", { query });
 		data.players = (data.players || []).map(player => ({
 			...player,
 			alt: list.players.filter(a => a.player === player.name)[0].server
@@ -120,7 +117,7 @@ export function ServerList({ spec }) {
 		query = query.join(",");
 
 		// Fetch player data
-		const data = await app.api("player", { query });
+		const data = query === "" ? [] : await app.api("player", { query });
 		data.players = (data.players || []).map(player => ({
 			...player,
 		}));
