@@ -53,9 +53,7 @@ function View() {
 					</Col>
 
 					<Col sm={12} lg={8}>
-						<Card>
-							<Markdown source={require("../../docs/vote.md").default}/>
-						</Card>
+						<Markdown source={require("../../docs/vote.md").default}/>
 					</Col>
 
 				</Row>

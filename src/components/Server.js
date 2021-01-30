@@ -3,14 +3,21 @@ import { Col, Row, Container } from "@photoncss/Layout";
 import { ServerList } from "components/PlayerList";
 import { Button } from "@photoncss/Button";
 import { Card, CardTitle } from "@photoncss/Card";
+import Markdown from "components/Markdown";
 
 export function Overview(server) {
 	return (
 		<Container>
 			<Row>
 
-				<Col sm={12} lg={4}>
+				<Col sm={12} lg={4} xl={3}>
 					<ServerList spec={server.name}/>
+				</Col>
+
+				<Col sm={12} lg={8} xl={9}>
+
+					{ server.about !== null && <Markdown source={server.about}/> }
+
 				</Col>
 
 			</Row>
