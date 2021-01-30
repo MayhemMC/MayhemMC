@@ -1,6 +1,7 @@
 # About
 Our take on a minimalistic SMP server. Small world size, no plugins, Supervanilla!
 
+---
 # Rules
 1.	No advertising.
 2.	No spamming/chat flood.

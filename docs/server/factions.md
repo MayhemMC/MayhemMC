@@ -1,6 +1,7 @@
 # About
 Assemble groups, work together, battling, building massive bases, raiding and looting enemy's, make alliances, farm materials, grind mobs.
 
+---
 # Rules
 1. No advertising.
 2. No teleport trapping.
@@ -17,14 +18,17 @@ Assemble groups, work together, battling, building massive bases, raiding and lo
 - The 5 types of crates are `Vote`, `Rare`, `Epic`, `Mighty` and `Mythic`
 - You can get crate keys from KOTH's, warzone envoys or by voting.
 
+---
 # Custom Landscape
 The map is completely custom terrain. Forget default Minecraft terrain generation, explore a new place every teleport. Download the map "Growth Custom Terrain" from the artist [here](https://www.planetminecraft.com/project/growth-custom-terrain-3303992/).
 
+---
 # Defense
 - Make sure to use `Gravel Generator's` to build falling walls to protect your base.
 - Make your main walls out of Obsidian.
 - Obsidian can withstand up to 5 blasts before breaking.
 
+---
 # Enchantments
 - You can enchant gear up to 32 levels with some enchantments.
 - 60+ Custom enchantments have been added to the game.
@@ -124,16 +128,19 @@ The map is completely custom terrain. Forget default Minecraft terrain generatio
 
 <br/>
 
+---
 # Farming
 - Use hoppers to put the items from your farm into a sellchest.
 - If the faction leader is online, sellchest's automatically sell their contents and pay the faction leader.
 - Heads do not sell in sellchest's
 
+---
 # Kits
 - Kits contain op enchantments starting at level 12 for the `Starter` kit and ranging to level 24 for the `Xeon` kit.
 - Starter kits can be obtained daily with `/kit`
 - Other kits can be obtained from crates.
 
+---
 # KOTH
 - KOTH (King of the Hill) events happen daily at 3pm EDT.
 - The objective is to capture the volcano in the Nether realm.
@@ -144,15 +151,18 @@ The map is completely custom terrain. Forget default Minecraft terrain generatio
 - After you have stood on the volcano for 5 minutes without being overturned, you have captured the KOTH.
 - KOTH rewards are `3x Mythic Crate Keys`.
 
+---
 # Masks
 - Masks are heads that give you special effects when you where them.
-- You can get masks from __________________
+- You can get masks from the mask trader at spawn.
 
+---
 # Spawners
 - You can buy spawners from the shop.
 - You can mine spawners with silk touch.
 - Mobs that spawn from spawners drop valuable heads.
 
+---
 # Warzone Envoys
 - Envoys occur every 2 hours at the WarZone.
 - Get to the warzone with `/warzone`

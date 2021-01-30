@@ -1,6 +1,7 @@
 # About
 A custom terrain multiplayer server, little to no pressure environment, amazing landscapes, Play to your hearts content.
 
+---
 # Rules
 1. No advertising.
 2. No teleport trapping.
