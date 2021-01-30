@@ -3,4 +3,6 @@ An entirely no-rules environment for players to do literally whatever they want.
 
 ---
 # Rules
-**There are none**. All we ask of you is to use your ethics when it comes to pushing the server to its limits. The server does have a limit despite high-end hardware. All we ask is that you be respectful, if you accidentally crash the server while traveling, that's ok. If you are purposely and repeatedly crashing the server, there may be a handicap. This has never happened before, lets try to make it never happen and keep MMC Anarchy fun for everyone.
+**There are none**
+
+All that is asked is that you don't intentionally try to lag the server. The hardware running anarchy runs other servers on the network and if its overworked, other servers may see a decline in performance. Please respect the players that are playing on other servers.
