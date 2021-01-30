@@ -19,7 +19,7 @@ function View() {
 	return (
 		<Fragment>
 
-			<Toolbar color="primary" variant="raised" position="fixed">
+			<Toolbar variant="raised" position="fixed">
 				<Icon onClick={() => Photon.Drawer("#web-nav").open()}>menu</Icon>
 				<ToolbarTitle>Mayhem MC</ToolbarTitle>
 			</Toolbar>

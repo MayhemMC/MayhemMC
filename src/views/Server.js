@@ -62,7 +62,7 @@ function View() {
 	return (
 		<Fragment>
 
-			<Toolbar color="light-bg" variant="raised" size="contains-tabs" position="fixed">
+			<Toolbar variant="raised" size="contains-tabs" position="fixed">
 				<Icon onClick={() => Photon.Drawer("#web-nav").open()}>menu</Icon>
 				<ToolbarTitle><MCText delimiter="&">{state.server.name_formatted}</MCText></ToolbarTitle>
 				<Tabs>
