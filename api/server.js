@@ -63,7 +63,7 @@ export default req => new Promise(async function(resolve, reject) {
 	const stat = await fs.stat(path.join(MMC_ROOT, server));
 
 	// Get server size
-	const size = parseInt((await exec(`time du -s ${server}`, { cwd: MMC_ROOT }).catch(() => "0\t")).split("\t")[0]) * 1000;
+	const size = parseInt((await exec(`du -s ${server}`, { cwd: MMC_ROOT }).catch(() => "0\t")).split("\t")[0]) * 1000;
 
 	// Formulate server response
 	const resp = {
