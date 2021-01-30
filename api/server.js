@@ -46,6 +46,9 @@ export default req => new Promise(async function(resolve, reject) {
 	description.shift();
 	description.shift();
 
+	// Get about page
+	const about = await fs.readFile(path.resolve("./docs/server", `${server}.md`), "utf8").catch(() => null);
+
 	// Formulate server response
 	const resp = {
 		name_formatted, name, icon, description: stripFormats(description.join("\n"), "&"),
@@ -54,7 +57,8 @@ export default req => new Promise(async function(resolve, reject) {
 		online: query.players.length,
 		limit: parseInt(query.max_players),
 		port: ports[server.toLowerCase()],
-		version: query.version
+		version: query.version,
+		about
 	}
 
 	// Respons to request
