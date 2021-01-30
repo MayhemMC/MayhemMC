@@ -27,6 +27,7 @@ export function Overview(server) {
 						<p>
 							<StatLine title="Players (all time)">{server.uniqueJoins}</StatLine>
 							<StatLine title="Server Version">{server.version}</StatLine>
+							<StatLine title="Memory">{server.memory_formatted}</StatLine>
 						</p>
 					</Card>
 

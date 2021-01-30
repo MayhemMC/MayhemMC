@@ -2,6 +2,7 @@ import path from "path";
 import { stripFormats } from "minecraft-text";
 import { promises as fs } from "fs";
 import YAML from "yaml";
+import pb from "pretty-bytes";
 
 export default req => new Promise(async function(resolve, reject) {
 
@@ -52,6 +53,12 @@ export default req => new Promise(async function(resolve, reject) {
 	// Get unique joins
 	const uniqueJoins = (await fs.readdir(path.join(MMC_ROOT, server, "/plugins/Essentials/userdata"))).length;
 
+	// Get start script
+	const start = await fs.readFile(path.join(MMC_ROOT, server, "start.sh"), "utf8");
+
+	// Get memory
+	const memory = parseInt(start.split("java -jar -Xmx")[1].split("G")[0]) * Math.pow(10, 9);
+
 	// Formulate server response
 	const resp = {
 		name_formatted, name, icon, description: stripFormats(description.join("\n"), "&"),
@@ -62,7 +69,9 @@ export default req => new Promise(async function(resolve, reject) {
 		port: ports[server.toLowerCase()],
 		version: query.version,
 		about,
-		uniqueJoins
+		uniqueJoins,
+		memory,
+		memory_formatted: pb(memory)
 	}
 
 	// Respons to request
