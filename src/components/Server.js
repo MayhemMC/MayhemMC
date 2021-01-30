@@ -6,11 +6,30 @@ import { Card, CardTitle } from "@photoncss/Card";
 import Markdown from "components/Markdown";
 
 export function Overview(server) {
+
+	function StatLine({ title, children }) {
+		return (
+			<div>
+				<b>{title}</b>
+				<span style={{ float: "right" }}>{children}</span>
+			</div>
+		)
+	}
+
 	return (
 		<Container>
 			<Row>
 
 				<Col sm={12} lg={4} xl={3}>
+
+					<Card>
+						<CardTitle>Server Stats</CardTitle>
+						<p>
+							<StatLine title="Players (all time)">{server.uniqueJoins}</StatLine>
+							<StatLine title="Server Version">{server.version}</StatLine>
+						</p>
+					</Card>
+
 					<ServerList spec={server.name}/>
 				</Col>
 

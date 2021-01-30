@@ -49,6 +49,9 @@ export default req => new Promise(async function(resolve, reject) {
 	// Get about page
 	const about = await fs.readFile(path.resolve("./docs/server", `${server}.md`), "utf8").catch(() => null);
 
+	// Get unique joins
+	const uniqueJoins = (await fs.readdir(path.join(MMC_ROOT, server, "/plugins/Essentials/userdata"))).length;
+
 	// Formulate server response
 	const resp = {
 		name_formatted, name, icon, description: stripFormats(description.join("\n"), "&"),
@@ -58,7 +61,8 @@ export default req => new Promise(async function(resolve, reject) {
 		limit: parseInt(query.max_players),
 		port: ports[server.toLowerCase()],
 		version: query.version,
-		about
+		about,
+		uniqueJoins
 	}
 
 	// Respons to request
