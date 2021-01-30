@@ -4,6 +4,7 @@ import { ServerList } from "components/PlayerList";
 import { Button } from "@photoncss/Button";
 import { Card, CardTitle } from "@photoncss/Card";
 import Markdown from "components/Markdown";
+import dayjs from "dayjs";
 
 export function Overview(server) {
 
@@ -25,9 +26,11 @@ export function Overview(server) {
 					<Card>
 						<CardTitle>Server Stats</CardTitle>
 						<p>
+							<StatLine title="First Opened">{dayjs(server.available_since).format("MM/DD/YYYY hh:mm a")}</StatLine>
+							<StatLine title="Memory">{server.memory_formatted}</StatLine>
 							<StatLine title="Players (all time)">{server.uniqueJoins}</StatLine>
 							<StatLine title="Server Version">{server.version}</StatLine>
-							<StatLine title="Memory">{server.memory_formatted}</StatLine>
+							<StatLine title="World Size">{server.size_formatted}</StatLine>
 						</p>
 					</Card>
 

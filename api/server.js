@@ -59,6 +59,12 @@ export default req => new Promise(async function(resolve, reject) {
 	// Get memory
 	const memory = parseInt(start.split("java -jar -Xmx")[1].split("G")[0]) * Math.pow(10, 9);
 
+	// Get stat on entire server
+	const stat = await fs.stat(path.join(MMC_ROOT, server));
+
+	// Get server size
+	const size = parseInt((await exec(`time du -s ${server}`, { cwd: MMC_ROOT }).catch(() => "0\t")).split("\t")[0]) * 1000;
+
 	// Formulate server response
 	const resp = {
 		name_formatted, name, icon, description: stripFormats(description.join("\n"), "&"),
@@ -71,7 +77,10 @@ export default req => new Promise(async function(resolve, reject) {
 		about,
 		uniqueJoins,
 		memory,
-		memory_formatted: pb(memory)
+		memory_formatted: pb(memory),
+		available_since: stat.birthtimeMs,
+		size,
+		size_formatted: pb(size)
 	}
 
 	// Respons to request
