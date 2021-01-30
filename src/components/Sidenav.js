@@ -38,7 +38,7 @@ export default function Component() {
 				<hr/>
 				<Subheader>Servers</Subheader>
 				{ state !== null && (
-					state.servers.map(server =>
+					state.servers.filter(({ server }) => server !== "lobby").map(server =>
 						<Route to={`/server/${server.server}`}><MCText delimiter="&">{server.name_formatted}</MCText></Route>
 					)
 				) }
