@@ -4,6 +4,7 @@ import { ServerList } from "components/PlayerList";
 import { Button } from "@photoncss/Button";
 import { Card, CardTitle } from "@photoncss/Card";
 import Markdown from "components/Markdown";
+import MCText from "components/MCText";
 import dayjs from "dayjs";
 
 export function Overview(server) {
@@ -22,6 +23,12 @@ export function Overview(server) {
 			<Row>
 
 				<Col sm={12} lg={4} xl={3}>
+
+					<Card>
+						<p style={{ opacity: 1 }}>
+							<MCText delimiter="&">{server.description_formatted}</MCText>
+						</p>
+					</Card>
 
 					<Card>
 						<CardTitle>Server Stats</CardTitle>

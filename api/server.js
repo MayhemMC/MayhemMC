@@ -67,7 +67,11 @@ export default req => new Promise(async function(resolve, reject) {
 
 	// Formulate server response
 	const resp = {
-		name_formatted, name, icon, description: stripFormats(description.join("\n"), "&"),
+		name_formatted,
+		name,
+		icon,
+		description_formatted: description.join("\n"),
+		description: stripFormats(description.join("\n"), "&"),
 		plugins: query.plugins.split(": ")[1].split("; ").reduce((acc, curr) => (acc[curr.split(" ")[0]] = curr.split(" ")[1], acc), {}),
 		players: query.players.map(player => ({ player, server: server.toLowerCase() })),
 		online: query.players.length,
