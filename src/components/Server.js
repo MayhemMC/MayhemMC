@@ -15,9 +15,7 @@ export function Overview(server) {
 				</Col>
 
 				<Col sm={12} lg={8} xl={9}>
-
 					{ server.about !== null && <Markdown source={server.about}/> }
-
 				</Col>
 
 			</Row>
@@ -27,10 +25,13 @@ export function Overview(server) {
 
 export function Plugins(server) {
 
+	const MY_PLUGINS = ["bigauction", "bossgamble", "toggleadmin", "nonetherroof"]
+
 	function Plugin({ name, version }) {
+		const isCustom = MY_PLUGINS.indexOf(name.toLowerCase()) > -1;
 		return (
 			<Card>
-				<CardTitle>
+				<CardTitle subtitle={ isCustom ? "Custom for Mayhem MC" : "" } style={{ color: isCustom ? "#ffb74d" : ""}}>
 					<span>{name}</span>
 					<span style={{ float: "right", fontFamily: "roboto condensed", opacity: 0.78 }}>{version}</span>
 				</CardTitle>
