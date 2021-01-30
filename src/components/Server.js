@@ -25,7 +25,7 @@ export function Overview(server) {
 
 					<Card>
 						<CardTitle>Server Stats</CardTitle>
-						<p>
+						<p style={{ paddingTop: 0 }}>
 							<StatLine title="First Opened">{dayjs(server.available_since).format("MM/DD/YYYY hh:mm a")}</StatLine>
 							<StatLine title="Memory">{server.memory_formatted}</StatLine>
 							<StatLine title="Players (all time)">{server.uniqueJoins}</StatLine>
