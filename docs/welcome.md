@@ -6,7 +6,7 @@ First things first please read our rules <#739093629578248252> and register your
 
 **😎 How to register**:
 1. Join our server `mayhemmc.uk.to` (Java edition)
-2. Use the **Discord command** `mmc register <username>` in <#775100944580608010>
+2. Use the **Discord command** `mmc register <minecraft username>` in <#775100944580608010>
 3. You now have access to talk in the server channels!
 
 **❓ If you need help**:
