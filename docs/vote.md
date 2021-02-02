@@ -8,4 +8,4 @@ Voting is the easiest way to help the server grow. It only takes a few seconds t
 | **Anarchy** | 1 Enchanted golden apple<br/>8 Bottles of experience<br/>2 Shulker shells |
 | **Factions** | 1 Vote crate key |
 | **Skyblock** | 1 Vote crate key |
-| **SMP** | 1 Vote crate key |
+| **Survival Multi Player** | 1 Vote crate key |
