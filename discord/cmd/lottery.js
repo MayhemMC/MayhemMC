@@ -1,6 +1,6 @@
 export default async function(args, message) {
 
-	const { channel, member, guild } = message;
+	const { channel, member } = message;
 
 	// If user dosnt have permissions
 	if(!Object.keys(parseCollection(member.roles.cache)).includes(Roles.OWNER)) {
@@ -11,17 +11,17 @@ export default async function(args, message) {
 	}
 
 	// Get votes
-	const { votes } = await mmcApi("votes", { limit: -1 });
+	const { votes } = await api("votes", { limit: -1 });
 
 	// Convert to list of drawable names
 	let drawpool = [];
-	votes.map(({ votes, uuid }) => drawpool = [ ...drawpool, ...Array(votes).fill(uuid) ]);
+	votes.map(({ amount, uuid }) => drawpool = [ ...drawpool, ...Array(amount).fill(uuid) ]);
 
 	// Select user
 	let user;
 	(async function draw() {
 		const uuid = drawpool[Math.floor(Math.random() * drawpool.length)];
-		user = await mmcApi("player", { uuid });
+		[ user ] = (await api("player", { query: uuid })).players;
 		if(user.administrator) draw();
 		if(user.discord_id === false) draw();
 		else proceed(user);
